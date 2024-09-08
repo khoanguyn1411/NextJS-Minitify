@@ -9,8 +9,10 @@
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:import/recommended" // Import plugin rules
   ],
+  "plugins": ["import"],
   "rules": {
     // Customize rules here
     "max-len": ["error", { "code": 80, "ignoreUrls": true }],
@@ -20,9 +22,12 @@
     "react/react-in-jsx-scope": "off",
     "@typescript-eslint/member-ordering": "off",
     "@typescript-eslint/naming-convention": "off",
-    "@typescript-eslint/consistent-type-imports": ["error", {
-      "fixStyle": "inline-type-imports"
-    }],
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "fixStyle": "inline-type-imports"
+      }
+    ],
     "@typescript-eslint/indent": [
       "error",
       2,
@@ -34,8 +39,28 @@
           "TSTypeAnnotation"
         ]
       }
+    ],
+    "import/prefer-default-export": "off",
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always",
+        "pathGroups": [
+          {
+            "pattern": "src/**",
+            "group": "internal",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "groups": [
+          ["builtin", "external"],
+          "internal",
+          ["parent", "sibling"],
+          "index"
+        ]
+      }
     ]
-    // Add any additional rules or overrides here
   },
   "settings": {
     "react": {
