@@ -6,13 +6,20 @@
     "start": "next dev",
     "build": "next build",
     "preview": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "next:cli": "nextui"
   },
   "dependencies": {
+    "@nextui-org/button": "^2.0.37",
+    "@nextui-org/system": "^2.2.5",
+    "@nextui-org/theme": "^2.2.9",
     "@prisma/client": "^5.19.1",
+    "framer-motion": "^11.5.4",
     "next": "14.2.8",
+    "nextui-cli": "^0.3.4",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "tailwindcss": "^3.4.10"
   },
   "devDependencies": {
     "@types/node": "^20",
