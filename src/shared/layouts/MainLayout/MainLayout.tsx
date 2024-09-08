@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { PropsWithChildren, type FC } from "react";
+
+import { type FC, type PropsWithChildren } from "react";
 
 export const MainLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
