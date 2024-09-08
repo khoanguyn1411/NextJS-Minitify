@@ -8,7 +8,7 @@ export const MainLayout: FC<PropsWithChildren> = ({ children }) => {
     <div>
       <h1 className="bg-black text-red-600">This is main layout</h1>
 
-      <Button>This is test button</Button>
+      <Button color="primary">This is test button</Button>
       <Input/>
 
       <Link href={"/user-musics"}>User music</Link>
