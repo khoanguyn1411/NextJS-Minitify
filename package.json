@@ -7,7 +7,7 @@
     "build": "next build",
     "preview": "next start",
     "lint": "next lint",
-    "next:cli": "nextui"
+    "nextui:add": "nextui add"
   },
   "dependencies": {
     "@nextui-org/button": "^2.0.37",
