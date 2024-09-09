@@ -8,7 +8,11 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      padding: {
+        container: "1rem",
+      },
+    },
   },
   darkMode: "class",
   plugins: [

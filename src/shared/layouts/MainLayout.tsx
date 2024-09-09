@@ -1,20 +1,15 @@
-import { Button } from "@nextui-org/button";
-import { Input } from "@nextui-org/react";
-import Link from "next/link";
 import { type FC, type PropsWithChildren } from "react";
 
 export const MainLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <div>
-      <h1 className="bg-black text-red-600">This is main layout</h1>
-
-      <Button color="primary">This is test button</Button>
-      <Input/>
-
-      <Link href={"/user-musics"}>User music</Link>
-      <Link href={"/trending-musics"}>Trending music</Link>
-      <Link href={"/"}>Home</Link>
-      {children}
+    <div className="flex flex-col gap-2 h-screen">
+      <header className="p-container">This is header</header>
+      <main className="h-full grid grid-cols-4">
+        <aside className="p-container">This is aside left</aside>
+        <div className="p-container col-span-2">{children}</div>
+        <aside className="p-container">This is aside right</aside>
+      </main>
+      <footer className="mt-auto p-container">This is footer</footer>
     </div>
   );
 };
