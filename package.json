@@ -7,7 +7,8 @@
     "build": "next build",
     "preview": "next start",
     "lint": "next lint",
-    "nextui:add": "nextui add"
+    "nextui:add": "nextui add",
+    "prisma:migrate": "npx prisma migrate dev --name init"
   },
   "dependencies": {
     "@nextui-org/button": "^2.0.37",

@@ -13,8 +13,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
+model Artist {
+  id          Int      @id @default(autoincrement())
+  biography   String
+  imageUrl    String
+  songCount   Int
+  createdDate DateTime
+  song        Song[]
+  album       Album[]
+}
+
+model Song {
+  id          Int       @id @default(autoincrement())
+  name        String
+  playTime    Int
+  imageUrl    String
+  createdDate DateTime
+  duration    Int
+  artist      Artist[]
+  album       Album?    @relation(fields: [albumId], references: [id])
+  albumId     Int?
+  playlist    Playlist? @relation(fields: [playlistId], references: [id])
+  playlistId  Int?
+}
+
+model Album {
+  id          Int      @id @default(autoincrement())
+  name        String
+  imageUrl    String
+  description String
+  playTime    Int
+  createdDate DateTime
+  song        Song[]
+  artist      Artist   @relation(fields: [artistId], references: [id])
+  artistId    Int
+}
+
+model Playlist {
+  id          Int      @id @default(autoincrement())
+  songCount   Int
+  description String
+  createdDate DateTime
+  song        Song[]
 }
