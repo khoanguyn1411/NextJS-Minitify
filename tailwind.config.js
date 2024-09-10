@@ -18,9 +18,9 @@ module.exports = {
   plugins: [
     nextui({
       prefix: "appui",
-      defaultTheme: "light",
+      defaultTheme: "dark",
       themes: {
-        light: {
+        dark: {
           colors: {
             background: "#0D001A",
             foreground: "#ffffff",

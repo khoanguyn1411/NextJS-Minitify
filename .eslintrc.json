@@ -15,7 +15,7 @@
   "plugins": ["import"],
   "rules": {
     // Customize rules here
-    "max-len": ["error", { "code": 80, "ignoreUrls": true }],
+    "max-len": ["error", { "code": 100, "ignoreUrls": true }],
     "no-console": "warn",
     "react/prop-types": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -23,6 +23,7 @@
     "object-curly-spacing": ["error", "always"], // Enforce spacing around curly braces
     "@typescript-eslint/member-ordering": "off",
     "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/space-infix-ops": "error",
     "@typescript-eslint/consistent-type-imports": [
       "error",
       {
