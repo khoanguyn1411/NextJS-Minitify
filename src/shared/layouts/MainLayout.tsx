@@ -9,7 +9,9 @@ export const MainLayout: FC<PropsWithChildren> = ({ children }) => {
         <div className="p-container col-span-2">{children}</div>
         <aside className="p-container">This is aside right</aside>
       </main>
-      <footer className="mt-auto p-container">This is footer</footer>
+      <footer className="mt-auto p-container">
+        This is footer
+      </footer>
     </div>
   );
 };

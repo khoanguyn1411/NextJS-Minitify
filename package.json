@@ -8,7 +8,8 @@
     "preview": "next start",
     "lint": "next lint",
     "nextui:add": "nextui add",
-    "prisma:migrate": "npx prisma migrate dev --name init"
+    "prisma:migrate": "npx prisma migrate dev --name init",
+    "prisma:generate": "npx prisma generate"
   },
   "dependencies": {
     "@nextui-org/button": "^2.0.37",
@@ -20,6 +21,7 @@
     "autoprefixer": "^10.4.20",
     "framer-motion": "^11.5.4",
     "next": "14.2.8",
+    "next-auth": "^4.24.7",
     "nextui-cli": "^0.3.4",
     "react": "^18",
     "react-dom": "^18",

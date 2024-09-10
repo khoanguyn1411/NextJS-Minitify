@@ -18,9 +18,10 @@ model Artist {
   biography   String
   imageUrl    String
   songCount   Int
-  createdDate DateTime
+  createdDate DateTime @default(now())
   song        Song[]
   album       Album[]
+  updatedAt   DateTime @updatedAt
 }
 
 model Song {
@@ -28,13 +29,14 @@ model Song {
   name        String
   playTime    Int
   imageUrl    String
-  createdDate DateTime
+  createdDate DateTime  @default(now())
   duration    Int
   artist      Artist[]
   album       Album?    @relation(fields: [albumId], references: [id])
   albumId     Int?
   playlist    Playlist? @relation(fields: [playlistId], references: [id])
   playlistId  Int?
+  updatedAt   DateTime  @updatedAt
 }
 
 model Album {
@@ -43,16 +45,27 @@ model Album {
   imageUrl    String
   description String
   playTime    Int
-  createdDate DateTime
+  createdDate DateTime @default(now())
   song        Song[]
   artist      Artist   @relation(fields: [artistId], references: [id])
   artistId    Int
+  updatedAt   DateTime @updatedAt
 }
 
 model Playlist {
   id          Int      @id @default(autoincrement())
   songCount   Int
   description String
-  createdDate DateTime
+  createdDate DateTime @default(now())
   song        Song[]
+  updatedAt   DateTime @updatedAt
+}
+
+model User {
+  id          Int      @id @default(autoincrement())
+  name        String
+  password    String
+  username    String   @unique
+  createdDate DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
