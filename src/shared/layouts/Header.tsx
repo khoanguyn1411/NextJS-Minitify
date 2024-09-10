@@ -2,8 +2,8 @@ import { Input } from "@nextui-org/input";
 import { type FC } from "react";
 import { BiSearch } from "react-icons/bi";
 
-import { LoginButton } from "../components/auths/LoginButton";
-import { RegisterButton } from "../components/auths/RegisterButton";
+import { LoginButton } from "../components/auth/login/LoginButton";
+import { RegisterButton } from "../components/auth/register/RegisterButton";
 
 export const Header: FC = () => {
 
