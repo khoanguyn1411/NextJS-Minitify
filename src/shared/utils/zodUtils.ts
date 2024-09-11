@@ -25,7 +25,7 @@ export namespace ZodUtils {
 
   /** Required number option. */
   export function password(): z.ZodString{
-    return string().min(8, "Password must be at least 8 characters long")
+    return string().min(8, "Password must be at least 8 characters long");
   }
 
   /**

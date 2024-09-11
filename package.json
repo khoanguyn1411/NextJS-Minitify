@@ -6,7 +6,7 @@
     "start": "next dev",
     "build": "next build",
     "preview": "next start",
-    "lint": "next lint",
+    "lint": "next lint --fix",
     "nextui:add": "nextui add",
     "prisma:migrate": "npx prisma migrate dev --name init",
     "prisma:generate": "npx prisma generate"

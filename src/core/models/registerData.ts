@@ -3,4 +3,4 @@ export type RegisterData = {
   readonly lastName: string
   readonly userName: string
   readonly password: string
-}
+};

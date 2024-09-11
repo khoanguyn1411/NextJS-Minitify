@@ -9,7 +9,7 @@ import {
 } from "@nextui-org/react";
 import { type FC } from "react";
 
-type Props = ReturnType<typeof useDisclosure>
+type Props = ReturnType<typeof useDisclosure>;
 
 export const LoginModal: FC<Props> = (props) => {
   return (
