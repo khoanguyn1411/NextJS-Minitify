@@ -13,6 +13,7 @@ import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { RegisterForm } from "./registerForm";
+import { Password } from "../../Password";
 
 type Props = ReturnType<typeof useDisclosure>;
 
@@ -26,8 +27,8 @@ export const RegisterModal: FC<Props> = (props) => {
   });
 
   const onFormSubmit = (data: RegisterForm.Type) => {
-    console.log({ data })
-  }
+    console.log({ data });
+  };
 
   return (
     <Modal {...props} onClose={reset}>
@@ -86,10 +87,9 @@ export const RegisterModal: FC<Props> = (props) => {
                   control={control}
                   name="password"
                   render={({ field, fieldState }) => (
-                    <Input
+                    <Password
                       label="Password"
                       autoComplete="password"
-                      type="password"
                       placeholder="yourSecretPassword"
                       errorMessage={fieldState.error?.message}
                       isInvalid={!!fieldState.error?.message}
@@ -102,9 +102,8 @@ export const RegisterModal: FC<Props> = (props) => {
                   control={control}
                   name="confirmPassword"
                   render={({ field, fieldState }) => (
-                    <Input
+                    <Password
                       label="Confirm password"
-                      type="password"
                       placeholder="yourSecretPassword"
                       errorMessage={fieldState.error?.message}
                       isInvalid={!!fieldState.error?.message}

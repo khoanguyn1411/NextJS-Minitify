@@ -28,6 +28,9 @@
     "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "comma-spacing": "error",
+    "array-bracket-spacing": "error",
+    "@typescript-eslint/semi": "error",
     "@typescript-eslint/consistent-type-imports": [
       "error",
       {

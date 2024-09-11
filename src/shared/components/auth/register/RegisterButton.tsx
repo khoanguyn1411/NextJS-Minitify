@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { Button } from "@nextui-org/button";
 import { useDisclosure } from "@nextui-org/react";
