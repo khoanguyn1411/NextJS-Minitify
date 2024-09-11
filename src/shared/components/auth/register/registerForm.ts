@@ -1,14 +1,18 @@
 import { z } from "zod";
 
 import { type RegisterData } from "@/core/models/registerData";
+import { ZodUtils } from "@/shared/utils/zodUtils";
 
 export namespace RegisterForm {
   export const schema = z.object({
-    firstName: z.string(),
-    lastName: z.string(),
-    userName: z.string(),
-    password: z.string(),
-    confirmPassword: z.string(),
+    firstName: ZodUtils.requiredString(),
+    lastName: ZodUtils.requiredString(),
+    userName: ZodUtils.requiredString(),
+    password: ZodUtils.requiredString(),
+    confirmPassword: ZodUtils.requiredString(),
+  }).refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });
 
   export type Type = z.infer<typeof schema>;
