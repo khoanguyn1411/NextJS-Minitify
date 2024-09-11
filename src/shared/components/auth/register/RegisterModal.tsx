@@ -12,8 +12,10 @@ import {
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { RegisterForm } from "./registerForm";
+import { createUser } from "@/app/apis/users";
+
 import { Password } from "../../Password";
+import { RegisterForm } from "./registerForm";
 
 type Props = ReturnType<typeof useDisclosure>;
 
@@ -26,8 +28,8 @@ export const RegisterModal: FC<Props> = (props) => {
     resolver: zodResolver(RegisterForm.schema),
   });
 
-  const onFormSubmit = (data: RegisterForm.Type) => {
-    console.log({ data });
+  const onFormSubmit = async (data: RegisterForm.Type) => {
+    await createUser(RegisterForm.toRegisterDataModel(data));
   };
 
   return (
