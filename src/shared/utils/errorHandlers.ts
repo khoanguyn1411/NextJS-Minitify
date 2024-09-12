@@ -5,7 +5,7 @@ import {
   ERROR_CODES,
   type ApiError,
   type AppError,
-  type ValidationError,
+  type ValidationError
 } from "@/core/models/errors";
 
 type Params<T, E> = {
@@ -38,11 +38,12 @@ export function validateWithSchema<T extends FieldValues, E>({
       };
     }
   }
-  return {
+  const error: ValidationError<T> = {
     type: ERROR_CODES.VALIDATION,
     detail: "Invalid data",
     errors: parsedData.error.errors.map(
       (e) => ({ detail: e.message, field: e.path.join(".") }) as ApiError<T>
     ),
   };
+  return error;
 }

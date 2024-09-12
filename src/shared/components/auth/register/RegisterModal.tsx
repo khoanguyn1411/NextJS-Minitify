@@ -14,15 +14,14 @@ import { Controller, useForm } from "react-hook-form";
 
 import { createUser } from "@/core/apis/users";
 import { RegisterData } from "@/core/models/registerData";
-import { extractValidationErrorsToForm } from "@/shared/utils/extractValidationErrorsToForm";
+import { useError } from "@/shared/hooks/useError";
 
 import { Password } from "../../Password";
-
-
 
 type Props = ReturnType<typeof useDisclosure>;
 
 export const RegisterModal: FC<Props> = (props) => {
+  const { notifyOnAppError, extractErrorsToForm } = useError();
   const { control, handleSubmit, reset, setError } = useForm<RegisterData.Type>(
     {
       resolver: zodResolver(RegisterData.schema),
@@ -31,7 +30,8 @@ export const RegisterModal: FC<Props> = (props) => {
 
   const onFormSubmit = async (data: RegisterData.Type) => {
     const result = await createUser(data);
-    extractValidationErrorsToForm<RegisterData.Type>(result, setError);
+    notifyOnAppError(result);
+    extractErrorsToForm({ result, setError });
   };
 
   return (

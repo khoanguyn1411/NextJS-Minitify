@@ -43,3 +43,13 @@ export function isValidationError<T extends FieldValues>(
 ): error is ValidationError<T> {
   return (error as ValidationError<T>).errors != null;
 }
+
+/**
+ * Is error a AppError.
+ * @param error Some error.
+ */
+export function isAppError(
+  error: unknown,
+): error is AppError {
+  return (error as AppError).detail != null && (error as AppError).type != null;
+}
