@@ -35,7 +35,7 @@ export const RegisterModal: FC<Props> = (props) => {
   };
 
   return (
-    <Modal {...props} onClose={reset}>
+    <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange} onClose={reset}>
       <ModalContent>
         {(onClose) => (
           <>

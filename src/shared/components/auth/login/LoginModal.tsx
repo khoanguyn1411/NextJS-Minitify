@@ -13,7 +13,7 @@ type Props = ReturnType<typeof useDisclosure>;
 
 export const LoginModal: FC<Props> = (props) => {
   return (
-    <Modal {...props}>
+    <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
