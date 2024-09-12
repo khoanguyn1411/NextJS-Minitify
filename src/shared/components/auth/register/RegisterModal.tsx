@@ -1,4 +1,3 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   Input,
@@ -12,24 +11,24 @@ import {
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { createUser } from "@/app/apis/users";
+import { createUser } from "@/core/apis/users";
 
+import { extractValidationErrorsToForm } from "@/shared/utils/extractValidationErrorsToForm";
 import { Password } from "../../Password";
-import { RegisterForm } from "./registerForm";
+import { type RegisterForm } from "./registerForm";
 
 type Props = ReturnType<typeof useDisclosure>;
 
 export const RegisterModal: FC<Props> = (props) => {
-  const {
-    control,
-    handleSubmit,
-    reset,
-  } = useForm<RegisterForm.Type>({
-    resolver: zodResolver(RegisterForm.schema),
-  });
+  const { control, handleSubmit, reset, setError } = useForm<RegisterForm.Type>(
+    {
+      // resolver: zodResolver(RegisterForm.schema),
+    }
+  );
 
   const onFormSubmit = async (data: RegisterForm.Type) => {
-    await createUser(RegisterForm.toRegisterDataModel(data));
+    const result = await createUser(data);
+    extractValidationErrorsToForm<RegisterForm.Type>(result, setError);
   };
 
   return (
@@ -114,7 +113,6 @@ export const RegisterModal: FC<Props> = (props) => {
                   )}
                 />
               </form>
-             
             </ModalBody>
             <ModalFooter>
               <Button color="primary" variant="light" onClick={onClose}>

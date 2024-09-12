@@ -10,12 +10,13 @@
     "plugin:react/recommended",
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended",
-    "plugin:import/recommended" // Import plugin rules
+    "plugin:import/recommended"
+    // "plugin:prettier/recommended"
   ],
   "plugins": ["import"],
   "rules": {
     // Customize rules here
-    "max-len": ["error", { "code": 100, "ignoreUrls": true }],
+    "max-len": ["error", { "code": 120, "ignoreUrls": true }],
     "no-console": "warn",
     "react/prop-types": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
