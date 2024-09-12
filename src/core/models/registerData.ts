@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { ZodUtils } from "@/shared/utils/zodUtils";
 
-export namespace RegisterForm {
+export namespace RegisterData {
   export const schema = z
     .object({
       firstName: ZodUtils.requiredString(),

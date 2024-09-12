@@ -1,5 +1,12 @@
 import { type FieldPath, type FieldValues } from "react-hook-form";
 
+
+export const ERROR_CODES = {
+  SERVER: "server",
+  VALIDATION : "validation",
+  INVALID_DATA: "invalidData", 
+} as const;
+
 /** Error returned by API. */
 export type ApiError<T extends FieldValues> = {
   /** Error description.  */
@@ -9,18 +16,23 @@ export type ApiError<T extends FieldValues> = {
   readonly field: FieldPath<T> | `root.${string}` | "root";
 };
 
-/** Validation error DTO. */
-export type ValidationError<T extends FieldValues> = {
-  
+
+export type AppError = {
   /** Error type. */
   readonly type: string;
 
   /** Detail of error. */
   readonly detail: string;
+};
+
+
+/** Validation error DTO. */
+export type ValidationError<T extends FieldValues> = AppError & {
 
   /** Errors. */
   readonly errors?: readonly ApiError<T>[];
 };
+
 
 /**
  * Is error a ValidationError.

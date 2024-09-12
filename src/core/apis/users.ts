@@ -1,24 +1,27 @@
 "use server";
 
-import { RegisterForm } from "@/shared/components/auth/register/registerForm";
 import { appPrisma } from "@/shared/configs/prisma.config";
-import { PasswordEncryption } from "@/shared/utils/passwordEncryption";
-import { validateWithSchema } from "@/shared/utils/schemaValidator";
+import { PasswordEncryption } from "@/shared/utils/encryptPassword";
+import { buildAppError, validateWithSchema } from "@/shared/utils/errorHandlers";
 
-export async function createUser(data: RegisterForm.Type) {
+import { RegisterData } from "../models/registerData";
+
+export async function createUser(data: RegisterData.Type) {
   return validateWithSchema({
     data: data,
-    schema: RegisterForm.schema,
+    schema: RegisterData.schema,
     async onPassed(data) {
       const hashedPassword = await PasswordEncryption.hashPassword(
         data.password
       );
 
-      // const userWithUsername = await appPrisma.user.findUnique({ where: { username: data.userName } });
-      // const isUsernameAlreadyExisted = userWithUsername != null;
-      // if(isUsernameAlreadyExisted){
-      //   return;
-      // }
+      const userWithUsername = await appPrisma.user.findUnique({
+        where: { username: data.userName },
+      });
+      const isUsernameAlreadyExisted = userWithUsername != null;
+      if (isUsernameAlreadyExisted) {
+        return buildAppError("Username already exist");
+      }
       const user = await appPrisma.user.create({
         data: {
           firstName: data.firstName,

@@ -1,3 +1,4 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
   Input,
@@ -12,23 +13,25 @@ import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { createUser } from "@/core/apis/users";
-
+import { RegisterData } from "@/core/models/registerData";
 import { extractValidationErrorsToForm } from "@/shared/utils/extractValidationErrorsToForm";
+
 import { Password } from "../../Password";
-import { type RegisterForm } from "./registerForm";
+
+
 
 type Props = ReturnType<typeof useDisclosure>;
 
 export const RegisterModal: FC<Props> = (props) => {
-  const { control, handleSubmit, reset, setError } = useForm<RegisterForm.Type>(
+  const { control, handleSubmit, reset, setError } = useForm<RegisterData.Type>(
     {
-      // resolver: zodResolver(RegisterForm.schema),
+      resolver: zodResolver(RegisterData.schema),
     }
   );
 
-  const onFormSubmit = async (data: RegisterForm.Type) => {
+  const onFormSubmit = async (data: RegisterData.Type) => {
     const result = await createUser(data);
-    extractValidationErrorsToForm<RegisterForm.Type>(result, setError);
+    extractValidationErrorsToForm<RegisterData.Type>(result, setError);
   };
 
   return (
