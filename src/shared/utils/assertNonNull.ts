@@ -5,9 +5,12 @@ import { type NonNullableFields } from "./types/nonNullableFields";
  * @param value Value to assert.
  * @param message Optional message to display.
  */
-export function assertNonNull<T>(value: T, message?: string): asserts value is NonNullable<T> {
+export function assertNonNull<T>(
+  value: T,
+  message?: string,
+): asserts value is NonNullable<T> {
   if (value == null) {
-    throw new Error(message ?? 'Unexpected null.');
+    throw new Error(message ?? "Unexpected null.");
   }
 }
 
@@ -34,6 +37,6 @@ export function assertNonNullableFieldsWithReturn<
   T extends Record<string, unknown>,
   K extends keyof T,
 >(object: T, ...keys: K[]): NonNullableFields<T, K> {
-  keys.forEach(key => assertNonNull(object[key]));
+  keys.forEach((key) => assertNonNull(object[key]));
   return object as unknown as NonNullableFields<T, K>;
 }

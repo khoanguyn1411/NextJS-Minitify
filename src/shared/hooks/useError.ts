@@ -39,12 +39,22 @@ export function useError() {
   const notifyOnAppError = <
     T extends Record<string, unknown>,
     E extends Record<string, unknown> = Record<string, unknown>,
-  >(result: HandleValidationErrorParams<T, E>["result"]) => {
+  >(
+    result: HandleValidationErrorParams<T, E>["result"],
+  ) => {
     if (isAppError(result)) {
       notify(result.detail, { type: "error" });
-      return;
     }
   };
 
-  return { extractErrorsToForm, notifyOnAppError };
+  const isPlainResult = <
+    T extends Record<string, unknown>,
+    E extends Record<string, unknown> = Record<string, unknown>,
+  >(
+    result: HandleValidationErrorParams<T, E>["result"],
+  ): result is E => {
+    return !isAppError(result);
+  };
+
+  return { extractErrorsToForm, notifyOnAppError, isPlainResult };
 }

@@ -5,17 +5,17 @@ export const APP_ERROR_MESSAGES = {
   /**
    * Error message for email validation.
    */
-  email: 'Invalid email.',
+  email: "Invalid email.",
 
   /**
    * Error message for required fields.
    */
-  required: 'This field is required. Please enter a value.',
+  required: "This field is required. Please enter a value.",
 
   /**
    * Error message for unknown error.
    */
-  unknown: 'Something went wrong, please try again.',
+  unknown: "Something went wrong, please try again.",
 
   /**
    * Error message for field mismatch.
@@ -36,6 +36,5 @@ export const APP_ERROR_MESSAGES = {
   /**
    * Error when have only whitespace.
    */
-  whitespace: 'This field cannot contain only whitespace.',
-
+  whitespace: "This field cannot contain only whitespace.",
 } as const;

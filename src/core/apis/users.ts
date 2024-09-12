@@ -1,8 +1,13 @@
 "use server";
 
+import { type User } from "@prisma/client";
+
 import { appPrisma } from "@/shared/configs/prisma.config";
 import { PasswordEncryption } from "@/shared/utils/encryptPassword";
-import { buildAppError, validateWithSchema } from "@/shared/utils/errorHandlers";
+import {
+  buildAppError,
+  validateWithSchema,
+} from "@/shared/utils/errorHandlers";
 
 import { RegisterData } from "../models/registerData";
 
@@ -12,7 +17,7 @@ export async function createUser(data: RegisterData.Type) {
     schema: RegisterData.schema,
     async onPassed(data) {
       const hashedPassword = await PasswordEncryption.hashPassword(
-        data.password
+        data.password,
       );
 
       const userWithUsername = await appPrisma.user.findUnique({
@@ -39,4 +44,32 @@ export async function createUser(data: RegisterData.Type) {
       return user;
     },
   });
+}
+
+export async function getUserProfile({
+  id,
+  username,
+  password,
+}: {
+  readonly id?: User["id"];
+  readonly username?: User["username"];
+  readonly password?: User["password"];
+}) {
+  const user = await appPrisma.user.findUnique({
+    where: {
+      id,
+      username,
+    },
+    select: {
+      id: true,
+      firstName: true,
+      lastName: true,
+      username: true,
+    },
+  });
+
+  if (password != null) {
+  }
+
+  return user;
 }

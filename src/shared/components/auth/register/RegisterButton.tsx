@@ -10,7 +10,9 @@ export const RegisterButton: FC = () => {
   const registerDisclosure = useDisclosure();
   return (
     <>
-      <Button onClick={registerDisclosure.onOpen} variant="bordered">Sign up</Button>
+      <Button onClick={registerDisclosure.onOpen} variant="bordered">
+        Sign up
+      </Button>
       <RegisterModal {...registerDisclosure} />
     </>
   );

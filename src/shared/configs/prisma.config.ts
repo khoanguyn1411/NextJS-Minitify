@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from "@prisma/client";
 
 let prisma: PrismaClient;
 
@@ -9,7 +9,7 @@ declare global {
 }
 
 // In production, create a new instance of PrismaClient
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   prisma = new PrismaClient();
 } else {
   // In development, use a global variable to prevent multiple instances of PrismaClient
