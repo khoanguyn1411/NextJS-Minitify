@@ -22,7 +22,13 @@ type Props = ReturnType<typeof useDisclosure>;
 
 export const LoginModal: FC<Props> = (props) => {
   const { notifyOnAppError, extractErrorsToForm } = useError();
-  const { control, handleSubmit, reset, setError } = useForm<LoginData.Type>({
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { isLoading },
+  } = useForm<LoginData.Type>({
     resolver: zodResolver(LoginData.schema),
   });
 
@@ -83,7 +89,11 @@ export const LoginModal: FC<Props> = (props) => {
               <Button color="primary" variant="light" onClick={onClose}>
                 Cancel
               </Button>
-              <Button color="primary" onClick={handleSubmit(onFormSubmit)}>
+              <Button
+                isLoading={isLoading}
+                color="primary"
+                onClick={handleSubmit(onFormSubmit)}
+              >
                 Submit
               </Button>
             </ModalFooter>

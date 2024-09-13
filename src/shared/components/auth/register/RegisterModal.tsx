@@ -22,11 +22,15 @@ type Props = ReturnType<typeof useDisclosure>;
 
 export const RegisterModal: FC<Props> = (props) => {
   const { notifyOnAppError, extractErrorsToForm } = useError();
-  const { control, handleSubmit, reset, setError } = useForm<RegisterData.Type>(
-    {
-      resolver: zodResolver(RegisterData.schema),
-    },
-  );
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setError,
+    formState: { isLoading },
+  } = useForm<RegisterData.Type>({
+    resolver: zodResolver(RegisterData.schema),
+  });
 
   const onFormSubmit = async (data: RegisterData.Type) => {
     const result = await signUp(data);
@@ -131,7 +135,11 @@ export const RegisterModal: FC<Props> = (props) => {
               <Button color="primary" variant="light" onClick={onClose}>
                 Cancel
               </Button>
-              <Button color="primary" onClick={handleSubmit(onFormSubmit)}>
+              <Button
+                isLoading={isLoading}
+                color="primary"
+                onClick={handleSubmit(onFormSubmit)}
+              >
                 Submit
               </Button>
             </ModalFooter>
