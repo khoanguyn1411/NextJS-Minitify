@@ -1,5 +1,7 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
+  Input,
   Modal,
   ModalBody,
   ModalContent,
@@ -8,12 +10,34 @@ import {
   type useDisclosure,
 } from "@nextui-org/react";
 import { type FC } from "react";
+import { Controller, useForm } from "react-hook-form";
+
+import { LoginData } from "@/core/models/loginData";
+import { useError } from "@/shared/hooks/useError";
+import { signIn } from "@/shared/services/authService";
+
+import { Password } from "../../Password";
 
 type Props = ReturnType<typeof useDisclosure>;
 
 export const LoginModal: FC<Props> = (props) => {
+  const { notifyOnAppError, extractErrorsToForm } = useError();
+  const { control, handleSubmit, reset, setError } = useForm<LoginData.Type>({
+    resolver: zodResolver(LoginData.schema),
+  });
+
+  const onFormSubmit = async (data: LoginData.Type) => {
+    const result = await signIn(data);
+    notifyOnAppError(result);
+    extractErrorsToForm({ result, setError });
+  };
+
   return (
-    <Modal isOpen={props.isOpen} onOpenChange={props.onOpenChange}>
+    <Modal
+      isOpen={props.isOpen}
+      onClose={reset}
+      onOpenChange={props.onOpenChange}
+    >
       <ModalContent>
         {(onClose) => (
           <>
@@ -21,31 +45,44 @@ export const LoginModal: FC<Props> = (props) => {
               Modal Title
             </ModalHeader>
             <ModalBody>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                pulvinar risus non risus hendrerit venenatis. Pellentesque sit
-                amet hendrerit risus, sed porttitor quam.
-              </p>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-                pulvinar risus non risus hendrerit venenatis. Pellentesque sit
-                amet hendrerit risus, sed porttitor quam.
-              </p>
-              <p>
-                Magna exercitation reprehenderit magna aute tempor cupidatat
-                consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                aliqua enim laboris do dolor eiusmod. Et mollit incididunt nisi
-                consectetur esse laborum eiusmod pariatur proident Lorem eiusmod
-                et. Culpa deserunt nostrud ad veniam.
-              </p>
+              <form className="flex flex-col gap-4">
+                <Controller
+                  control={control}
+                  name="userName"
+                  render={({ field, fieldState }) => (
+                    <Input
+                      label="Username"
+                      autoComplete="username"
+                      placeholder="yourusername123"
+                      errorMessage={fieldState.error?.message}
+                      isInvalid={!!fieldState.error?.message}
+                      {...field}
+                    />
+                  )}
+                />
+
+                <Controller
+                  control={control}
+                  name="password"
+                  render={({ field, fieldState }) => (
+                    <Password
+                      label="Password"
+                      autoComplete="password"
+                      placeholder="yourSecretPassword"
+                      errorMessage={fieldState.error?.message}
+                      isInvalid={!!fieldState.error?.message}
+                      {...field}
+                    />
+                  )}
+                />
+              </form>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="light" onPress={onClose}>
+              <Button color="danger" variant="light" onClick={onClose}>
                 Close
               </Button>
-              <Button color="primary" onPress={onClose}>
-                Action
+              <Button color="primary" onClick={handleSubmit(onFormSubmit)}>
+                Submit
               </Button>
             </ModalFooter>
           </>

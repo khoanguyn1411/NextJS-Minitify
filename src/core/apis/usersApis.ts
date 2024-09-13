@@ -1,5 +1,7 @@
 "use server";
 
+import { type User } from "@prisma/client";
+
 import { appPrisma } from "@/shared/configs/prisma.config";
 import { PasswordEncryption } from "@/shared/utils/encryptPassword";
 import {
@@ -32,14 +34,26 @@ export async function createUser(data: RegisterData.Type) {
           username: data.userName,
           password: hashedPassword,
         },
-        select: {
-          id: true,
-          firstName: true,
-          lastName: true,
-          username: true,
-        },
       });
       return user;
     },
   });
+}
+
+export async function findUser(user: Partial<User>) {
+  try {
+    const userToFind = await appPrisma.user.findUnique({
+      where: {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        createdDate: user.createdDate,
+        updatedAt: user.updatedAt,
+      },
+    });
+    return userToFind;
+  } catch (e) {
+    return buildAppError("Cannot find user.");
+  }
 }

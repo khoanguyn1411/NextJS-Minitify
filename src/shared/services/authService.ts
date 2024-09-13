@@ -1,14 +1,17 @@
 "use server";
 
-import { type User, type Session } from "lucia";
+import { type Session, type User } from "lucia";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
+import { type LoginData } from "@/core/models/loginData";
 import { lucia } from "@/shared/configs/lucia.config";
 
-import { createUser } from "../../core/apis/usersApis";
+import { createUser, findUser } from "../../core/apis/usersApis";
 import { isAppError } from "../../core/models/errors";
 import { type RegisterData } from "../../core/models/registerData";
+import { PasswordEncryption } from "../utils/encryptPassword";
+import { buildAppError } from "../utils/errorHandlers";
 
 export async function signUp(data: RegisterData.Type) {
   const newUser = await createUser(data);
@@ -23,6 +26,27 @@ export async function signUp(data: RegisterData.Type) {
     sessionCookie.attributes,
   );
   return newUser;
+}
+
+export async function signIn(data: LoginData.Type) {
+  const userToFind = await findUser({
+    username: data.userName,
+    password: data.password,
+  });
+  if (isAppError(userToFind)) {
+    return userToFind;
+  }
+  if (userToFind == null) {
+    return null;
+  }
+  const isPasswordCorrect = await PasswordEncryption.verifyPassword(
+    data.password,
+    userToFind.password,
+  );
+  if (isPasswordCorrect) {
+    return userToFind;
+  }
+  return buildAppError("Incorrect username or password.");
 }
 
 export const validateRequest = cache(

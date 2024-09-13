@@ -8,7 +8,6 @@ import { validateRequest } from "../services/authService";
 
 export const Header: FC<PropsWithChildren> = async () => {
   const { user } = await validateRequest();
-  console.log({ user });
   return (
     <div className="grid grid-cols-3 gap-4 items-center">
       <div>Logo here</div>
