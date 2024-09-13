@@ -14,7 +14,7 @@ import { Controller, useForm } from "react-hook-form";
 
 import { RegisterData } from "@/core/models/registerData";
 import { useError } from "@/shared/hooks/useError";
-import { signUp } from "@/shared/services/auth";
+import { signUp } from "@/shared/services/authService";
 
 import { Password } from "../../Password";
 

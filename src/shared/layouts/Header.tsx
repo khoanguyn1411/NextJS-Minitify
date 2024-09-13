@@ -4,10 +4,11 @@ import { BiSearch } from "react-icons/bi";
 
 import { LoginButton } from "../components/auth/login/LoginButton";
 import { RegisterButton } from "../components/auth/register/RegisterButton";
-import { validateRequest } from "../services/validateRequest";
+import { validateRequest } from "../services/authService";
 
 export const Header: FC<PropsWithChildren> = async () => {
   const { user } = await validateRequest();
+  console.log({ user });
   return (
     <div className="grid grid-cols-3 gap-4 items-center">
       <div>Logo here</div>

@@ -1,10 +1,29 @@
 "use server";
 
-import type { Session, User } from "lucia";
+import { type User, type Session } from "lucia";
 import { cookies } from "next/headers";
 import { cache } from "react";
 
-import { lucia } from "../configs/lucia.config";
+import { lucia } from "@/shared/configs/lucia.config";
+
+import { createUser } from "../../core/apis/usersApis";
+import { isAppError } from "../../core/models/errors";
+import { type RegisterData } from "../../core/models/registerData";
+
+export async function signUp(data: RegisterData.Type) {
+  const newUser = await createUser(data);
+  if (isAppError(newUser)) {
+    return newUser;
+  }
+  const session = await lucia.createSession(newUser.id, {});
+  const sessionCookie = lucia.createSessionCookie(session.id);
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes,
+  );
+  return newUser;
+}
 
 export const validateRequest = cache(
   async (): Promise<
@@ -38,7 +57,7 @@ export const validateRequest = cache(
         );
       }
     } catch (e) {
-      console.error("Unauthoried");
+      throw new Error("There are some error with validation process.");
     }
     return result;
   },

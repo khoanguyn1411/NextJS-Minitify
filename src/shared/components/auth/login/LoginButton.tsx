@@ -3,7 +3,6 @@
 import { Button } from "@nextui-org/button";
 import { useDisclosure } from "@nextui-org/react";
 import { type FC } from "react";
-import { useSession } from "next-auth/react";
 
 import { LoginModal } from "./LoginModal";
 
