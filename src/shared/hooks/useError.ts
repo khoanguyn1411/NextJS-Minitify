@@ -1,22 +1,35 @@
 import { type UseFormSetError } from "react-hook-form";
 
-import { isAppError, isValidationError } from "@/core/models/errors";
+import {
+  isAppError,
+  isValidationError,
+  type AppError,
+  type ValidationError,
+} from "@/core/models/errors";
 
 import { assertNonNull } from "../utils/assertNonNull";
 import { useNotify } from "./useNotify";
 
-type HandleValidationErrorParams<T extends Record<string, unknown>> = {
-  readonly result: unknown;
+type HandleValidationErrorParams<
+  T extends Record<string, unknown>,
+  K extends null | undefined,
+  E extends Record<string, unknown> = Record<string, unknown>,
+> = {
+  readonly result: E | ValidationError<T> | AppError | K;
   readonly setError: UseFormSetError<T>;
 };
 
 export function useError() {
   const { notify } = useNotify();
 
-  const extractErrorsToForm = <T extends Record<string, unknown>>({
+  const extractErrorsToForm = <
+    T extends Record<string, unknown>,
+    K extends null | undefined,
+    E extends Record<string, unknown> = Record<string, unknown>,
+  >({
     result,
     setError,
-  }: HandleValidationErrorParams<T>) => {
+  }: HandleValidationErrorParams<T, K, E>) => {
     if (isValidationError<T>(result)) {
       assertNonNull(result.errors);
       result.errors.forEach((error) => {
@@ -25,8 +38,12 @@ export function useError() {
     }
   };
 
-  const notifyOnAppError = <T extends Record<string, unknown>>(
-    result: HandleValidationErrorParams<T>["result"],
+  const notifyOnAppError = <
+    T extends Record<string, unknown>,
+    K extends null | undefined,
+    E extends Record<string, unknown> = Record<string, unknown>,
+  >(
+    result: HandleValidationErrorParams<T, K, E>["result"],
   ) => {
     if (isAppError(result)) {
       notify(result.detail, { type: "error" });
@@ -34,12 +51,15 @@ export function useError() {
   };
 
   const isPlainResult = <
-    T extends Record<string, unknown>,
     E extends Record<string, unknown> = Record<string, unknown>,
   >(
-    result: HandleValidationErrorParams<T>["result"],
+    result: HandleValidationErrorParams<
+      Record<string, unknown>,
+      null,
+      E
+    >["result"],
   ): result is E => {
-    return !isAppError(result) && result != null;
+    return !isAppError(result);
   };
 
   return { extractErrorsToForm, notifyOnAppError, isPlainResult };
