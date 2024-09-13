@@ -11,19 +11,17 @@ import {
 } from "@nextui-org/react";
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useSession } from "next-auth/react";
 
-import { createUser } from "@/core/apis/users";
 import { RegisterData } from "@/core/models/registerData";
 import { useError } from "@/shared/hooks/useError";
+import { signUp } from "@/shared/services/auth";
 
 import { Password } from "../../Password";
 
 type Props = ReturnType<typeof useDisclosure>;
 
 export const RegisterModal: FC<Props> = (props) => {
-  const { notifyOnAppError, extractErrorsToForm, isPlainResult } = useError();
-  const { update: updateSession } = useSession();
+  const { notifyOnAppError, extractErrorsToForm } = useError();
   const { control, handleSubmit, reset, setError } = useForm<RegisterData.Type>(
     {
       resolver: zodResolver(RegisterData.schema),
@@ -31,12 +29,9 @@ export const RegisterModal: FC<Props> = (props) => {
   );
 
   const onFormSubmit = async (data: RegisterData.Type) => {
-    const result = await createUser(data);
+    const result = await signUp(data);
     notifyOnAppError(result);
     extractErrorsToForm({ result, setError });
-    if (isPlainResult(result)) {
-      updateSession(result);
-    }
   };
 
   return (

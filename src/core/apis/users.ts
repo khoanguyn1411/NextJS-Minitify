@@ -1,7 +1,5 @@
 "use server";
 
-import { type User } from "@prisma/client";
-
 import { appPrisma } from "@/shared/configs/prisma.config";
 import { PasswordEncryption } from "@/shared/utils/encryptPassword";
 import {
@@ -44,32 +42,4 @@ export async function createUser(data: RegisterData.Type) {
       return user;
     },
   });
-}
-
-export async function getUserProfile({
-  id,
-  username,
-  password,
-}: {
-  readonly id?: User["id"];
-  readonly username?: User["username"];
-  readonly password?: User["password"];
-}) {
-  const user = await appPrisma.user.findUnique({
-    where: {
-      id,
-      username,
-    },
-    select: {
-      id: true,
-      firstName: true,
-      lastName: true,
-      username: true,
-    },
-  });
-
-  if (password != null) {
-  }
-
-  return user;
 }

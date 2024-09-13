@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
+    "@lucia-auth/adapter-prisma": "^4.0.1",
     "@nextui-org/button": "^2.0.37",
     "@nextui-org/input": "^2.2.4",
     "@nextui-org/react": "^2.4.6",
@@ -21,8 +22,8 @@
     "@prisma/client": "^5.19.1",
     "autoprefixer": "^10.4.20",
     "framer-motion": "^11.5.4",
+    "lucia": "^3.2.0",
     "next": "14.2.8",
-    "next-auth": "^4.24.7",
     "nextui-cli": "^0.3.4",
     "react": "^18",
     "react-dom": "^18",

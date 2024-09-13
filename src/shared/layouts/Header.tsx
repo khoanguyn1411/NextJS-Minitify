@@ -1,15 +1,13 @@
-"use client";
-
 import { Input } from "@nextui-org/input";
-import { SessionProvider, useSession } from "next-auth/react";
-import { type PropsWithChildren, type FC } from "react";
+import { type FC, type PropsWithChildren } from "react";
 import { BiSearch } from "react-icons/bi";
 
 import { LoginButton } from "../components/auth/login/LoginButton";
 import { RegisterButton } from "../components/auth/register/RegisterButton";
+import { validateRequest } from "../services/validateRequest";
 
-const InitHeader: FC = () => {
-  const { data: session, status } = useSession();
+export const Header: FC<PropsWithChildren> = async () => {
+  const { user } = await validateRequest();
   return (
     <div className="grid grid-cols-3 gap-4 items-center">
       <div>Logo here</div>
@@ -20,21 +18,15 @@ const InitHeader: FC = () => {
           placeholder="What do you want to listen?"
         />
       </div>
-      {session?.user && <p>{session.user.name}</p>}
-      {session?.user == null && (
+
+      {user == null ? (
         <div className="flex gap-4 ml-auto">
           <RegisterButton />
           <LoginButton />
         </div>
+      ) : (
+        <h1>Logged in</h1>
       )}
     </div>
-  );
-};
-
-export const Header: FC<PropsWithChildren> = () => {
-  return (
-    <SessionProvider>
-      <InitHeader />
-    </SessionProvider>
   );
 };
