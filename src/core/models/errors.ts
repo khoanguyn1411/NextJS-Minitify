@@ -34,7 +34,7 @@ export type ValidationError<T extends FieldValues> = AppError & {
  * @param error Some error.
  */
 export function isValidationError<T extends FieldValues>(
-  error: Record<string, unknown>,
+  error: unknown,
 ): error is ValidationError<T> {
   return (error as ValidationError<T>).errors != null;
 }
