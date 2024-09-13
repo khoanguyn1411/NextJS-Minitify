@@ -41,10 +41,12 @@ export const LoginModal: FC<Props> = (props) => {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">
-              Modal Title
-            </ModalHeader>
-            <ModalBody>
+            <ModalHeader className="text-2xl">Sign In</ModalHeader>
+            <ModalBody className="flex flex-col gap-7">
+              <div className="flex flex-col gap-1">
+                <h1 className="text-xl">Welcome back to Minitify</h1>
+                <p className="text-sm text-primary-200">Enjoy your tracks!</p>
+              </div>
               <form className="flex flex-col gap-4">
                 <Controller
                   control={control}
@@ -78,8 +80,8 @@ export const LoginModal: FC<Props> = (props) => {
               </form>
             </ModalBody>
             <ModalFooter>
-              <Button color="danger" variant="light" onClick={onClose}>
-                Close
+              <Button color="primary" variant="light" onClick={onClose}>
+                Cancel
               </Button>
               <Button color="primary" onClick={handleSubmit(onFormSubmit)}>
                 Submit

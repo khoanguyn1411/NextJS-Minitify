@@ -43,8 +43,14 @@ export const RegisterModal: FC<Props> = (props) => {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="flex flex-col gap-1">Sign Up</ModalHeader>
-            <ModalBody>
+            <ModalHeader className="text-2xl">Sign Up</ModalHeader>
+            <ModalBody className="flex flex-col gap-7">
+              <div className="flex flex-col gap-1">
+                <h1 className="text-xl">Welcome to Minitify</h1>
+                <p className="text-sm text-primary-200">
+                  Stay up together with musics!
+                </p>
+              </div>
               <form className="flex flex-col gap-4">
                 <div className="flex gap-4">
                   <Controller

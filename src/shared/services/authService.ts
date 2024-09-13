@@ -44,6 +44,13 @@ export async function signIn(data: LoginData.Type) {
     userToFind.password,
   );
   if (isPasswordCorrect) {
+    const session = await lucia.createSession(userToFind.id, {});
+    const sessionCookie = lucia.createSessionCookie(session.id);
+    cookies().set(
+      sessionCookie.name,
+      sessionCookie.value,
+      sessionCookie.attributes,
+    );
     return userToFind;
   }
   return buildAppError("Incorrect username or password.");
