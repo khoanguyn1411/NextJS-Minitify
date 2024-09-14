@@ -1,8 +1,8 @@
 import { appPrisma } from "../configs/prisma.config";
 
-export async function createPrismaRequest<T>(callback: () => Promise<T>) {
+export async function createPrismaRequest<T>(callback: () => T) {
   try {
-    await callback();
+    return await callback();
   } finally {
     appPrisma.$disconnect();
   }

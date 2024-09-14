@@ -1,6 +1,7 @@
 import { type FC, type PropsWithChildren } from "react";
 
 import { Header } from "./header/Header";
+import { NavigationAside } from "./navigationAside/NavigationAside";
 
 export const MainLayout: FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -9,7 +10,9 @@ export const MainLayout: FC<PropsWithChildren> = ({ children }) => {
         <Header />
       </header>
       <main className="h-full grid grid-cols-4">
-        <aside className="p-container">This is aside left</aside>
+        <aside className="p-container">
+          <NavigationAside />
+        </aside>
         <div className="p-container col-span-2">{children}</div>
         <aside className="p-container">This is aside right</aside>
       </main>

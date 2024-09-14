@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
 import {
   Dropdown,
   DropdownItem,
@@ -27,20 +26,23 @@ export const UserDropdown: FC<Props> = ({ user }) => {
     <div className="justify-self-end">
       <Dropdown placement="bottom-end">
         <DropdownTrigger>
-          <Button
-            endContent={
-              <Avatar
-                color="primary"
-                size="sm"
-                name={User.getFirstChar(user)}
-              />
-            }
-            variant="light"
-          >
-            {User.getFullName(user)}
-          </Button>
+          <Avatar
+            as="button"
+            isBordered
+            color="primary"
+            size="sm"
+            name={User.getFirstChar(user)}
+          />
         </DropdownTrigger>
         <DropdownMenu aria-label="Static Actions">
+          <DropdownItem className="h-14 gap-2">
+            <p className="font-semibold text-primary-200">
+              {User.getFullName(user)}
+            </p>
+            <p className="text-xs font-semibold">
+              Sign in with {user.username}
+            </p>
+          </DropdownItem>
           <DropdownItem onClick={onLogout} key="logout">
             Logout
           </DropdownItem>
