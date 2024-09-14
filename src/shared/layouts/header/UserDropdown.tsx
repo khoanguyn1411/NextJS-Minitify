@@ -24,10 +24,23 @@ export const UserDropdown: FC<Props> = ({ user }) => {
   };
 
   return (
-    <div className="flex gap-4 justify-self-end">
-      <Dropdown>
+    <div className="justify-self-end">
+      <Dropdown placement="bottom-end">
         <DropdownTrigger>
-          <Button variant="light">{User.getFullName(user)}</Button>
+          <div className="flex gap-2">
+            <Button
+              endContent={
+                <Avatar
+                  color="primary"
+                  size="sm"
+                  name={User.getFirstChar(user)}
+                />
+              }
+              variant="light"
+            >
+              {User.getFullName(user)}
+            </Button>
+          </div>
         </DropdownTrigger>
         <DropdownMenu aria-label="Static Actions">
           <DropdownItem onClick={onLogout} key="logout">
@@ -35,7 +48,6 @@ export const UserDropdown: FC<Props> = ({ user }) => {
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
-      <Avatar name={user.firstName} />
     </div>
   );
 };
