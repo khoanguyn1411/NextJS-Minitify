@@ -17,7 +17,7 @@ export async function createArtist(data: ArtistData.ServerType) {
             firstName: data.firstName,
             lastName: data.lastName,
             biography: data.biography,
-            imageUrl: "",
+            imageUrl: data.image,
             songCount: 0,
           },
         });

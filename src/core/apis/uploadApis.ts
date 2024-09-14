@@ -24,7 +24,8 @@ export async function uploadFile(data: FormData) {
       path: path,
     };
   } catch (e) {
-    console.log({ e });
+    // eslint-disable-next-line no-console
+    console.error(e);
     return buildAppError("Failed to upload file");
   }
 }
