@@ -1,8 +1,8 @@
 import { NextUIProvider } from "@nextui-org/react";
 import type { Metadata } from "next";
 
-import { MainLayout } from "@/shared/layouts/MainLayout";
 import { ToastProvider } from "@/shared/providers/ToastProvider";
+
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -19,9 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <NextUIProvider>
-          <ToastProvider>
-            <MainLayout>{children}</MainLayout>
-          </ToastProvider>
+          <ToastProvider>{children}</ToastProvider>
         </NextUIProvider>
       </body>
     </html>

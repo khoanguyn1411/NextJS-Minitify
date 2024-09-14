@@ -61,6 +61,11 @@ model Playlist {
   updatedAt   DateTime @updatedAt
 }
 
+enum UserRole {
+  admin
+  user
+}
+
 model User {
   id          Int       @id @default(autoincrement())
   firstName   String
@@ -70,6 +75,7 @@ model User {
   createdDate DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   Session     Session[]
+  role        UserRole  @default(user)
 }
 
 model Session {

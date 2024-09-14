@@ -1,7 +1,12 @@
 "use client";
 
-import { Divider, Link, type NavbarItem } from "@nextui-org/react";
-import { usePathname } from "next/navigation";
+import {
+  Divider,
+  Link,
+  NextUIProvider,
+  type NavbarItem,
+} from "@nextui-org/react";
+import { usePathname, useRouter } from "next/navigation";
 import { type FC, type ReactNode } from "react";
 import { BiLibrary, BiMusic, BiTrendingUp, BiWorld } from "react-icons/bi";
 
@@ -44,13 +49,17 @@ const discoverNarItems: readonly NavbarItem[] = [
 
 export const NavigationAside: FC = () => {
   const pathname = usePathname();
+  const router = useRouter();
 
   const isCurrentUrl = (url: string) => {
     return pathname === url;
   };
 
   return (
-    <div className="flex flex-col p-container gap-3 h-full">
+    <NextUIProvider
+      navigate={router.push}
+      className="flex flex-col p-container gap-3 h-full"
+    >
       <div className="flex flex-col">
         {userNavbarItems.map((item) => (
           <Link
@@ -87,6 +96,6 @@ export const NavigationAside: FC = () => {
           This is self-edu project. No commercial purpose.
         </p>
       </div>
-    </div>
+    </NextUIProvider>
   );
 };

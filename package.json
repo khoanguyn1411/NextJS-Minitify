@@ -8,7 +8,7 @@
     "preview": "next start",
     "lint": "next lint --fix",
     "nextui:add": "nextui add",
-    "prisma:migrate": "npx prisma migrate dev --name init",
+    "prisma:migrate": "npx prisma migrate dev --name",
     "prisma:generate": "npx prisma generate"
   },
   "dependencies": {

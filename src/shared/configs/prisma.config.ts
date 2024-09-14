@@ -1,22 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 
-let prisma: PrismaClient;
+const prismaClientSingleton = () => {
+  return new PrismaClient();
+};
 
-declare global {
-  // Allows us to add a custom property `prisma` to the global object
-  // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined;
-}
+declare const globalThis: {
+  prismaGlobal: ReturnType<typeof prismaClientSingleton>;
+} & typeof global;
 
-// In production, create a new instance of PrismaClient
-if (process.env.NODE_ENV === "production") {
-  prisma = new PrismaClient();
-} else {
-  // In development, use a global variable to prevent multiple instances of PrismaClient
-  if (!global.prisma) {
-    global.prisma = new PrismaClient();
-  }
-  prisma = global.prisma;
-}
+const prisma = globalThis.prismaGlobal ?? prismaClientSingleton();
 
 export const appPrisma = prisma;
+
+if (process.env.NODE_ENV !== "production") globalThis.prismaGlobal = prisma;

@@ -1,9 +1,9 @@
-import styles from "./page.module.css";
+import { MainLayout } from "@/shared/layouts/MainLayout";
 
 export default function Home() {
   return (
-    <div className={styles.page}>
+    <MainLayout>
       <div>Home page</div>
-    </div>
+    </MainLayout>
   );
 }
