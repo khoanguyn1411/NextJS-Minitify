@@ -41,19 +41,15 @@ export async function createUser(data: RegisterData.Type) {
 }
 
 export async function findUser(user: Partial<User>) {
-  try {
-    const userToFind = await appPrisma.user.findUnique({
-      where: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        username: user.username,
-        createdDate: user.createdDate,
-        updatedAt: user.updatedAt,
-      },
-    });
-    return userToFind;
-  } catch (e) {
-    return buildAppError("Cannot find user.");
-  }
+  const userToFind = await appPrisma.user.findUnique({
+    where: {
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      username: user.username,
+      createdDate: user.createdDate,
+      updatedAt: user.updatedAt,
+    },
+  });
+  return userToFind;
 }
