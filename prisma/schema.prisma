@@ -17,6 +17,8 @@ model Artist {
   id          Int      @id @default(autoincrement())
   biography   String
   imageUrl    String
+  firstName   String
+  lastName    String
   songCount   Int
   createdDate DateTime @default(now())
   song        Song[]
@@ -27,7 +29,7 @@ model Artist {
 model Song {
   id          Int       @id @default(autoincrement())
   name        String
-  playTime    Int
+  playTime    Int       @default(0)
   imageUrl    String
   createdDate DateTime  @default(now())
   duration    Int
@@ -44,7 +46,7 @@ model Album {
   name        String
   imageUrl    String
   description String
-  playTime    Int
+  playTime    Int      @default(0)
   createdDate DateTime @default(now())
   song        Song[]
   artist      Artist   @relation(fields: [artistId], references: [id])
@@ -54,7 +56,7 @@ model Album {
 
 model Playlist {
   id          Int      @id @default(autoincrement())
-  songCount   Int
+  songCount   Int      @default(0)
   description String
   createdDate DateTime @default(now())
   song        Song[]
