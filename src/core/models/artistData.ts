@@ -19,4 +19,11 @@ export namespace ArtistData {
 
   export type Type = z.infer<typeof schema>;
   export type ServerType = z.infer<typeof serverSchema>;
+
+  export const initialValue: Type = {
+    firstName: "",
+    lastName: "",
+    biography: "",
+    image: null,
+  };
 }

@@ -18,6 +18,7 @@ import { createArtist } from "@/core/apis/artistApis";
 import { uploadFile } from "@/core/apis/uploadApis";
 import { ArtistData } from "@/core/models/artistData";
 import { useError } from "@/shared/hooks/useError";
+import { useNotify } from "@/shared/hooks/useNotify";
 import { convertFileToFormData } from "@/shared/services/uploadService";
 
 import { FileUploader } from "../FileUploader";
@@ -26,6 +27,7 @@ type Props = ReturnType<typeof useDisclosure>;
 
 export const ArtistCreationModal: FC<Props> = (props) => {
   const { extractErrorsToForm, notifyOnAppError, isSuccess } = useError();
+  const { notify } = useNotify();
   const {
     control,
     handleSubmit,
@@ -50,7 +52,9 @@ export const ArtistCreationModal: FC<Props> = (props) => {
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
+      notify("Created new artist", { type: "success" });
       props.onClose();
+      reset(ArtistData.initialValue);
     }
   };
 
