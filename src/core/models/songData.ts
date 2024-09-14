@@ -4,7 +4,7 @@ import { ZodUtils } from "@/shared/utils/zodUtils";
 
 export namespace SongData {
   export const schema = z.object({
-    image: z.instanceof(File),
+    image: ZodUtils.notAllowNullable(z.instanceof(File)),
     artistId: ZodUtils.requiredNumber(),
     albumId: ZodUtils.requiredNumber(),
     name: ZodUtils.requiredString(),

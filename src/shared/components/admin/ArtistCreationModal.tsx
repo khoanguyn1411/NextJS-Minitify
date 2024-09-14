@@ -14,8 +14,7 @@ import {
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { type ArtistData } from "@/core/models/artistData";
-import { SongData } from "@/core/models/songData";
+import { ArtistData } from "@/core/models/artistData";
 
 import { FileUploader } from "../FileUploader";
 
@@ -27,13 +26,15 @@ export const ArtistCreationModal: FC<Props> = (props) => {
     handleSubmit,
     reset,
     setError,
-    formState: { isLoading },
+    formState: { isLoading, errors },
   } = useForm<ArtistData.Type>({
-    resolver: zodResolver(SongData.schema),
+    resolver: zodResolver(ArtistData.schema),
   });
 
+  console.log({ errors });
+
   const onFormSubmit = (data: ArtistData.Type) => {
-    reset();
+    props.onClose();
   };
 
   return (

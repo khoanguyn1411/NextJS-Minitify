@@ -1,7 +1,6 @@
-import { type ReactNode, useRef, type ChangeEvent, type FC } from "react";
-import { BiFile, BiUpload, BiX } from "react-icons/bi";
 import classnames from "classnames";
-import { Button } from "@nextui-org/react";
+import { useRef, type ChangeEvent, type FC, type ReactNode } from "react";
+import { BiFile, BiUpload, BiX } from "react-icons/bi";
 
 type Props = {
   readonly value: File | null;
@@ -40,7 +39,7 @@ export const FileUploader: FC<Props> = ({ value, errorMessage, onChange }) => {
   }
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <button
         type="button"
         onClick={handleButtonClick}
@@ -62,7 +61,7 @@ export const FileUploader: FC<Props> = ({ value, errorMessage, onChange }) => {
           onChange={handleFileChange}
         />
       </button>
-      {errorMessage}
+      <p className="text-xs text-red-500">{errorMessage}</p>
     </div>
   );
 };
