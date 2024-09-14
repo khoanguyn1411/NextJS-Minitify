@@ -12,6 +12,9 @@ module.exports = {
       padding: {
         container: "1rem",
       },
+      colors: {
+        input: "#272729",
+      },
     },
   },
   darkMode: "class",

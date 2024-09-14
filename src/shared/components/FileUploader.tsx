@@ -6,9 +6,15 @@ type Props = {
   readonly value: File | null;
   readonly onChange: (value: File | null) => void;
   readonly errorMessage?: ReactNode;
+  readonly label?: string;
 };
 
-export const FileUploader: FC<Props> = ({ value, errorMessage, onChange }) => {
+export const FileUploader: FC<Props> = ({
+  value,
+  errorMessage,
+  label,
+  onChange,
+}) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleButtonClick = () => {
@@ -27,19 +33,23 @@ export const FileUploader: FC<Props> = ({ value, errorMessage, onChange }) => {
 
   if (value != null) {
     return (
-      <div className="flex gap-2 items-center justify-between">
-        <span className="flex text-sm gap-2 items-center">
-          <BiFile /> {value.name}
-        </span>
-        <button onClick={handleClearFile} type="button">
-          <BiX />
-        </button>
+      <div className="flex flex-col gap-3 bg-input p-container rounded-md">
+        <label className="text-sm">{label}</label>
+        <div className="flex gap-2 items-center justify-between">
+          <span className="flex text-sm gap-2 items-center">
+            <BiFile /> {value.name}
+          </span>
+          <button onClick={handleClearFile} type="button">
+            <BiX />
+          </button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 bg-input p-container rounded-md">
+      <label className="text-sm">{label}</label>
       <button
         type="button"
         onClick={handleButtonClick}
