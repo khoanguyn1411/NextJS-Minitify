@@ -10,7 +10,7 @@ export const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
         <Header />
       </div>
       <div className="pb-container px-container grid grid-cols-5 h-full gap-3">
-        <div className="bg-primary-900 h-full rounded-md p-container">
+        <div className="bg-primary-900 h-full rounded-md">
           <AdminNavigationAside />
         </div>
         <div className="p-container bg-primary-900 h-full rounded-md col-span-4">
