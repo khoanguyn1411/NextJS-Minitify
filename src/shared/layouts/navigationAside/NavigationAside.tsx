@@ -1,22 +1,16 @@
 "use client";
 
-import {
-  Divider,
-  Link,
-  NextUIProvider,
-  type NavbarItem,
-} from "@nextui-org/react";
-import { usePathname, useRouter } from "next/navigation";
-import { type FC, type ReactNode } from "react";
+import { Divider, NextUIProvider } from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+import { type FC } from "react";
 import { BiLibrary, BiMusic, BiTrendingUp, BiWorld } from "react-icons/bi";
 
-type NavbarItem = {
-  readonly title: string;
-  readonly url: string;
-  readonly icon: ReactNode;
-};
+import {
+  NavigationItem,
+  type NavigationItemProps,
+} from "@/shared/components/NavigationItem";
 
-const userNavbarItems: readonly NavbarItem[] = [
+const userNavbarItems: readonly NavigationItemProps[] = [
   {
     title: "Home",
     url: "/",
@@ -29,7 +23,7 @@ const userNavbarItems: readonly NavbarItem[] = [
   },
 ];
 
-const discoverNarItems: readonly NavbarItem[] = [
+const discoverNarItems: readonly NavigationItemProps[] = [
   {
     title: "Trending Musics",
     url: "/trending-musics",
@@ -48,13 +42,7 @@ const discoverNarItems: readonly NavbarItem[] = [
 ];
 
 export const NavigationAside: FC = () => {
-  const pathname = usePathname();
   const router = useRouter();
-
-  const isCurrentUrl = (url: string) => {
-    return pathname === url;
-  };
-
   return (
     <NextUIProvider
       navigate={router.push}
@@ -62,30 +50,14 @@ export const NavigationAside: FC = () => {
     >
       <div className="flex flex-col">
         {userNavbarItems.map((item) => (
-          <Link
-            className="flex gap-3 py-2 hover:text-primary-100 w-full self-start"
-            key={item.url}
-            color={isCurrentUrl(item.url) ? "primary" : "foreground"}
-            href={item.url}
-          >
-            {item.icon}
-            {item.title}
-          </Link>
+          <NavigationItem key={item.title} {...item} />
         ))}
       </div>
       <Divider />
 
       <div className="flex flex-col">
         {discoverNarItems.map((item) => (
-          <Link
-            className="flex gap-3 py-2 hover:text-primary-100 w-full self-start"
-            key={item.url}
-            color={isCurrentUrl(item.url) ? "primary" : "foreground"}
-            href={item.url}
-          >
-            {item.icon}
-            {item.title}
-          </Link>
+          <NavigationItem key={item.title} {...item} />
         ))}
       </div>
       <Divider />
