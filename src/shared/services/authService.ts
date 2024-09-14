@@ -58,13 +58,15 @@ export async function signIn(data: LoginData.Type) {
 
 export const validateRequest = cache(
   async (): Promise<
-    { user: User; session: Session } | { user: null; session: null }
+    | { user: User; session: Session; isAuthenticated: boolean }
+    | { user: null; session: null; isAuthenticated: boolean }
   > => {
     const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
     if (!sessionId) {
       return {
         user: null,
         session: null,
+        isAuthenticated: false,
       };
     }
 
@@ -90,7 +92,10 @@ export const validateRequest = cache(
     } catch (e) {
       throw new Error("There are some error with validation process.");
     }
-    return result;
+    return {
+      ...result,
+      isAuthenticated: true,
+    };
   },
 );
 
