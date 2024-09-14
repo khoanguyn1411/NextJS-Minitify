@@ -7,7 +7,7 @@ import { cache } from "react";
 import { type LoginData } from "@/core/models/loginData";
 import { lucia } from "@/shared/configs/lucia.config";
 
-import { createUser, findUser } from "../../core/apis/usersApis";
+import { createUser, findUser } from "../../core/apis/userApis";
 import { isAppError } from "../../core/models/errors";
 import { type RegisterData } from "../../core/models/registerData";
 import { PasswordEncryption } from "../utils/encryptPassword";

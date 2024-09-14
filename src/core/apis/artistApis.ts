@@ -6,11 +6,11 @@ import { validateWithSchema } from "@/shared/utils/errorHandlers";
 
 import { ArtistData } from "../models/artistData";
 
-export async function createArtist(data: ArtistData.Type) {
+export async function createArtist(data: ArtistData.ServerType) {
   return createPrismaRequest(() => {
     return validateWithSchema({
       data: data,
-      schema: ArtistData.schema,
+      schema: ArtistData.serverSchema,
       async onPassed(data) {
         const artist = await appPrisma.artist.create({
           data: {

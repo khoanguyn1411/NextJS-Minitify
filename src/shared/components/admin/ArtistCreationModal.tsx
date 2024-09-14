@@ -14,9 +14,11 @@ import {
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { createArtist } from "@/core/apis/artistsApis";
+import { createArtist } from "@/core/apis/artistApis";
+import { uploadFile } from "@/core/apis/uploadApis";
 import { ArtistData } from "@/core/models/artistData";
 import { useError } from "@/shared/hooks/useError";
+import { convertFileToFormData } from "@/shared/services/uploadServicet";
 
 import { FileUploader } from "../FileUploader";
 
@@ -35,7 +37,16 @@ export const ArtistCreationModal: FC<Props> = (props) => {
   });
 
   const onFormSubmit = async (data: ArtistData.Type) => {
-    const result = await createArtist(data);
+    let imageUrl = "";
+    if (data.image != null) {
+      const filePath = await uploadFile(convertFileToFormData(data.image));
+      if (!isSuccess(filePath)) {
+        notifyOnAppError(filePath);
+        return;
+      }
+      imageUrl = filePath.path;
+    }
+    const result = await createArtist({ ...data, image: imageUrl });
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
