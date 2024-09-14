@@ -27,4 +27,9 @@ export namespace BaseFilterParams {
   export type Combined<T extends number | string = string> = Search &
     Pagination &
     Sort<T>;
+
+  export const initialPagination: Pagination = {
+    pageNumber: 0,
+    pageSize: 10,
+  };
 }

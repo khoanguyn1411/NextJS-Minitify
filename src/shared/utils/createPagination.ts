@@ -1,5 +1,5 @@
 import { type BaseFilterParams } from "@/core/models/baseFilterParams";
-import { Pagination } from "@/core/models/pagination";
+import { type Pagination } from "@/core/models/pagination";
 
 import { appPrisma } from "../configs/prisma.config";
 
@@ -12,7 +12,7 @@ type Params<T, M> = {
 export async function createPagination<
   T extends string,
   M extends Record<string, unknown>,
->({ model, result, pagination }: Params<T, M>) {
+>({ model, result, pagination }: Params<T, M>): Promise<Pagination<M>> {
   const skip = (pagination.pageNumber - 1) * pagination.pageSize;
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -22,10 +22,10 @@ export async function createPagination<
   const hasPrev = pagination.pageNumber > 1;
   const hasNext = skip + result.length < total;
 
-  return new Pagination({
+  return {
     totalCount: total,
     hasNext,
     hasPrev,
     items: result,
-  });
+  };
 }

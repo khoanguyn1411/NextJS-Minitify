@@ -4,6 +4,7 @@ import { Button } from "@nextui-org/button";
 import { useDisclosure } from "@nextui-org/react";
 
 import { ArtistCreationModal } from "@/shared/components/admin/ArtistCreationModal";
+import { ArtistTable } from "@/shared/components/admin/ArtistTable";
 
 export default function Page() {
   const disclosure = useDisclosure();
@@ -16,6 +17,7 @@ export default function Page() {
         </Button>
         <ArtistCreationModal {...disclosure} />
       </div>
+      <ArtistTable />
     </div>
   );
 }
