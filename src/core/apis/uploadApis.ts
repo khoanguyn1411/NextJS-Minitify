@@ -24,6 +24,7 @@ export async function uploadFile(data: FormData) {
       path: path,
     };
   } catch (e) {
+    console.log({ e });
     return buildAppError("Failed to upload file");
   }
 }

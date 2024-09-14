@@ -18,7 +18,7 @@ import { createArtist } from "@/core/apis/artistApis";
 import { uploadFile } from "@/core/apis/uploadApis";
 import { ArtistData } from "@/core/models/artistData";
 import { useError } from "@/shared/hooks/useError";
-import { convertFileToFormData } from "@/shared/services/uploadServicet";
+import { convertFileToFormData } from "@/shared/services/uploadService";
 
 import { FileUploader } from "../FileUploader";
 
