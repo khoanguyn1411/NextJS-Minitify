@@ -14,27 +14,33 @@ import {
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
+import { createArtist } from "@/core/apis/artistsApis";
 import { ArtistData } from "@/core/models/artistData";
+import { useError } from "@/shared/hooks/useError";
 
 import { FileUploader } from "../FileUploader";
 
 type Props = ReturnType<typeof useDisclosure>;
 
 export const ArtistCreationModal: FC<Props> = (props) => {
+  const { extractErrorsToForm, notifyOnAppError, isSuccess } = useError();
   const {
     control,
     handleSubmit,
     reset,
     setError,
-    formState: { isLoading, errors },
+    formState: { isLoading },
   } = useForm<ArtistData.Type>({
     resolver: zodResolver(ArtistData.schema),
   });
 
-  console.log({ errors });
-
-  const onFormSubmit = (data: ArtistData.Type) => {
-    props.onClose();
+  const onFormSubmit = async (data: ArtistData.Type) => {
+    const result = await createArtist(data);
+    extractErrorsToForm({ result, setError });
+    notifyOnAppError(result);
+    if (isSuccess(result)) {
+      props.onClose();
+    }
   };
 
   return (

@@ -21,7 +21,7 @@ import { Password } from "../../Password";
 type Props = ReturnType<typeof useDisclosure>;
 
 export const RegisterModal: FC<Props> = (props) => {
-  const { notifyOnAppError, extractErrorsToForm } = useError();
+  const { notifyOnAppError, extractErrorsToForm, isSuccess } = useError();
   const {
     control,
     handleSubmit,
@@ -36,6 +36,9 @@ export const RegisterModal: FC<Props> = (props) => {
     const result = await signUp(data);
     notifyOnAppError(result);
     extractErrorsToForm({ result, setError });
+    if (isSuccess(result)) {
+      props.onClose();
+    }
   };
 
   return (

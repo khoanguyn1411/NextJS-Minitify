@@ -50,7 +50,7 @@ export function useError() {
     }
   };
 
-  const isPlainResult = <
+  const isSuccess = <
     E extends Record<string, unknown> = Record<string, unknown>,
   >(
     result: HandleValidationErrorParams<
@@ -62,5 +62,5 @@ export function useError() {
     return !isAppError(result);
   };
 
-  return { extractErrorsToForm, notifyOnAppError, isPlainResult };
+  return { extractErrorsToForm, notifyOnAppError, isSuccess };
 }
