@@ -34,7 +34,7 @@ export const FileUploader: FC<Props> = ({
 
   if (value != null) {
     return (
-      <Card className="flex flex-col gap-3">
+      <Card className="flex flex-col gap-3 bg-input p-container">
         <label className="text-sm">{label}</label>
         <div className="flex gap-2 items-center justify-between">
           <span className="flex text-sm gap-2 items-center">
@@ -49,7 +49,7 @@ export const FileUploader: FC<Props> = ({
   }
 
   return (
-    <Card className="flex flex-col gap-2">
+    <Card className="flex flex-col gap-2 bg-input p-container">
       <label className="text-sm">{label}</label>
       <button
         type="button"
