@@ -1,3 +1,4 @@
+import { Card } from "@nextui-org/react";
 import classnames from "classnames";
 import { useRef, type ChangeEvent, type FC, type ReactNode } from "react";
 import { BiFile, BiUpload, BiX } from "react-icons/bi";
@@ -33,7 +34,7 @@ export const FileUploader: FC<Props> = ({
 
   if (value != null) {
     return (
-      <div className="flex flex-col gap-3 bg-input p-container rounded-md">
+      <Card className="flex flex-col gap-3">
         <label className="text-sm">{label}</label>
         <div className="flex gap-2 items-center justify-between">
           <span className="flex text-sm gap-2 items-center">
@@ -43,12 +44,12 @@ export const FileUploader: FC<Props> = ({
             <BiX />
           </button>
         </div>
-      </div>
+      </Card>
     );
   }
 
   return (
-    <div className="flex flex-col gap-2 bg-input p-container rounded-md">
+    <Card className="flex flex-col gap-2">
       <label className="text-sm">{label}</label>
       <button
         type="button"
@@ -72,6 +73,6 @@ export const FileUploader: FC<Props> = ({
         />
       </button>
       <p className="text-xs text-red-500">{errorMessage}</p>
-    </div>
+    </Card>
   );
 };
