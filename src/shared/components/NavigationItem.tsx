@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "@nextui-org/react";
 import { usePathname } from "next/navigation";
 import { type FC, type ReactNode } from "react";
 

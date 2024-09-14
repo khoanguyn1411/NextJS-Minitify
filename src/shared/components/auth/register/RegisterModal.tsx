@@ -10,7 +10,7 @@ import {
   type useDisclosure,
 } from "@nextui-org/react";
 import { type FC } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 
 import { RegisterData } from "@/core/models/registerData";
 import { useError } from "@/shared/hooks/useError";
@@ -55,7 +55,7 @@ export const RegisterModal: FC<Props> = (props) => {
                   Stay up together with musics!
                 </p>
               </div>
-              <form className="flex flex-col gap-4">
+              <Form className="flex flex-col gap-4">
                 <div className="flex gap-4">
                   <Controller
                     control={control}
@@ -129,7 +129,7 @@ export const RegisterModal: FC<Props> = (props) => {
                     />
                   )}
                 />
-              </form>
+              </Form>
             </ModalBody>
             <ModalFooter>
               <Button color="primary" variant="light" onClick={onClose}>

@@ -10,7 +10,7 @@ import {
   type useDisclosure,
 } from "@nextui-org/react";
 import { type FC } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, Form, useForm } from "react-hook-form";
 
 import { LoginData } from "@/core/models/loginData";
 import { useError } from "@/shared/hooks/useError";
@@ -53,7 +53,7 @@ export const LoginModal: FC<Props> = (props) => {
                 <h1 className="text-xl">Welcome back to Minitify</h1>
                 <p className="text-sm text-primary-200">Enjoy your tracks!</p>
               </div>
-              <form className="flex flex-col gap-4">
+              <Form className="flex flex-col gap-4">
                 <Controller
                   control={control}
                   name="userName"
@@ -83,7 +83,7 @@ export const LoginModal: FC<Props> = (props) => {
                     />
                   )}
                 />
-              </form>
+              </Form>
             </ModalBody>
             <ModalFooter>
               <Button color="primary" variant="light" onClick={onClose}>

@@ -3,7 +3,7 @@
 import { Divider, NextUIProvider } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { type FC } from "react";
-import { BiMusic, BiUpload } from "react-icons/bi";
+import { BiAlbum, BiMale, BiMusic } from "react-icons/bi";
 
 import {
   NavigationItem,
@@ -12,14 +12,19 @@ import {
 
 const adminNavbarItems: readonly NavigationItemProps[] = [
   {
-    title: "New Song",
-    url: "/admin/new-song",
-    icon: <BiUpload />,
+    title: "Songs",
+    url: "/admin/songs",
+    icon: <BiMusic />,
   },
   {
-    title: "All Songs",
-    url: "/admin/all-songs",
-    icon: <BiMusic />,
+    title: "Albums",
+    url: "/admin/albums",
+    icon: <BiAlbum />,
+  },
+  {
+    title: "Artists",
+    url: "/admin/artists",
+    icon: <BiMale />,
   },
 ];
 
