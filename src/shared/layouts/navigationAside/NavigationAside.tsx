@@ -10,12 +10,20 @@ type NavbarItem = {
   readonly icon: ReactNode;
 };
 
-const navbarItems: readonly NavbarItem[] = [
+const userNavbarItems: readonly NavbarItem[] = [
   {
     title: "Library",
     url: "/library",
     icon: <BiLibrary />,
   },
+  {
+    title: "Home",
+    url: "/",
+    icon: <BiTrendingUp />,
+  },
+];
+
+const discoverNarItems: readonly NavbarItem[] = [
   {
     title: "Trending Musics",
     url: "/trending-musics",
@@ -37,7 +45,7 @@ export const NavigationAside: FC = () => {
   return (
     <div className="flex flex-col p-container gap-3 h-full">
       <div className="flex flex-col">
-        {navbarItems.map((item) => (
+        {userNavbarItems.map((item) => (
           <Link
             className="flex gap-3 py-2 hover:text-primary-100 w-full self-start"
             key={item.url}
@@ -50,9 +58,27 @@ export const NavigationAside: FC = () => {
         ))}
       </div>
       <Divider />
+
+      <div className="flex flex-col">
+        {discoverNarItems.map((item) => (
+          <Link
+            className="flex gap-3 py-2 hover:text-primary-100 w-full self-start"
+            key={item.url}
+            color="foreground"
+            href={item.url}
+          >
+            {item.icon}
+            {item.title}
+          </Link>
+        ))}
+      </div>
+      <Divider />
+
       <div className="mt-auto">
-        <p className="text-sm">This is self-edu project.</p>
-        <p className="text-xs">No commercial purpose.</p>
+        <Divider className="mb-3" />
+        <p className="text-sm">
+          This is self-edu project. No commercial purpose.
+        </p>
       </div>
     </div>
   );
