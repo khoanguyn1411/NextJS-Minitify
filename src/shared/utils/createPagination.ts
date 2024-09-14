@@ -27,5 +27,6 @@ export async function createPagination<
     hasNext,
     hasPrev,
     items: result,
+    hasItem: result.length > 0,
   };
 }

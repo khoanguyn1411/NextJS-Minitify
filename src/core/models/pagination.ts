@@ -11,4 +11,7 @@ export type Pagination<T> = {
 
   /** Whether the pagination have prev pages. */
   readonly hasPrev: boolean;
+
+  /** Whether the pagination has item. */
+  readonly hasItem: boolean;
 };
