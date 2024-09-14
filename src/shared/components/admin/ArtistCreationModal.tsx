@@ -17,6 +17,8 @@ import { Controller, useForm } from "react-hook-form";
 import { type ArtistData } from "@/core/models/artistData";
 import { SongData } from "@/core/models/songData";
 
+import { FileUploader } from "../FileUploader";
+
 type Props = ReturnType<typeof useDisclosure>;
 
 export const ArtistCreationModal: FC<Props> = (props) => {
@@ -83,6 +85,17 @@ export const ArtistCreationModal: FC<Props> = (props) => {
                       autoComplete="biography"
                       errorMessage={fieldState.error?.message}
                       isInvalid={!!fieldState.error?.message}
+                      {...field}
+                    />
+                  )}
+                />
+
+                <Controller
+                  control={control}
+                  name="image"
+                  render={({ field, fieldState }) => (
+                    <FileUploader
+                      errorMessage={fieldState.error?.message}
                       {...field}
                     />
                   )}
