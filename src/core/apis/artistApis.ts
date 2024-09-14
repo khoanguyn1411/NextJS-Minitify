@@ -1,10 +1,13 @@
 "use server";
 
 import { appPrisma } from "@/shared/configs/prisma.config";
+import { createPagination } from "@/shared/utils/createPagination";
+import { createPrismaPaginationFilter } from "@/shared/utils/createPrismaPaginationFilter";
 import { createPrismaRequest } from "@/shared/utils/createPrismaRequest";
 import { validateWithSchema } from "@/shared/utils/errorHandlers";
 
 import { ArtistData } from "../models/artistData";
+import { type BaseFilterParams } from "../models/baseFilterParams";
 
 export async function createArtist(data: ArtistData.ServerType) {
   return createPrismaRequest(() => {
@@ -23,6 +26,19 @@ export async function createArtist(data: ArtistData.ServerType) {
         });
         return artist;
       },
+    });
+  });
+}
+
+export async function getArtists(pagination: BaseFilterParams.Pagination) {
+  return createPrismaRequest(async () => {
+    const paginationFilters = createPrismaPaginationFilter(pagination);
+    const artists = await appPrisma.artist.findMany({ ...paginationFilters });
+
+    return createPagination({
+      pagination: pagination,
+      result: artists,
+      model: "artist",
     });
   });
 }
