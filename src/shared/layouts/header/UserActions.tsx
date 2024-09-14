@@ -1,9 +1,9 @@
 import { type FC } from "react";
 
-import { findUser } from "@/core/apis/usersApis";
 import { LoginButton } from "@/shared/components/auth/login/LoginButton";
 import { RegisterButton } from "@/shared/components/auth/register/RegisterButton";
 import { validateRequest } from "@/shared/services/authService";
+import { findUser } from "@/core/apis/userApis";
 
 import { UserDropdown } from "./UserDropdown";
 
