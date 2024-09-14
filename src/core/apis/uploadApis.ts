@@ -17,7 +17,7 @@ export async function uploadFile(data: FormData) {
 
     // With the file data in the buffer, you can do whatever you want with it.
     // For this, we'll just write it to the filesystem in a new location
-    const path = join("assets", "uploads", file.name);
+    const path = join("public", "uploads", file.name);
     await writeFile(path, buffer);
 
     return {
