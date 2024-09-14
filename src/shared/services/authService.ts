@@ -18,7 +18,7 @@ export async function signUp(data: RegisterData.Type) {
   if (isAppError(newUser)) {
     return newUser;
   }
-  const session = await lucia.createSession(newUser.id, { role: newUser.role });
+  const session = await lucia.createSession(newUser.id, {});
   const sessionCookie = lucia.createSessionCookie(session.id);
   cookies().set(
     sessionCookie.name,
@@ -44,9 +44,7 @@ export async function signIn(data: LoginData.Type) {
     userToFind.password,
   );
   if (isPasswordCorrect) {
-    const session = await lucia.createSession(userToFind.id, {
-      role: userToFind.role,
-    });
+    const session = await lucia.createSession(userToFind.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
     cookies().set(
       sessionCookie.name,
