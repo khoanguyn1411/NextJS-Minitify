@@ -1,6 +1,7 @@
 "use client";
 
 import { Divider, Link, type NavbarItem } from "@nextui-org/react";
+import { usePathname } from "next/navigation";
 import { type FC, type ReactNode } from "react";
 import { BiLibrary, BiMusic, BiTrendingUp, BiWorld } from "react-icons/bi";
 
@@ -12,14 +13,14 @@ type NavbarItem = {
 
 const userNavbarItems: readonly NavbarItem[] = [
   {
-    title: "Library",
-    url: "/library",
-    icon: <BiLibrary />,
-  },
-  {
     title: "Home",
     url: "/",
     icon: <BiTrendingUp />,
+  },
+  {
+    title: "Library",
+    url: "/library",
+    icon: <BiLibrary />,
   },
 ];
 
@@ -42,6 +43,12 @@ const discoverNarItems: readonly NavbarItem[] = [
 ];
 
 export const NavigationAside: FC = () => {
+  const pathname = usePathname();
+
+  const isCurrentUrl = (url: string) => {
+    return pathname === url;
+  };
+
   return (
     <div className="flex flex-col p-container gap-3 h-full">
       <div className="flex flex-col">
@@ -49,7 +56,7 @@ export const NavigationAside: FC = () => {
           <Link
             className="flex gap-3 py-2 hover:text-primary-100 w-full self-start"
             key={item.url}
-            color="foreground"
+            color={isCurrentUrl(item.url) ? "primary" : "foreground"}
             href={item.url}
           >
             {item.icon}
@@ -64,7 +71,7 @@ export const NavigationAside: FC = () => {
           <Link
             className="flex gap-3 py-2 hover:text-primary-100 w-full self-start"
             key={item.url}
-            color="foreground"
+            color={isCurrentUrl(item.url) ? "primary" : "foreground"}
             href={item.url}
           >
             {item.icon}
