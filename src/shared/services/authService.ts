@@ -1,7 +1,8 @@
 "use server";
 
 import { type Session, type User } from "lucia";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { cache } from "react";
 
 import { type LoginData } from "@/core/models/loginData";
@@ -100,6 +101,11 @@ export const validateRequest = cache(
 );
 
 export async function logout() {
+  const headersList = headers();
+  const currentUrl = headersList.get("referer") || "";
+  const url = new URL(currentUrl);
+  const currentPath = url.pathname;
+
   const { session } = await validateRequest();
   if (!session) {
     return {
@@ -115,4 +121,8 @@ export async function logout() {
     sessionCookie.value,
     sessionCookie.attributes,
   );
+
+  if (currentPath.startsWith("/admin")) {
+    redirect("/");
+  }
 }
