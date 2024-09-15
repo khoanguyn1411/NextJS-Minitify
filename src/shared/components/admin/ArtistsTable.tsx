@@ -1,5 +1,6 @@
 "use client";
 
+import { Tooltip } from "@nextui-org/react";
 import { type Artist } from "@prisma/client";
 import { useEffect, useState, type FC } from "react";
 
@@ -17,22 +18,30 @@ const columns: readonly TableColumn<Artist>[] = [
   { title: "ID", key: "id" },
   { title: "First name", key: "firstName" },
   { title: "Last name", key: "lastName" },
-  { title: "Biography", key: "biography" },
-  { title: "Songs", key: "songCount" },
+  {
+    title: "Biography",
+    key: "biography",
+    render: (item) => (
+      <Tooltip content={item.biography}>
+        <p className="truncate-2">{item.biography}</p>
+      </Tooltip>
+    ),
+  },
+  { title: "Songs", key: "songCount", align: "end" },
   {
     title: "Image",
     key: "imageUrl",
     render: (item) => (
       <AppImage
-        isBlurred
-        height={100}
-        width={100}
-        className="object-cover"
-        src={`${item.imageUrl}`}
+        height={60}
+        width={60}
+        className="object-cover rounded-full"
+        src={item.imageUrl}
         alt={User.getFullName(item)}
       />
     ),
     width: 150,
+    align: "center",
   },
   {
     title: "Created date",

@@ -2,6 +2,6 @@ import { DateTime } from "luxon";
 
 export namespace DateUtils {
   export function toReadable(date: Date) {
-    return DateTime.fromJSDate(date).toFormat("MM/dd/yyyy hh:mm:ss");
+    return DateTime.fromJSDate(date).toFormat("MM/dd/yyyy");
   }
 }

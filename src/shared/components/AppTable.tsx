@@ -18,6 +18,7 @@ export type TableColumn<T> = {
   readonly toReadable?: (item: T) => string;
   readonly key: LooseAutocomplete<keyof T>;
   readonly width?: number | string;
+  readonly align?: "start" | "center" | "end";
 };
 
 type TableProps<T> = {
@@ -46,7 +47,9 @@ export const AppTable = <TData extends Record<string, any>>(
     <Table>
       <TableHeader>
         {props.columns.map((column) => (
-          <TableColumn key={column.key.toString()}>{column.title}</TableColumn>
+          <TableColumn align={column.align} key={column.key.toString()}>
+            {column.title}
+          </TableColumn>
         ))}
       </TableHeader>
       <TableBody>
@@ -59,7 +62,9 @@ export const AppTable = <TData extends Record<string, any>>(
                     width={col.width}
                     key={`${col.key.toString()}-${props.toKey(item)}`}
                   >
-                    {getCellContent(col, item)}
+                    <div className={`flex justify-${col.align}`}>
+                      {getCellContent(col, item)}
+                    </div>
                   </TableCell>
                 );
               })}
