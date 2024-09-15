@@ -1,8 +1,0 @@
--- AlterTable
-ALTER TABLE `Album` MODIFY `playTime` INTEGER NOT NULL DEFAULT 0;
-
--- AlterTable
-ALTER TABLE `Playlist` MODIFY `songCount` INTEGER NOT NULL DEFAULT 0;
-
--- AlterTable
-ALTER TABLE `Song` MODIFY `playTime` INTEGER NOT NULL DEFAULT 0;
