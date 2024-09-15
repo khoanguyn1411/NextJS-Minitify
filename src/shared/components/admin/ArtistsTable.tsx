@@ -54,7 +54,7 @@ const columns: readonly TableColumn<Artist>[] = [
     key: "edit",
     render: (item) => (
       <Tooltip content="Edit">
-        <Button size="sm" color="primary" isIconOnly>
+        <Button variant="flat" size="sm" color="primary" isIconOnly>
           <BiEdit className="text-lg" />
         </Button>
       </Tooltip>
