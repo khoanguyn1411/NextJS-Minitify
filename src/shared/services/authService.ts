@@ -91,6 +91,7 @@ export const validateRequest = cache(
         );
       }
     } catch (e) {
+      cookies().delete("auth_session");
       return {
         user: null,
         session: null,
