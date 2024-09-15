@@ -91,7 +91,11 @@ export const validateRequest = cache(
         );
       }
     } catch (e) {
-      throw new Error("There are some error with validation process.");
+      return {
+        user: null,
+        session: null,
+        isAuthenticated: false,
+      };
     }
     return {
       ...result,
