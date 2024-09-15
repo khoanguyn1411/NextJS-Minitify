@@ -19,6 +19,7 @@ model Artist {
   imageUrl    String
   firstName   String
   lastName    String
+  fullName    String    @default("")
   songCount   Int
   createdDate DateTime @default(now())
   song        Song[]
@@ -72,6 +73,7 @@ model User {
   id          Int       @id @default(autoincrement())
   firstName   String
   lastName    String
+  fullName    String    @default("")
   password    String
   username    String    @unique
   createdDate DateTime  @default(now())
