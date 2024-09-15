@@ -1,8 +1,9 @@
 "use client";
 
-import { Tooltip } from "@nextui-org/react";
+import { Button, Tooltip } from "@nextui-org/react";
 import { type Artist } from "@prisma/client";
 import { useEffect, useState, type FC } from "react";
+import { BiEdit } from "react-icons/bi";
 
 import { getArtists } from "@/core/apis/artistApis";
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
@@ -47,6 +48,17 @@ const columns: readonly TableColumn<Artist>[] = [
     title: "Created date",
     key: "createdDate",
     toReadable: (item) => DateUtils.toReadable(item.createdDate),
+  },
+  {
+    title: "Edit",
+    key: "edit",
+    render: (item) => (
+      <Tooltip content="Edit">
+        <Button size="sm" color="primary" isIconOnly>
+          <BiEdit className="text-lg" />
+        </Button>
+      </Tooltip>
+    ),
   },
 ];
 
