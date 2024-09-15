@@ -1,7 +1,7 @@
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { ArtistCreationButton } from "@/shared/components/admin/artists/ArtistCreationButton";
-import { ArtistInputSearch } from "@/shared/components/admin/artists/ArtistInputSearch";
 import { ArtistsTableServer } from "@/shared/components/admin/artists/ArtistTableServer";
+import { AdminTableLayout } from "@/shared/layouts/AdminTableLayout";
 
 export default function Page({
   searchParams,
@@ -20,17 +20,10 @@ export default function Page({
   };
 
   return (
-    <>
-      <div className="flex flex-col gap-6">
-        <div className="flex gap-2 justify-between items-center">
-          <h1 className="text-xl font-semibold">Artists</h1>
-          <div className="flex gap-4">
-            <ArtistInputSearch initialFilter={filters.search} />
-            <ArtistCreationButton />
-          </div>
-        </div>
-        <ArtistsTableServer filters={filters} />
-      </div>
-    </>
+    <AdminTableLayout
+      Table={<ArtistsTableServer filters={filters} />}
+      Action={<ArtistCreationButton />}
+      initialSearch={filters.search}
+    />
   );
 }
