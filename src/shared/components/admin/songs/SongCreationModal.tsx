@@ -21,6 +21,7 @@ import { useError } from "@/shared/hooks/useError";
 import { useNotify } from "@/shared/hooks/useNotify";
 import { convertFileToFormData } from "@/shared/services/uploadService";
 
+import { AppSelect } from "../../AppSelect";
 import { FileUploader } from "../../FileUploader";
 
 type Props = ReturnType<typeof useDisclosure>;
@@ -95,6 +96,7 @@ export const SongCreationModal: FC<Props> = (props) => {
                     />
                   )}
                 />
+                <AppSelect />
               </form>
             </ModalBody>
             <ModalFooter>
