@@ -4,7 +4,7 @@ import { ZodUtils } from "@/shared/utils/zodUtils";
 
 export namespace SongData {
   export const baseSchema = z.object({
-    artistIds: ZodUtils.notAllowNullable(z.number().array()),
+    artistIds: z.number().array(),
     albumId: ZodUtils.notAllowNullable(ZodUtils.requiredNumber()),
     name: ZodUtils.requiredString(),
   });
@@ -22,7 +22,7 @@ export namespace SongData {
 
   export const initialValue: Type = {
     name: "",
-    artistIds: null,
+    artistIds: [],
     albumId: null,
     image: null,
   };

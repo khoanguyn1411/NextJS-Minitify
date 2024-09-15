@@ -35,6 +35,7 @@ export const SongCreationModal: FC<Props> = (props) => {
     setError,
     formState: { isLoading },
   } = useForm<SongData.Type>({
+    defaultValues: SongData.initialValue,
     resolver: zodResolver(SongData.schema),
   });
 
