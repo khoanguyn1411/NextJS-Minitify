@@ -65,7 +65,7 @@ export const AppTable = <TData extends Record<string, any>>(
               showControls
               showShadow
               total={props.page.totalPages}
-              page={1}
+              page={props.page.pageNumber}
             />
           </div>
         }
