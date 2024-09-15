@@ -16,11 +16,11 @@ export async function uploadFile(data: FormData) {
     const buffer = Buffer.from(bytes);
 
     // For this, we'll just write it to the filesystem in a new location
-    const path = join("public", "uploads", file.name);
+    const path = join("uploads", file.name);
     await writeFile(path, buffer);
 
     return {
-      path: path,
+      path: `/${path}`,
     };
   } catch (e) {
     // eslint-disable-next-line no-console

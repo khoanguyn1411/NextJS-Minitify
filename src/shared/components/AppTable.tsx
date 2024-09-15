@@ -17,6 +17,7 @@ export type TableColumn<T> = {
   readonly render?: (item: T) => ReactNode;
   readonly toReadable?: (item: T) => string;
   readonly key: LooseAutocomplete<keyof T>;
+  readonly width?: number | string;
 };
 
 type TableProps<T> = {
@@ -54,7 +55,10 @@ export const AppTable = <TData extends Record<string, any>>(
             <TableRow key={props.toKey(item)}>
               {props.columns.map((col) => {
                 return (
-                  <TableCell key={`${col.key.toString()}-${props.toKey(item)}`}>
+                  <TableCell
+                    width={col.width}
+                    key={`${col.key.toString()}-${props.toKey(item)}`}
+                  >
                     {getCellContent(col, item)}
                   </TableCell>
                 );

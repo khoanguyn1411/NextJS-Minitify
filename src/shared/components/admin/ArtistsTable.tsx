@@ -6,9 +6,11 @@ import { useEffect, useState, type FC } from "react";
 import { getArtists } from "@/core/apis/artistApis";
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
+import { User } from "@/core/models/user";
 import { useToggleExecutionState } from "@/shared/hooks/useToggleExecutionState";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
+import { AppImage } from "../AppImage";
 import { AppTable, type TableColumn } from "../AppTable";
 
 const columns: readonly TableColumn<Artist>[] = [
@@ -17,7 +19,21 @@ const columns: readonly TableColumn<Artist>[] = [
   { title: "Last name", key: "lastName" },
   { title: "Biography", key: "biography" },
   { title: "Songs", key: "songCount" },
-  { title: "Image", key: "imageUrl" },
+  {
+    title: "Image",
+    key: "imageUrl",
+    render: (item) => (
+      <AppImage
+        isBlurred
+        height={100}
+        width={100}
+        className="object-cover"
+        src={`${item.imageUrl}`}
+        alt={User.getFullName(item)}
+      />
+    ),
+    width: 150,
+  },
   {
     title: "Created date",
     key: "createdDate",

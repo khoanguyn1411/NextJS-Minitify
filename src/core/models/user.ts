@@ -1,7 +1,7 @@
 import { type User as PrismaUser } from "@prisma/client";
 
 export namespace User {
-  export function getFullName(user: PrismaUser) {
+  export function getFullName(user: { firstName: string; lastName: string }) {
     return `${user.firstName} ${user.lastName}`;
   }
 
