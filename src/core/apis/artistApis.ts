@@ -1,5 +1,7 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
 import { createPrismaPaginationFilter } from "@/shared/utils/createPrismaPaginationFilter";
@@ -24,6 +26,7 @@ export async function createArtist(data: ArtistData.ServerType) {
             songCount: 0,
           },
         });
+        revalidatePath("/artists"); // This will re-fetch the artist list
         return artist;
       },
     });
