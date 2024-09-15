@@ -12,8 +12,8 @@ import { User } from "@/core/models/user";
 import { useToggleExecutionState } from "@/shared/hooks/useToggleExecutionState";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
-import { AppImage } from "../AppImage";
-import { AppTable, type TableColumn } from "../AppTable";
+import { AppImage } from "../../AppImage";
+import { AppTable, type TableColumn } from "../../AppTable";
 
 const columns: readonly TableColumn<Artist>[] = [
   { title: "ID", key: "id" },
@@ -52,7 +52,7 @@ const columns: readonly TableColumn<Artist>[] = [
   {
     title: "Edit",
     key: "edit",
-    render: (item) => (
+    render: () => (
       <Tooltip content="Edit">
         <Button variant="flat" size="sm" color="primary" isIconOnly>
           <BiEdit className="text-lg" />

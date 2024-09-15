@@ -7,7 +7,7 @@ import { UserAction } from "./UserActions";
 
 export const Header: FC<PropsWithChildren> = async () => {
   return (
-    <div className="grid grid-cols-3 gap-4 items-center">
+    <div className="grid grid-cols-3 gap-4 items-center h-header">
       <Link href="/">Minitify</Link>
       <div className="self-center">
         <Input

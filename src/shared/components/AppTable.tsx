@@ -27,6 +27,7 @@ type TableProps<T> = {
   readonly toKey: (item: T) => string | number;
   readonly isLoading?: boolean;
   readonly paginationOptions: BaseFilterParams.Pagination;
+  readonly className?: string;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,7 +45,7 @@ export const AppTable = <TData extends Record<string, any>>(
   };
 
   return (
-    <Table>
+    <Table className={props.className}>
       <TableHeader>
         {props.columns.map((column) => (
           <TableColumn align={column.align} key={column.key.toString()}>

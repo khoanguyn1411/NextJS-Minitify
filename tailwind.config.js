@@ -15,6 +15,10 @@ module.exports = {
       colors: {
         input: "#272729",
       },
+      height: {
+        header: "40px",
+        main: "calc(100vh - 40px - 2rem)", // 2 rem is container padding.
+      }
     },
   },
   darkMode: "class",
