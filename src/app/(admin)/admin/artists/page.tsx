@@ -25,7 +25,7 @@ export default function Page({
         <div className="flex gap-2 justify-between items-center">
           <h1 className="text-xl font-semibold">Artists</h1>
           <div className="flex gap-4">
-            <ArtistInputSearch />
+            <ArtistInputSearch initialFilter={filters.search} />
             <ArtistCreationButton />
           </div>
         </div>

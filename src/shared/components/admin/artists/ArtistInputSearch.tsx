@@ -5,10 +5,15 @@ import { useEffect, useState, type ChangeEvent, type FC } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useDebounceValue } from "usehooks-ts";
 
+import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { useAppQueryParams } from "@/shared/hooks/useAppQueryParams";
 
-export const ArtistInputSearch: FC = () => {
-  const [searchValue, setSearchValue] = useState<string>("");
+type Props = {
+  readonly initialFilter: string;
+};
+
+export const ArtistInputSearch: FC<Props> = ({ initialFilter }) => {
+  const [searchValue, setSearchValue] = useState<string>(initialFilter);
   const { mergeQueryParams } = useAppQueryParams();
   const [searchDebounced] = useDebounceValue(searchValue, 300);
 
@@ -17,12 +22,16 @@ export const ArtistInputSearch: FC = () => {
   };
 
   useEffect(() => {
-    mergeQueryParams({ search: searchDebounced });
+    mergeQueryParams({
+      pageNumber: BaseFilterParams.initialPagination.pageNumber.toString(),
+      search: searchDebounced,
+    });
   }, [searchDebounced]);
 
   return (
     <Input
       type="search"
+      value={searchValue}
       onChange={handleInputChange}
       startContent={<BiSearch />}
       placeholder="Search artist"

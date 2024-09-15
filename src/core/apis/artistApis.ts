@@ -36,7 +36,7 @@ export async function createArtist(data: ArtistData.ServerType) {
 export async function getArtists(pagination: BaseFilterParams.Combined) {
   return createPrismaRequest(async () => {
     const paginationFilters = createPrismaPaginationFilter(pagination);
-    const artists = await appPrisma.artist.findMany({
+    const filters: Parameters<typeof appPrisma.artist.findMany>[0] = {
       ...paginationFilters,
       where: {
         AND: [
@@ -44,12 +44,14 @@ export async function getArtists(pagination: BaseFilterParams.Combined) {
           { lastName: { contains: pagination.search } },
         ],
       },
-    });
+    };
+    const artists = await appPrisma.artist.findMany(filters);
 
     return createPagination({
       pagination: pagination,
       result: artists,
       model: "artist",
+      filters,
     });
   });
 }
