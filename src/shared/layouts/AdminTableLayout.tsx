@@ -1,6 +1,6 @@
 import { type FC, type ReactNode } from "react";
 
-import { ArtistInputSearch } from "../components/admin/artists/ArtistInputSearch";
+import { TableSearch } from "../components/TableSearch";
 
 type Props = {
   readonly initialSearch: string;
@@ -18,7 +18,7 @@ export const AdminTableLayout: FC<Props> = ({
       <div className="flex gap-2 justify-between items-center">
         <h1 className="text-xl font-semibold">Artists</h1>
         <div className="flex gap-4">
-          <ArtistInputSearch initialFilter={initialSearch} />
+          <TableSearch initialFilter={initialSearch} />
           {Action}
         </div>
       </div>

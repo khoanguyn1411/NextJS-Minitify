@@ -12,7 +12,7 @@ type Props = {
   readonly initialFilter: string;
 };
 
-export const ArtistInputSearch: FC<Props> = ({ initialFilter }) => {
+export const TableSearch: FC<Props> = ({ initialFilter }) => {
   const [searchValue, setSearchValue] = useState<string>(initialFilter);
   const { mergeQueryParams } = useAppQueryParams();
   const [searchDebounced] = useDebounceValue(searchValue, 300);
