@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/button";
-import { Input, Textarea } from "@nextui-org/input";
+import { Input } from "@nextui-org/input";
 import {
   Modal,
   ModalBody,
@@ -14,9 +14,9 @@ import {
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { createArtist } from "@/core/apis/artistApis";
+import { createSong } from "@/core/apis/songApis";
 import { uploadFile } from "@/core/apis/uploadApis";
-import { ArtistData } from "@/core/models/artistData";
+import { SongData } from "@/core/models/songData";
 import { useError } from "@/shared/hooks/useError";
 import { useNotify } from "@/shared/hooks/useNotify";
 import { convertFileToFormData } from "@/shared/services/uploadService";
@@ -34,11 +34,11 @@ export const SongCreationModal: FC<Props> = (props) => {
     reset,
     setError,
     formState: { isLoading },
-  } = useForm<ArtistData.Type>({
-    resolver: zodResolver(ArtistData.schema),
+  } = useForm<SongData.Type>({
+    resolver: zodResolver(SongData.schema),
   });
 
-  const onFormSubmit = async (data: ArtistData.Type) => {
+  const onFormSubmit = async (data: SongData.Type) => {
     let imageUrl = "";
     if (data.image != null) {
       const filePath = await uploadFile(convertFileToFormData(data.image));
@@ -48,13 +48,13 @@ export const SongCreationModal: FC<Props> = (props) => {
       }
       imageUrl = filePath.path;
     }
-    const result = await createArtist({ ...data, image: imageUrl });
+    const result = await createSong({ ...data, image: imageUrl });
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
       notify("Created new artist", { type: "success" });
       props.onClose();
-      reset(ArtistData.initialValue);
+      reset(SongData.initialValue);
     }
   };
 
@@ -67,51 +67,22 @@ export const SongCreationModal: FC<Props> = (props) => {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="text-2xl">Add New Artist</ModalHeader>
+            <ModalHeader className="text-2xl">Add New Song</ModalHeader>
             <ModalBody className="flex flex-col gap-7">
               <form className="flex flex-col gap-4">
-                <div className="flex gap-4">
-                  <Controller
-                    control={control}
-                    name="firstName"
-                    render={({ field, fieldState }) => (
-                      <Input
-                        label="First name"
-                        placeholder="Danny"
-                        errorMessage={fieldState.error?.message}
-                        isInvalid={!!fieldState.error?.message}
-                        {...field}
-                      />
-                    )}
-                  />
-                  <Controller
-                    control={control}
-                    name="lastName"
-                    render={({ field, fieldState }) => (
-                      <Input
-                        label="Last name"
-                        placeholder="John"
-                        errorMessage={fieldState.error?.message}
-                        isInvalid={!!fieldState.error?.message}
-                        {...field}
-                      />
-                    )}
-                  />
-                </div>
                 <Controller
                   control={control}
-                  name="biography"
+                  name="name"
                   render={({ field, fieldState }) => (
-                    <Textarea
-                      label="Biography"
-                      autoComplete="biography"
+                    <Input
+                      label="Name"
+                      placeholder="Beautiful In White"
                       errorMessage={fieldState.error?.message}
                       isInvalid={!!fieldState.error?.message}
                       {...field}
                     />
                   )}
                 />
-
                 <Controller
                   control={control}
                   name="image"

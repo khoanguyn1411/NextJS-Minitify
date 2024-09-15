@@ -20,7 +20,7 @@ export const AdminTableLayout: FC<Props> = ({
       <div className="flex gap-2 justify-between items-center">
         <h1 className="text-xl font-semibold">{title}</h1>
         <div className="flex gap-4">
-          <TableSearch initialFilter={initialSearch} />
+          <TableSearch placeholder={title} initialFilter={initialSearch} />
           {Action}
         </div>
       </div>

@@ -11,7 +11,7 @@ export const SongCreationButton: FC = () => {
   return (
     <>
       <Button onClick={disclosure.onOpen} color="primary">
-        Add new artist
+        Add new song
       </Button>
       <SongCreationModal {...disclosure} />
     </>

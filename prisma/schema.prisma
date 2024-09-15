@@ -19,7 +19,7 @@ model Artist {
   imageUrl    String
   firstName   String
   lastName    String
-  fullName    String    @default("")
+  fullName    String   @default("")
   songCount   Int
   createdDate DateTime @default(now())
   song        Song[]
@@ -34,7 +34,7 @@ model Song {
   imageUrl    String
   createdDate DateTime  @default(now())
   duration    Int
-  artist      Artist[]
+  artists     Artist[]
   album       Album?    @relation(fields: [albumId], references: [id])
   albumId     Int?
   playlist    Playlist? @relation(fields: [playlistId], references: [id])

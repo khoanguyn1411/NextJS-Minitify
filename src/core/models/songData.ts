@@ -3,12 +3,27 @@ import { z } from "zod";
 import { ZodUtils } from "@/shared/utils/zodUtils";
 
 export namespace SongData {
-  export const schema = z.object({
-    image: ZodUtils.notAllowNullable(z.instanceof(File)),
-    artistId: ZodUtils.requiredNumber(),
-    albumId: ZodUtils.requiredNumber(),
+  export const baseSchema = z.object({
+    artistIds: ZodUtils.notAllowNullable(z.number().array()),
+    albumId: ZodUtils.notAllowNullable(ZodUtils.requiredNumber()),
     name: ZodUtils.requiredString(),
   });
 
+  export const schema = baseSchema.extend({
+    image: ZodUtils.notAllowNullable(z.instanceof(File)),
+  });
+
+  export const serverSchema = baseSchema.extend({
+    image: ZodUtils.requiredString(),
+  });
+
   export type Type = z.infer<typeof schema>;
+  export type ServerType = z.infer<typeof serverSchema>;
+
+  export const initialValue: Type = {
+    name: "",
+    artistIds: null,
+    albumId: null,
+    image: null,
+  };
 }

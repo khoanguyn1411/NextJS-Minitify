@@ -10,9 +10,10 @@ import { useAppQueryParams } from "@/shared/hooks/useAppQueryParams";
 
 type Props = {
   readonly initialFilter: string;
+  readonly placeholder?: string;
 };
 
-export const TableSearch: FC<Props> = ({ initialFilter }) => {
+export const TableSearch: FC<Props> = ({ initialFilter, placeholder }) => {
   const [searchValue, setSearchValue] = useState<string>(initialFilter);
   const { mergeQueryParams } = useAppQueryParams();
   const [searchDebounced] = useDebounceValue(searchValue, 300);
@@ -34,7 +35,7 @@ export const TableSearch: FC<Props> = ({ initialFilter }) => {
       value={searchValue}
       onChange={handleInputChange}
       startContent={<BiSearch />}
-      placeholder="Search artist"
+      placeholder={`Search ${placeholder}`}
       className="w-2/3"
     />
   );
