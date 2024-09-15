@@ -38,7 +38,7 @@ export async function signIn(data: LoginData.Type) {
     return userToFind;
   }
   if (userToFind == null) {
-    return null;
+    return buildAppError("Incorrect username or password.");
   }
   const isPasswordCorrect = await PasswordEncryption.verifyPassword(
     data.password,

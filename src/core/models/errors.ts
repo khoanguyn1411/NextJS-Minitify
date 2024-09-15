@@ -36,7 +36,7 @@ export type ValidationError<T extends FieldValues> = AppError & {
 export function isValidationError<T extends FieldValues>(
   error: unknown,
 ): error is ValidationError<T> {
-  return (error as ValidationError<T>).errors != null;
+  return (error as ValidationError<T>)?.errors != null;
 }
 
 /**
@@ -44,5 +44,7 @@ export function isValidationError<T extends FieldValues>(
  * @param error Some error.
  */
 export function isAppError(error: unknown): error is AppError {
-  return (error as AppError).detail != null && (error as AppError).type != null;
+  return (
+    (error as AppError)?.detail != null && (error as AppError)?.type != null
+  );
 }
