@@ -26,11 +26,11 @@ const columns: readonly TableColumn<Artist>[] = [
         name={User.getFullName(item)}
       />
     ),
+    width: 220,
   },
   {
     title: "Biography",
     key: "biography",
-    width: 400,
     render: (item) => (
       <Tooltip
         className="max-w-48 overflow-auto max-h-40"
@@ -64,17 +64,25 @@ export const ArtistsTable: FC = () => {
   const [artistsPage, setArtistsPage] = useState<Pagination<Artist> | null>(
     null,
   );
+  const [pagination, setPagination] = useState<BaseFilterParams.Pagination>(
+    BaseFilterParams.initialPagination,
+  );
 
-  const fetchArtistPage = async () => {
+  const fetchArtistPage = async (filters: BaseFilterParams.Pagination) => {
     toggleExecutionState(async () => {
-      const page = await getArtists(BaseFilterParams.initialPagination);
+      const page = await getArtists(filters);
       setArtistsPage(page);
     });
   };
 
+  const handlePaginationChange = (page: number) => {
+    console.log({ page });
+    setPagination((prev) => ({ ...prev, pageNumber: page }));
+  };
+
   useEffect(() => {
-    fetchArtistPage();
-  }, []);
+    fetchArtistPage(pagination);
+  }, [pagination]);
 
   if (isLoading) {
     return <div>Loading table ...</div>;
@@ -86,6 +94,7 @@ export const ArtistsTable: FC = () => {
 
   return (
     <AppTable
+      onPaginationChange={handlePaginationChange}
       columns={columns}
       className="max-h-table"
       isLoading={isLoading}

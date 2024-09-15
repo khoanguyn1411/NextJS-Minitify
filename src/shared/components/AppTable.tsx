@@ -1,12 +1,12 @@
 import {
+  Pagination as NextUIPagination,
+  Spinner,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
-  Pagination as NextUIPagination,
-  Spinner,
 } from "@nextui-org/react";
 import { type ReactNode } from "react";
 
@@ -31,12 +31,17 @@ type TableProps<T> = {
   readonly isLoading?: boolean;
   readonly paginationOptions: BaseFilterParams.Pagination;
   readonly className?: string;
+  readonly onPaginationChange: (page: number) => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AppTable = <TData extends Record<string, any>>(
   props: TableProps<TData>,
 ) => {
+  const handlePaginationChange = (page: number) => {
+    props.onPaginationChange(page);
+  };
+
   const getCellContent = (col: TableColumn<TData>, item: TData) => {
     if (col.render) {
       return col.render(item);
@@ -56,9 +61,10 @@ export const AppTable = <TData extends Record<string, any>>(
           <div className="flex w-full justify-center">
             <NextUIPagination
               isCompact
+              onChange={handlePaginationChange}
               showControls
               showShadow
-              total={props.page.totalCount}
+              total={props.page.totalPages}
               page={1}
             />
           </div>

@@ -26,6 +26,9 @@ export async function createPagination<
     totalCount: total,
     hasNext,
     hasPrev,
+    pageNumber: pagination.pageNumber,
+    pageSize: pagination.pageSize,
+    totalPages: Math.round(total / pagination.pageSize),
     items: result,
     hasItem: result.length > 0,
   };

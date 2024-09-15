@@ -28,6 +28,7 @@
     "@typescript-eslint/type-annotation-spacing": "error",
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "react-hooks/exhaustive-deps": "off",
     "comma-spacing": "error",
     "array-bracket-spacing": "error",
     "@typescript-eslint/semi": "error",

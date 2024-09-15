@@ -6,6 +6,15 @@ export type Pagination<T> = {
   /** Total count in the store. */
   readonly totalCount: number;
 
+  /** Page number filter. */
+  readonly pageNumber: number;
+
+  /** Page size filter. */
+  readonly pageSize: number;
+
+  /** Total pages. */
+  readonly totalPages: number;
+
   /** Whether the pagination have next pages. */
   readonly hasNext: boolean;
 
