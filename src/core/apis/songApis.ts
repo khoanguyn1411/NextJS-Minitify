@@ -23,7 +23,7 @@ export async function createSong(data: SongData.ServerType) {
             imageUrl: data.image,
             albumId: data.albumId,
             duration: 100,
-            artists: { connect: data.artistIds?.map((id) => ({ id })) },
+            artists: { connect: data.artistIds.map((id) => ({ id })) },
             playTime: 0,
             playlistId: null,
           },
