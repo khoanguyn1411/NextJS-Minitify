@@ -77,7 +77,11 @@ export const AppTable = <TData extends Record<string, any>>(
             </TableColumn>
           ))}
         </TableHeader>
-        <TableBody loadingContent={<Spinner />} isLoading={props.isLoading}>
+        <TableBody
+          emptyContent={"No data to display."}
+          loadingContent={<Spinner />}
+          isLoading={props.isLoading}
+        >
           {props.page.items.map((item) => {
             return (
               <TableRow key={props.toKey(item)}>

@@ -59,16 +59,21 @@ const columns: readonly TableColumn<Artist>[] = [
   },
 ];
 
-export const ArtistsTable: FC = () => {
+type Props = {
+  readonly searchValue: string;
+};
+
+export const ArtistsTable: FC<Props> = ({ searchValue }) => {
   const [isLoading, toggleExecutionState] = useToggleExecutionState();
   const [artistsPage, setArtistsPage] = useState<Pagination<Artist> | null>(
     null,
   );
-  const [pagination, setPagination] = useState<BaseFilterParams.Pagination>(
-    BaseFilterParams.initialPagination,
-  );
+  const [pagination, setPagination] = useState<BaseFilterParams.Combined>({
+    ...BaseFilterParams.initialPagination,
+    search: "",
+  });
 
-  const fetchArtistPage = async (filters: BaseFilterParams.Pagination) => {
+  const fetchArtistPage = async (filters: BaseFilterParams.Combined) => {
     toggleExecutionState(async () => {
       const page = await getArtists(filters);
       setArtistsPage(page);
@@ -76,17 +81,12 @@ export const ArtistsTable: FC = () => {
   };
 
   const handlePaginationChange = (page: number) => {
-    console.log({ page });
     setPagination((prev) => ({ ...prev, pageNumber: page }));
   };
 
   useEffect(() => {
-    fetchArtistPage(pagination);
-  }, [pagination]);
-
-  if (isLoading) {
-    return <div>Loading table ...</div>;
-  }
+    fetchArtistPage({ ...pagination, search: searchValue });
+  }, [pagination, searchValue]);
 
   if (artistsPage?.items == null) {
     return <div>No data available.</div>;
