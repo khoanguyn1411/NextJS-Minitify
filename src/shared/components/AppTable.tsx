@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Pagination as NextUIPagination,
   Spinner,
@@ -10,9 +12,9 @@ import {
 } from "@nextui-org/react";
 import { type ReactNode } from "react";
 
-import { type BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 
+import { useAppQueryParams } from "../hooks/useAppQueryParams";
 import { type LooseAutocomplete } from "../utils/types/looseAutocomplete";
 
 export type TableColumn<T> = {
@@ -29,17 +31,19 @@ type TableProps<T> = {
   readonly page: Pagination<T>;
   readonly toKey: (item: T) => string | number;
   readonly isLoading?: boolean;
-  readonly paginationOptions: BaseFilterParams.Pagination;
   readonly className?: string;
-  readonly onPaginationChange: (page: number) => void;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AppTable = <TData extends Record<string, any>>(
   props: TableProps<TData>,
 ) => {
+  const { mergeQueryParams } = useAppQueryParams();
+
   const handlePaginationChange = (page: number) => {
-    props.onPaginationChange(page);
+    mergeQueryParams({
+      pageNumber: page.toString(),
+    });
   };
 
   const getCellContent = (col: TableColumn<TData>, item: TData) => {

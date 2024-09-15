@@ -21,7 +21,7 @@ import { useError } from "@/shared/hooks/useError";
 import { useNotify } from "@/shared/hooks/useNotify";
 import { convertFileToFormData } from "@/shared/services/uploadService";
 
-import { FileUploader } from "../FileUploader";
+import { FileUploader } from "../../FileUploader";
 
 type Props = ReturnType<typeof useDisclosure>;
 
