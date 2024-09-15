@@ -37,12 +37,14 @@ export async function getArtists(pagination: BaseFilterParams.Combined) {
   return createPrismaRequest(async () => {
     const paginationFilters = createPrismaPaginationFilter(pagination);
     const filters: Parameters<typeof appPrisma.artist.findMany>[0] = {
-      ...paginationFilters,
       where: {
         fullName: { contains: pagination.search },
       },
     };
-    const artists = await appPrisma.artist.findMany(filters);
+    const artists = await appPrisma.artist.findMany({
+      ...paginationFilters,
+      ...filters,
+    });
 
     return createPagination({
       pagination: pagination,

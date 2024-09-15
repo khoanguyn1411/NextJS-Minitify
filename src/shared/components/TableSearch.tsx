@@ -1,12 +1,14 @@
 "use client";
 
 import { Input } from "@nextui-org/react";
-import { useEffect, useState, type ChangeEvent, type FC } from "react";
+import { useState, type ChangeEvent, type FC } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useDebounceValue } from "usehooks-ts";
 
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { useAppQueryParams } from "@/shared/hooks/useAppQueryParams";
+
+import { useUpdateEffect } from "../hooks/useUpdateEffect";
 
 type Props = {
   readonly initialFilter: string;
@@ -22,7 +24,7 @@ export const TableSearch: FC<Props> = ({ initialFilter, placeholder }) => {
     setSearchValue(e.target.value);
   };
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     mergeQueryParams({
       pageNumber: BaseFilterParams.initialPagination.pageNumber.toString(),
       search: searchDebounced,

@@ -46,6 +46,8 @@ export const AppTable = <TData extends Record<string, any>>(
     });
   };
 
+  console.log(props.page);
+
   const getCellContent = (col: TableColumn<TData>, item: TData) => {
     if (col.render) {
       return col.render(item);
