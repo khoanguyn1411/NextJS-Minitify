@@ -5,10 +5,13 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  Pagination as NextUIPagination,
+  Spinner,
 } from "@nextui-org/react";
 import { type ReactNode } from "react";
 
 import { type BaseFilterParams } from "@/core/models/baseFilterParams";
+import { type Pagination } from "@/core/models/pagination";
 
 import { type LooseAutocomplete } from "../utils/types/looseAutocomplete";
 
@@ -23,7 +26,7 @@ export type TableColumn<T> = {
 
 type TableProps<T> = {
   readonly columns: readonly TableColumn<T>[];
-  readonly items: T[] | readonly T[];
+  readonly page: Pagination<T>;
   readonly toKey: (item: T) => string | number;
   readonly isLoading?: boolean;
   readonly paginationOptions: BaseFilterParams.Pagination;
@@ -45,34 +48,50 @@ export const AppTable = <TData extends Record<string, any>>(
   };
 
   return (
-    <Table className={props.className}>
-      <TableHeader>
-        {props.columns.map((column) => (
-          <TableColumn align={column.align} key={column.key.toString()}>
-            {column.title}
-          </TableColumn>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {props.items.map((item) => {
-          return (
-            <TableRow key={props.toKey(item)}>
-              {props.columns.map((col) => {
-                return (
-                  <TableCell
-                    width={col.width}
-                    key={`${col.key.toString()}-${props.toKey(item)}`}
-                  >
-                    <div className={`flex justify-${col.align}`}>
-                      {getCellContent(col, item)}
-                    </div>
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          );
-        })}
-      </TableBody>
-    </Table>
+    <div className="flex flex-col gap-3">
+      <Table
+        isHeaderSticky
+        className={props.className}
+        bottomContent={
+          <div className="flex w-full justify-center">
+            <NextUIPagination
+              isCompact
+              showControls
+              showShadow
+              total={props.page.totalCount}
+              page={1}
+            />
+          </div>
+        }
+      >
+        <TableHeader>
+          {props.columns.map((column) => (
+            <TableColumn align={column.align} key={column.key.toString()}>
+              {column.title}
+            </TableColumn>
+          ))}
+        </TableHeader>
+        <TableBody loadingContent={<Spinner />} isLoading={props.isLoading}>
+          {props.page.items.map((item) => {
+            return (
+              <TableRow key={props.toKey(item)}>
+                {props.columns.map((col) => {
+                  return (
+                    <TableCell
+                      width={col.width}
+                      key={`${col.key.toString()}-${props.toKey(item)}`}
+                    >
+                      <div className={`flex justify-${col.align}`}>
+                        {getCellContent(col, item)}
+                      </div>
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </div>
   );
 };

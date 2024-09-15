@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Tooltip } from "@nextui-org/react";
+import { Button, User as NextUiUser, Tooltip } from "@nextui-org/react";
 import { type Artist } from "@prisma/client";
 import { useEffect, useState, type FC } from "react";
 import { BiEdit } from "react-icons/bi";
@@ -12,38 +12,35 @@ import { User } from "@/core/models/user";
 import { useToggleExecutionState } from "@/shared/hooks/useToggleExecutionState";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
-import { AppImage } from "../../AppImage";
 import { AppTable, type TableColumn } from "../../AppTable";
 
 const columns: readonly TableColumn<Artist>[] = [
   { title: "ID", key: "id" },
-  { title: "First name", key: "firstName" },
-  { title: "Last name", key: "lastName" },
+  {
+    title: "Artist",
+    key: "artist",
+    render: (item) => (
+      <NextUiUser
+        avatarProps={{ radius: "lg", src: item.imageUrl }}
+        description={`Last updated: ${DateUtils.toReadable(item.updatedAt)}`}
+        name={User.getFullName(item)}
+      />
+    ),
+  },
   {
     title: "Biography",
     key: "biography",
+    width: 400,
     render: (item) => (
-      <Tooltip content={item.biography}>
+      <Tooltip
+        className="max-w-48 overflow-auto max-h-40"
+        content={item.biography}
+      >
         <p className="truncate-2">{item.biography}</p>
       </Tooltip>
     ),
   },
   { title: "Songs", key: "songCount", align: "end" },
-  {
-    title: "Image",
-    key: "imageUrl",
-    render: (item) => (
-      <AppImage
-        height={60}
-        width={60}
-        className="object-cover rounded-full"
-        src={item.imageUrl}
-        alt={User.getFullName(item)}
-      />
-    ),
-    width: 150,
-    align: "center",
-  },
   {
     title: "Created date",
     key: "createdDate",
@@ -80,7 +77,7 @@ export const ArtistsTable: FC = () => {
   }, []);
 
   if (isLoading) {
-    return <div>Loading</div>;
+    return <div>Loading table ...</div>;
   }
 
   if (artistsPage?.items == null) {
@@ -90,9 +87,11 @@ export const ArtistsTable: FC = () => {
   return (
     <AppTable
       columns={columns}
+      className="max-h-table"
+      isLoading={isLoading}
       toKey={(item) => item.id}
       paginationOptions={BaseFilterParams.initialPagination}
-      items={artistsPage.items}
+      page={artistsPage}
     />
   );
 };

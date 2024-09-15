@@ -18,7 +18,11 @@ module.exports = {
       height: {
         header: "40px",
         main: "calc(100vh - 40px - 2rem)", // 2 rem is container padding.
-      }
+        table: "calc(100vh - 40px - 2rem - 130px)", // 2 rem is container padding.
+      },
+      maxHeight: {
+        table: "calc(100vh - 40px - 2rem - 130px)", // 2 rem is container padding.
+      },
     },
   },
   darkMode: "class",
