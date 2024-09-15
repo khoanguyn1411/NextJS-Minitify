@@ -4,6 +4,7 @@
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type NonNullableFields<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   T extends Record<string, any>,
   K extends keyof T,
 > = Readonly<

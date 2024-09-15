@@ -9,7 +9,7 @@ import { ArtistsTable } from "@/shared/components/admin/ArtistsTable";
 export default function Page() {
   const disclosure = useDisclosure();
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-6">
       <div className="flex gap-2 justify-between items-center">
         <h1 className="text-xl font-semibold">Artists</h1>
         <Button onClick={disclosure.onOpen} color="primary">
