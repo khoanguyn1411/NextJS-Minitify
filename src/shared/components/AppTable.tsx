@@ -42,7 +42,7 @@ export const AppTable = <TData extends Record<string, any>>(
 
   const handlePaginationChange = (page: number) => {
     mergeQueryParams({
-      pageNumber: page.toString(),
+      pageNumber: (page - 1).toString(),
     });
   };
 
@@ -69,7 +69,7 @@ export const AppTable = <TData extends Record<string, any>>(
               showControls
               showShadow
               total={props.page.totalPages}
-              page={props.page.pageNumber}
+              page={props.page.pageNumber + 1}
             />
           </div>
         }
