@@ -97,7 +97,7 @@ export const SongCreationModal: FC<Props> = (props) => {
                     />
                   )}
                 />
-                <AppSelect />
+                <AppSelect placeholder="Select Artist" />
               </form>
             </ModalBody>
             <ModalFooter>
