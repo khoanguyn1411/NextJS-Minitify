@@ -1,11 +1,13 @@
 import { Card } from "@nextui-org/react";
 import classNames from "classnames";
-import debounce from "lodash.debounce";
-import { useState } from "react";
-import Select from "react-select/async";
+import { useEffect, useState } from "react";
+import Select from "react-select";
+import { useDebounceValue } from "usehooks-ts";
 
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
+
+import { useToggleExecutionState } from "../hooks/useToggleExecutionState";
 
 type SelectOption = {
   readonly value: string | number;
@@ -30,41 +32,60 @@ export const AppSelect = <TData extends Record<string, any>>({
   placeholder,
   config,
 }: Props<TData>) => {
-  const [options, setSelectedOptions] = useState<readonly SelectOption[]>([]);
-  const [selectedOption, setSelectedOption] = useState<readonly SelectOption[]>(
-    [],
-  );
+  const [options, setOptions] = useState<readonly SelectOption[]>([]);
+  const [selectedOptions, setSelectedOptions] = useState<
+    readonly SelectOption[]
+  >([]);
+  const [hasNext, setHasNext] = useState(true);
+  const [pageNumber, setPageNumber] = useState<number>(0);
+  const [isLoading, toggleExecutionState] = useToggleExecutionState();
+  const [search, setSearch] = useState("");
 
-  const fetchApi = async (
-    inputValue: string,
-    callback: (options: SelectOption[]) => void,
-  ) => {
-    const result = await config.fetchApi({
-      ...BaseFilterParams.initialPagination,
-      search: inputValue,
+  const [debouncedSearch] = useDebounceValue(search, 300);
+
+  const onInputChange = (search: string) => {
+    setSearch(search);
+  };
+
+  const fetchApi = async (filters: BaseFilterParams.Combined) => {
+    toggleExecutionState(async () => {
+      if (!hasNext) {
+        return;
+      }
+      const result = await config.fetchApi({
+        ...BaseFilterParams.initialPagination,
+        pageNumber: pageNumber,
+        search: filters.search,
+      });
+      const newOptions = result.items.map((item) => config.toOption(item));
+      setHasNext(result.hasNext);
+      setOptions((prev) => [...prev, ...newOptions]);
     });
-    const options = result.items.map((item) => config.toOption(item));
-    callback(options);
   };
 
-  const debouncedFetchApi = debounce(fetchApi, 300);
-
-  const loadOptions = (
-    inputValue: string,
-    callback: (options: SelectOption[]) => void,
-  ) => {
-    debouncedFetchApi(inputValue, callback);
+  const onLoadMore = () => {
+    setPageNumber((prev) => prev + 1);
   };
+
+  useEffect(() => {
+    fetchApi({
+      ...BaseFilterParams.initialPagination,
+      pageNumber,
+      search,
+    });
+  }, [debouncedSearch, pageNumber]);
 
   return (
     <Card className="bg-input pb-2">
       <p className="px-container text-sm pt-2">Artists</p>
       <Select
         isMulti
-        loadOptions={loadOptions}
+        value={selectedOptions}
+        options={options}
         menuPortalTarget={document.body}
-        defaultOptions
-        cacheOptions
+        isLoading={isLoading}
+        onInputChange={onInputChange}
+        onMenuScrollToBottom={onLoadMore}
         placeholder={placeholder}
         classNames={{
           control: () =>
@@ -82,9 +103,8 @@ export const AppSelect = <TData extends Record<string, any>>({
             classNames("!text-input hover:!bg-primary-100 hover:!rounded-md"),
           valueContainer: () => "!pl-3",
         }}
-        defaultValue={selectedOption}
-        onChange={setSelectedOption}
-        options={options}
+        onChange={setSelectedOptions}
+        defaultValue={[]}
       />
     </Card>
   );
