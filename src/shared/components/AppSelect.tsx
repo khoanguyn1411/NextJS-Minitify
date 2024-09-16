@@ -29,7 +29,6 @@ export const AppSelect: FC<Props> = ({ placeholder }) => {
       <Select
         isMulti
         menuPortalTarget={document.body}
-        className="px-1"
         placeholder={placeholder}
         classNames={{
           control: () =>
@@ -45,6 +44,7 @@ export const AppSelect: FC<Props> = ({ placeholder }) => {
           multiValue: () => classNames("!rounded-md !bg-primary-50"),
           multiValueRemove: () =>
             classNames("!text-input hover:!bg-primary-100 hover:!rounded-md"),
+          valueContainer: () => "!pl-3",
         }}
         defaultValue={selectedOption}
         onChange={setSelectedOption}
