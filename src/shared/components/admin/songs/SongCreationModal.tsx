@@ -64,6 +64,7 @@ export const SongCreationModal: FC<Props> = (props) => {
     <Modal
       isOpen={props.isOpen}
       onClose={reset}
+      isDismissable={false}
       onOpenChange={props.onOpenChange}
     >
       <ModalContent>
