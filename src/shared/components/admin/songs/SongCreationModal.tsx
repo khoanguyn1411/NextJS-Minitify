@@ -11,9 +11,11 @@ import {
   ModalHeader,
   type useDisclosure,
 } from "@nextui-org/react";
+import { type Artist } from "@prisma/client";
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
+import { getArtists } from "@/core/apis/artistApis";
 import { createSong } from "@/core/apis/songApis";
 import { uploadFile } from "@/core/apis/uploadApis";
 import { SongData } from "@/core/models/songData";
@@ -21,10 +23,16 @@ import { useError } from "@/shared/hooks/useError";
 import { useNotify } from "@/shared/hooks/useNotify";
 import { convertFileToFormData } from "@/shared/services/uploadService";
 
-import { AppSelect } from "../../AppSelect";
+import { AppSelect, type SelectConfig } from "../../AppSelect";
 import { FileUploader } from "../../FileUploader";
 
 type Props = ReturnType<typeof useDisclosure>;
+
+const config: SelectConfig<Artist> = {
+  toOption: (item) => ({ value: item.id, label: item.fullName }),
+  fetchApi: (filters) => getArtists(filters),
+  toReadable: (item) => item.fullName,
+};
 
 export const SongCreationModal: FC<Props> = (props) => {
   const { extractErrorsToForm, notifyOnAppError, isSuccess } = useError();
@@ -97,7 +105,7 @@ export const SongCreationModal: FC<Props> = (props) => {
                     />
                   )}
                 />
-                <AppSelect placeholder="Select Artist" />
+                <AppSelect placeholder="Select Artist" config={config} />
               </form>
             </ModalBody>
             <ModalFooter>
