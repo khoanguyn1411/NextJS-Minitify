@@ -28,8 +28,6 @@ export async function createPagination<
   const hasPrev = pagination.pageNumber > 1;
   const hasNext = skip + result.length < total;
 
-  console.log({ hasNext });
-
   return {
     totalCount: total,
     hasNext,
