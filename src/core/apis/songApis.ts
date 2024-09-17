@@ -22,7 +22,7 @@ export async function createSong(data: SongData.ServerType) {
             name: data.name,
             imageUrl: data.image,
             albumId: data.albumId,
-            duration: 100,
+            duration: data.duration,
             songUrl: data.song,
             artists: {
               connect: data.artistIds.map((option) => ({ id: option.value })),
