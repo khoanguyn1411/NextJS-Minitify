@@ -28,7 +28,7 @@ import { FileUploader } from "../../FileUploader";
 
 type Props = ReturnType<typeof useDisclosure>;
 
-const config: SelectConfig<Artist> = {
+const config: SelectConfig<Artist, number> = {
   toOption: (item) => ({ value: item.id, label: item.fullName }),
   fetchApi: (filters) => getArtists(filters),
   toReadable: (item) => item.fullName,
@@ -105,7 +105,19 @@ export const SongCreationModal: FC<Props> = (props) => {
                     />
                   )}
                 />
-                <AppSelect placeholder="Select Artist" config={config} />
+
+                <Controller
+                  control={control}
+                  name="artistIds"
+                  render={({ field, fieldState }) => (
+                    <AppSelect
+                      errorMessage={fieldState.error?.message}
+                      placeholder="Select Artist"
+                      config={config}
+                      {...field}
+                    />
+                  )}
+                />
               </form>
             </ModalBody>
             <ModalFooter>

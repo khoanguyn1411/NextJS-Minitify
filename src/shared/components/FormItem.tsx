@@ -16,9 +16,11 @@ export const FormItem: FC<Props> = ({ children, error = "" }) => {
   const errorText = typeof error === "string" ? error : error.message;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
       {children}
-      {error && <p className="text-red-500">{errorText}</p>}
+      {error && (
+        <p className="text-red-500 text-xs px-container">{errorText}</p>
+      )}
     </div>
   );
 };

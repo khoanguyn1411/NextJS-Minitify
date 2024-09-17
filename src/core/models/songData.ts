@@ -2,9 +2,13 @@ import { z } from "zod";
 
 import { ZodUtils } from "@/shared/utils/zodUtils";
 
+import { createSelectOptionSchema } from "./selectOption";
+
 export namespace SongData {
   export const baseSchema = z.object({
-    artistIds: z.number().array(),
+    artistIds: ZodUtils.notAllowEmptyArray(
+      createSelectOptionSchema(z.number()).array(),
+    ),
     albumId: ZodUtils.notAllowNullable(ZodUtils.requiredNumber()),
     name: ZodUtils.requiredString(),
   });

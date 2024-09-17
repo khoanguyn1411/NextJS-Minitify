@@ -1,4 +1,4 @@
-import { type ZodNullable, number, string, type z, date } from "zod";
+import { type ZodNullable, date, number, string, type z } from "zod";
 
 import { APP_ERROR_MESSAGES } from "../constants/errorMessages";
 
@@ -25,6 +25,17 @@ export namespace ZodUtils {
   /** Required number option. */
   export function password(): z.ZodString {
     return string().min(8, "Password must be at least 8 characters long");
+  }
+
+  /**
+   * Not allow empty array.
+   * @param zodValidation Zod primitive validation.
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  export function notAllowEmptyArray<T extends z.ZodArray<any>>(
+    zodValidation: T,
+  ) {
+    return zodValidation.nonempty(APP_ERROR_MESSAGES.required) as unknown as T;
   }
 
   /**
