@@ -30,11 +30,9 @@ const columns: readonly TableColumn<Song>[] = [
     width: 200,
     render: (item) => {
       return (
-        <>
-          <audio controls>
-            <source src={item.songUrl} />
-          </audio>
-        </>
+        <audio controls>
+          <source src={item.songUrl} />
+        </audio>
       );
     },
   },
