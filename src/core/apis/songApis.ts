@@ -7,6 +7,7 @@ import { createPagination } from "@/shared/utils/createPagination";
 import { createPrismaPaginationFilter } from "@/shared/utils/createPrismaPaginationFilter";
 import { createPrismaRequest } from "@/shared/utils/createPrismaRequest";
 import { validateWithSchema } from "@/shared/utils/errorHandlers";
+import { getMp3Duration } from "@/shared/utils/getMp3Duration";
 
 import { type BaseFilterParams } from "../models/baseFilterParams";
 import { SongData } from "../models/songData";
@@ -17,12 +18,13 @@ export async function createSong(data: SongData.ServerType) {
       data: data,
       schema: SongData.serverSchema,
       async onPassed(data) {
+        const duration = await getMp3Duration(`public${data.song}`);
         const songs = await appPrisma.song.create({
           data: {
             name: data.name,
             imageUrl: data.image,
             albumId: data.albumId,
-            duration: data.duration,
+            duration: duration,
             songUrl: data.song,
             artists: {
               connect: data.artistIds.map((option) => ({ id: option.value })),
