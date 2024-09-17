@@ -48,9 +48,13 @@ export const SongCreationModal: FC<Props> = (props) => {
     resolver: zodResolver(SongData.schema),
   });
 
-  const onFormSubmit = async (data: SongData.Type) => {
-    let imageUrl = "";
-    let songUrl = "";
+  const getUrls = async (
+    data: SongData.Type,
+  ): Promise<{ songUrl: string; imageUrl: string }> => {
+    const defaultUrls = {
+      imageUrl: "",
+      songUrl: "",
+    };
     if (data.image != null && data.song != null) {
       const imageFilePathPromise = uploadFile(
         convertFileToFormData(data.image),
@@ -65,14 +69,24 @@ export const SongCreationModal: FC<Props> = (props) => {
       ]);
       if (!isSuccess(imageFilePath)) {
         notifyOnAppError(imageFilePath);
-        return;
+        return defaultUrls;
       }
       if (!isSuccess(songFilePath)) {
         notifyOnAppError(songFilePath);
-        return;
+        return defaultUrls;
       }
-      imageUrl = imageFilePath.path;
-      songUrl = songFilePath.path;
+      return {
+        imageUrl: imageFilePath.path,
+        songUrl: songFilePath.path,
+      };
+    }
+    return defaultUrls;
+  };
+
+  const onFormSubmit = async (data: SongData.Type) => {
+    const { imageUrl, songUrl } = await getUrls(data);
+    if (imageUrl == "" || songUrl == "") {
+      return;
     }
     const result = await createSong({
       ...data,
