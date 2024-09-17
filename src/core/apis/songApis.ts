@@ -33,7 +33,7 @@ export async function createSong(data: SongData.ServerType) {
             playlistId: null,
           },
         });
-        revalidatePath("/admin/songs"); // This will re-fetch the artist list
+        revalidatePath("/admin/songs"); // This will re-fetch the song list
         return songs;
       },
     });
