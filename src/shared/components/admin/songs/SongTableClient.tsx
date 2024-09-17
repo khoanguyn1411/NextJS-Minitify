@@ -25,7 +25,7 @@ const columns: readonly TableColumn<Song>[] = [
     width: 260,
   },
   {
-    title: "URL",
+    title: "Track",
     key: "songUrl",
     width: 200,
     render: (item) => {
