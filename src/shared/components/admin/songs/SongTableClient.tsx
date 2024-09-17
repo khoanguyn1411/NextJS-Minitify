@@ -22,10 +22,22 @@ const columns: readonly TableColumn<Song>[] = [
         name={item.name}
       />
     ),
-    width: 220,
+    width: 260,
   },
-  { title: "URL", key: "songUrl", width: 200 },
-  { title: "Duration", key: "duration", align: "end" },
+  {
+    title: "URL",
+    key: "songUrl",
+    width: 200,
+    render: (item) => {
+      return (
+        <>
+          <audio controls>
+            <source src={item.songUrl} />
+          </audio>
+        </>
+      );
+    },
+  },
   { title: "Playtime", key: "playTime", align: "end" },
   {
     title: "Created date",
@@ -50,7 +62,6 @@ type Props = {
 };
 
 export const SongsTableClient: FC<Props> = async ({ page }) => {
-  console.log({ page });
   return (
     <AppTable
       columns={columns}
