@@ -3,17 +3,24 @@ import classnames from "classnames";
 import { useRef, type ChangeEvent, type FC, type ReactNode } from "react";
 import { BiFile, BiUpload, BiX } from "react-icons/bi";
 
+export const ACCEPTED_UPLOAD_FILES = {
+  mp3: ".mp3",
+  image: ".jpg,.jpeg,.png",
+} as const;
+
 type Props = {
   readonly value: File | null;
   readonly onChange: (value: File | null) => void;
   readonly errorMessage?: ReactNode;
   readonly label?: string;
+  readonly fileAccepted?: (typeof ACCEPTED_UPLOAD_FILES)[keyof typeof ACCEPTED_UPLOAD_FILES];
 };
 
 export const FileUploader: FC<Props> = ({
   value,
   errorMessage,
   label,
+  fileAccepted,
   onChange,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -67,6 +74,7 @@ export const FileUploader: FC<Props> = ({
         </div>
         <input
           type="file"
+          accept={fileAccepted}
           ref={fileInputRef}
           className="hidden"
           onChange={handleFileChange}

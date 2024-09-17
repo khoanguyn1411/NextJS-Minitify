@@ -117,6 +117,7 @@ export const ArtistCreationModal: FC<Props> = (props) => {
                   name="image"
                   render={({ field, fieldState }) => (
                     <FileUploader
+                      fileAccepted=".jpg,.jpeg,.png"
                       label="Image"
                       errorMessage={fieldState.error?.message}
                       {...field}

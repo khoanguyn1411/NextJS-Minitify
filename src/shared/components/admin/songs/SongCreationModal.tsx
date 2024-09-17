@@ -133,6 +133,7 @@ export const SongCreationModal: FC<Props> = (props) => {
                   name="image"
                   render={({ field, fieldState }) => (
                     <FileUploader
+                      fileAccepted=".jpg,.jpeg,.png"
                       label="Image"
                       errorMessage={fieldState.error?.message}
                       {...field}
@@ -145,6 +146,7 @@ export const SongCreationModal: FC<Props> = (props) => {
                   name="song"
                   render={({ field, fieldState }) => (
                     <FileUploader
+                      fileAccepted=".mp3"
                       label="Song"
                       errorMessage={fieldState.error?.message}
                       {...field}
