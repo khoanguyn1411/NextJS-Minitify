@@ -9,16 +9,18 @@ export namespace SongData {
     artistIds: ZodUtils.notAllowEmptyArray(
       createSelectOptionSchema(z.number()).array(),
     ),
-    albumId: ZodUtils.notAllowNullable(ZodUtils.requiredNumber()),
+    albumId: z.number().nullable(),
     name: ZodUtils.requiredString(),
   });
 
   export const schema = baseSchema.extend({
     image: ZodUtils.notAllowNullable(z.instanceof(File)),
+    song: ZodUtils.notAllowNullable(z.instanceof(File)),
   });
 
   export const serverSchema = baseSchema.extend({
     image: ZodUtils.requiredString(),
+    song: ZodUtils.requiredString(),
   });
 
   export type Type = z.infer<typeof schema>;
@@ -26,6 +28,7 @@ export namespace SongData {
 
   export const initialValue: Type = {
     name: "",
+    song: null,
     artistIds: [],
     albumId: null,
     image: null,

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Song` ADD COLUMN `songUrl` VARCHAR(191) NOT NULL DEFAULT '';

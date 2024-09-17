@@ -50,15 +50,35 @@ export const SongCreationModal: FC<Props> = (props) => {
 
   const onFormSubmit = async (data: SongData.Type) => {
     let imageUrl = "";
-    if (data.image != null) {
-      const filePath = await uploadFile(convertFileToFormData(data.image));
-      if (!isSuccess(filePath)) {
-        notifyOnAppError(filePath);
+    let songUrl = "";
+    if (data.image != null && data.song != null) {
+      const imageFilePathPromise = uploadFile(
+        convertFileToFormData(data.image),
+      );
+      const songFilePathPromise = uploadFile(
+        convertFileToFormData(data.song),
+        "musics",
+      );
+      const [imageFilePath, songFilePath] = await Promise.all([
+        imageFilePathPromise,
+        songFilePathPromise,
+      ]);
+      if (!isSuccess(imageFilePath)) {
+        notifyOnAppError(imageFilePath);
         return;
       }
-      imageUrl = filePath.path;
+      if (!isSuccess(songFilePath)) {
+        notifyOnAppError(songFilePath);
+        return;
+      }
+      imageUrl = imageFilePath.path;
+      songUrl = songFilePath.path;
     }
-    const result = await createSong({ ...data, image: imageUrl });
+    const result = await createSong({
+      ...data,
+      image: imageUrl,
+      song: songUrl,
+    });
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
@@ -100,6 +120,18 @@ export const SongCreationModal: FC<Props> = (props) => {
                   render={({ field, fieldState }) => (
                     <FileUploader
                       label="Image"
+                      errorMessage={fieldState.error?.message}
+                      {...field}
+                    />
+                  )}
+                />
+
+                <Controller
+                  control={control}
+                  name="song"
+                  render={({ field, fieldState }) => (
+                    <FileUploader
+                      label="Song"
                       errorMessage={fieldState.error?.message}
                       {...field}
                     />

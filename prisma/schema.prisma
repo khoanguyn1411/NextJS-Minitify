@@ -34,6 +34,7 @@ model Song {
   imageUrl    String
   createdDate DateTime  @default(now())
   duration    Int
+  songUrl     String    @default("")
   artists     Artist[]
   album       Album?    @relation(fields: [albumId], references: [id])
   albumId     Int?
