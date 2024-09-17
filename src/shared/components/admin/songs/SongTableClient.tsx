@@ -50,6 +50,7 @@ type Props = {
 };
 
 export const SongsTableClient: FC<Props> = async ({ page }) => {
+  console.log({ page });
   return (
     <AppTable
       columns={columns}

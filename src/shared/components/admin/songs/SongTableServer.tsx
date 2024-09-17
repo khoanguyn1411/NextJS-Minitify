@@ -1,6 +1,6 @@
 import { type FC } from "react";
 
-import { getArtists } from "@/core/apis/artistApis";
+import { getSongs } from "@/core/apis/songApis";
 import { type BaseFilterParams } from "@/core/models/baseFilterParams";
 
 import { SongsTableClient } from "./SongTableClient";
@@ -10,6 +10,6 @@ type Props = {
 };
 
 export const SongsTableServer: FC<Props> = async ({ filters }) => {
-  const artistsPage = await getArtists(filters);
+  const artistsPage = await getSongs(filters);
   return <SongsTableClient page={artistsPage} />;
 };
