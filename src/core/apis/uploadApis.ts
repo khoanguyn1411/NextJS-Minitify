@@ -7,7 +7,7 @@ import { buildAppError } from "@/shared/utils/errorHandlers";
 
 export async function uploadFile(
   data: FormData,
-  folder: "images" | "musics" = "images",
+  type: "images" | "musics" = "images",
 ) {
   try {
     const file: File | null = data.get("file") as unknown as File;
@@ -19,11 +19,11 @@ export async function uploadFile(
     const buffer = Buffer.from(bytes);
 
     // For this, we'll just write it to the filesystem in a new location
-    const path = join("public", "uploads", folder, file.name);
+    const path = join("public", "uploads", type, file.name);
     await writeFile(path, buffer);
 
     return {
-      path: `/${join("uploads", folder, file.name)}`,
+      path: `/${join("uploads", type, file.name)}`,
     };
   } catch (e) {
     // eslint-disable-next-line no-console
