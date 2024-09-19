@@ -36,7 +36,7 @@ const columns: readonly TableColumn<Album>[] = [
       </Tooltip>
     ),
   },
-  { title: "Play times", key: "playTime", align: "end" },
+  { title: "Play count", key: "playTime", align: "end" },
   {
     title: "Created date",
     key: "createdDate",
