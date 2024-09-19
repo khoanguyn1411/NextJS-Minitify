@@ -1,43 +1,42 @@
 "use client";
 
 import { Button, User as NextUiUser, Tooltip } from "@nextui-org/react";
-import { type Artist } from "@prisma/client";
+import { type Album } from "@prisma/client";
 import { type FC } from "react";
 import { BiEdit } from "react-icons/bi";
 
 import { type Pagination } from "@/core/models/pagination";
-import { User } from "@/core/models/user";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
 import { AppTable, type TableColumn } from "../../AppTable";
 
-const columns: readonly TableColumn<Artist>[] = [
+const columns: readonly TableColumn<Album>[] = [
   { title: "ID", key: "id" },
   {
-    title: "Artist",
-    key: "artist",
+    title: "Name",
+    key: "name",
     render: (item) => (
       <NextUiUser
-        avatarProps={{ radius: "lg", src: item.imageUrl }}
+        avatarProps={{ radius: "full", src: item.imageUrl }}
         description={`Last updated: ${DateUtils.toReadable(item.updatedAt)}`}
-        name={User.getFullName(item)}
+        name={item.name}
       />
     ),
     width: 220,
   },
   {
-    title: "Biography",
-    key: "biography",
+    title: "Description",
+    key: "description",
     render: (item) => (
       <Tooltip
         className="max-w-48 overflow-auto max-h-40"
-        content={item.biography}
+        content={item.description}
       >
-        <p className="truncate-2">{item.biography}</p>
+        <p className="truncate-2">{item.description}</p>
       </Tooltip>
     ),
   },
-  { title: "Songs", key: "songCount", align: "end" },
+  { title: "Play times", key: "playTime", align: "end" },
   {
     title: "Created date",
     key: "createdDate",
@@ -57,7 +56,7 @@ const columns: readonly TableColumn<Artist>[] = [
 ];
 
 type Props = {
-  readonly page: Pagination<Artist>;
+  readonly page: Pagination<Album>;
 };
 
 export const AlbumsTableClient: FC<Props> = async ({ page }) => {

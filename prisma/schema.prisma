@@ -50,7 +50,7 @@ model Album {
   description String
   playTime    Int      @default(0)
   createdDate DateTime @default(now())
-  song        Song[]
+  songs        Song[]
   artist      Artist   @relation(fields: [artistId], references: [id])
   artistId    Int
   updatedAt   DateTime @updatedAt
