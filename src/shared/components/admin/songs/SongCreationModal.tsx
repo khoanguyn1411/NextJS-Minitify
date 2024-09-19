@@ -23,8 +23,9 @@ import { useError } from "@/shared/hooks/useError";
 import { useNotify } from "@/shared/hooks/useNotify";
 import { convertFileToFormData } from "@/shared/services/uploadService";
 
-import { AppSelect, type SelectConfig } from "../../AppSelect";
 import { FileUploader } from "../../FileUploader";
+import { AppMultipleSelect } from "../../autocompletes/AppMultipleSelect";
+import { type SelectConfig } from "../../autocompletes/useFetchAutocomplete";
 
 type Props = ReturnType<typeof useDisclosure>;
 
@@ -32,6 +33,7 @@ const config: SelectConfig<Artist, number> = {
   toOption: (item) => ({ value: item.id, label: item.fullName }),
   fetchApi: (filters) => getArtists(filters),
   toReadable: (item) => item.fullName,
+  toKey: (item) => item.id,
 };
 
 export const SongCreationModal: FC<Props> = (props) => {
@@ -158,7 +160,7 @@ export const SongCreationModal: FC<Props> = (props) => {
                   control={control}
                   name="artistIds"
                   render={({ field, fieldState }) => (
-                    <AppSelect
+                    <AppMultipleSelect
                       label="Artists"
                       errorMessage={fieldState.error?.message}
                       placeholder="Select Artist"

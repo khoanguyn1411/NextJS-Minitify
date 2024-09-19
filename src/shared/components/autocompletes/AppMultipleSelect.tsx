@@ -2,38 +2,29 @@
 
 import { Card } from "@nextui-org/react";
 import classNames from "classnames";
-import { useEffect, useState } from "react";
 import Select, { type MultiValue } from "react-select";
-import { useDebounceValue } from "usehooks-ts";
 
-import { BaseFilterParams } from "@/core/models/baseFilterParams";
-import { type Pagination } from "@/core/models/pagination";
 import {
   type AllowedSelectOptionValue,
   type SelectOption,
 } from "@/core/models/selectOption";
 
-import { useToggleExecutionState } from "../hooks/useToggleExecutionState";
-import { FormItem } from "./FormItem";
+import { FormItem } from "../FormItem";
+import {
+  useFetchAutocomplete,
+  type SelectConfig,
+} from "./useFetchAutocomplete";
 
-export type SelectConfig<T, E extends AllowedSelectOptionValue> = {
-  readonly toReadable: (item: T) => string;
-  readonly toOption: (item: T) => SelectOption<E>;
-  readonly fetchApi: (
-    filters: BaseFilterParams.Combined,
-  ) => Promise<Pagination<T>>;
-};
-
-type Props<T, E extends AllowedSelectOptionValue> = {
+type Props<TOption, TData extends AllowedSelectOptionValue> = {
   readonly placeholder: string;
-  readonly config: SelectConfig<T, E>;
+  readonly config: SelectConfig<TOption, TData>;
   readonly errorMessage?: string;
   readonly label?: string;
-  readonly value: SelectOption<E>[];
-  readonly onChange: (value: MultiValue<SelectOption<E>>) => void;
+  readonly value: SelectOption<TData>[];
+  readonly onChange: (value: MultiValue<SelectOption<TData>>) => void;
 };
 
-export const AppSelect = <
+export const AppMultipleSelect = <
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TOption extends Record<string, any>,
   TData extends AllowedSelectOptionValue,
@@ -45,32 +36,11 @@ export const AppSelect = <
   onChange,
   errorMessage,
 }: Props<TOption, TData>) => {
-  const [options, setOptions] = useState<readonly SelectOption<TData>[]>([]);
-  const [hasNext, setHasNext] = useState(true);
-  const [pageNumber, setPageNumber] = useState<number>(0);
-  const [isLoading, toggleExecutionState] = useToggleExecutionState();
-  const [search, setSearch] = useState("");
-
-  const [debouncedSearch] = useDebounceValue(search, 300);
+  const { options, setPageNumber, isLoading, setSearch } =
+    useFetchAutocomplete(config);
 
   const onInputChange = (search: string) => {
     setSearch(search);
-  };
-
-  const fetchApi = async (filters: BaseFilterParams.Combined) => {
-    toggleExecutionState(async () => {
-      if (!hasNext) {
-        return;
-      }
-      const result = await config.fetchApi({
-        ...BaseFilterParams.initialPagination,
-        pageNumber: pageNumber,
-        search: filters.search,
-      });
-      const newOptions = result.items.map((item) => config.toOption(item));
-      setHasNext(result.hasNext);
-      setOptions((prev) => [...prev, ...newOptions]);
-    });
   };
 
   const onLoadMore = () => {
@@ -80,14 +50,6 @@ export const AppSelect = <
   // const MultiValue = (props: MultiValueGenericProps<SelectOption>) => {
   //   return <div {...props}>{props.data.value}</div>;
   // };
-
-  useEffect(() => {
-    fetchApi({
-      ...BaseFilterParams.initialPagination,
-      pageNumber,
-      search,
-    });
-  }, [debouncedSearch, pageNumber]);
 
   return (
     <FormItem error={errorMessage}>

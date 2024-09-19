@@ -11,11 +11,12 @@ import {
   ModalHeader,
   type useDisclosure,
 } from "@nextui-org/react";
-import { type Song } from "@prisma/client";
+import { type Artist, type Song } from "@prisma/client";
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { createAlbum } from "@/core/apis/albumsApis";
+import { getArtists } from "@/core/apis/artistApis";
 import { getSongs } from "@/core/apis/songApis";
 import { uploadFile } from "@/core/apis/uploadApis";
 import { AlbumData } from "@/core/models/albumData";
@@ -24,15 +25,25 @@ import { useNotify } from "@/shared/hooks/useNotify";
 import { convertFileToFormData } from "@/shared/services/uploadService";
 import { assertNonNull } from "@/shared/utils/assertNonNull";
 
-import { AppSelect, type SelectConfig } from "../../AppSelect";
 import { FileUploader } from "../../FileUploader";
+import { AppMultipleSelect } from "../../autocompletes/AppMultipleSelect";
+import { AppSelect } from "../../autocompletes/AppSelect";
+import { type SelectConfig } from "../../autocompletes/useFetchAutocomplete";
 
 type Props = ReturnType<typeof useDisclosure>;
 
-const config: SelectConfig<Song, number> = {
+const songsSelectConfig: SelectConfig<Song, number> = {
   toOption: (item) => ({ value: item.id, label: item.name }),
   fetchApi: (filters) => getSongs(filters),
   toReadable: (item) => item.name,
+  toKey: (item) => item.id,
+};
+
+const artistSelectConfig: SelectConfig<Artist, number> = {
+  toOption: (item) => ({ value: item.id, label: item.fullName }),
+  fetchApi: (filters) => getArtists(filters),
+  toReadable: (item) => item.fullName,
+  toKey: (item) => item.id,
 };
 
 export const AlbumCreationModal: FC<Props> = (props) => {
@@ -61,7 +72,7 @@ export const AlbumCreationModal: FC<Props> = (props) => {
     assertNonNull(data.artistId);
     const result = await createAlbum({
       ...data,
-      artistId: data.artistId,
+      artistId: data.artistId.value,
       image: imageUrl,
     });
     extractErrorsToForm({ result, setError });
@@ -124,15 +135,30 @@ export const AlbumCreationModal: FC<Props> = (props) => {
                     />
                   )}
                 />
+
+                <Controller
+                  control={control}
+                  name="artistId"
+                  render={({ field, fieldState }) => (
+                    <AppSelect
+                      label="Artist"
+                      errorMessage={fieldState.error?.message}
+                      placeholder="Select artist"
+                      config={artistSelectConfig}
+                      {...field}
+                    />
+                  )}
+                />
+
                 <Controller
                   control={control}
                   name="songIds"
                   render={({ field, fieldState }) => (
-                    <AppSelect
+                    <AppMultipleSelect
                       label="Songs"
                       errorMessage={fieldState.error?.message}
-                      placeholder="Select Songs"
-                      config={config}
+                      placeholder="Select songs"
+                      config={songsSelectConfig}
                       {...field}
                     />
                   )}

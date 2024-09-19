@@ -14,7 +14,7 @@ export namespace AlbumData {
   });
 
   export const schema = baseSchema.extend({
-    artistId: ZodUtils.notAllowNullable(z.number()),
+    artistId: createSelectOptionSchema(z.number()).nullable(),
     image: ZodUtils.notAllowNullable(z.instanceof(File)),
   });
 
