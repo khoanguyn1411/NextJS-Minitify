@@ -96,6 +96,7 @@ export const AppSelect = <
           value={value}
           options={options}
           menuPortalTarget={document.body}
+          menuPlacement="auto"
           isLoading={isLoading}
           onInputChange={onInputChange}
           onMenuScrollToBottom={onLoadMore}
