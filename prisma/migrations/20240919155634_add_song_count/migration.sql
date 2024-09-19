@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Album` ADD COLUMN `songCount` INTEGER NOT NULL DEFAULT 0;
