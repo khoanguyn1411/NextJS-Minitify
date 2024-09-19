@@ -49,6 +49,15 @@ export const useFetchAutocomplete = <
     });
   };
 
+  const fetchApiWithSearch = async (filters: BaseFilterParams.Combined) => {
+    toggleExecutionState(async () => {
+      const result = await params.fetchApi(filters);
+      const newOptions = result.items.map((item) => params.toOption(item));
+      setHasNext(result.hasNext);
+      setOptions(newOptions);
+    });
+  };
+
   useEffect(() => {
     fetchApi({
       ...BaseFilterParams.initialPagination,
@@ -58,8 +67,7 @@ export const useFetchAutocomplete = <
   }, [pageNumber]);
 
   useEffect(() => {
-    setOptions([]);
-    fetchApi({
+    fetchApiWithSearch({
       ...BaseFilterParams.initialPagination,
       search: debouncedSearch,
     });
