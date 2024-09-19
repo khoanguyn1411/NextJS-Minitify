@@ -7,6 +7,7 @@ import {
   type AllowedSelectOptionValue,
   type SelectOption,
 } from "@/core/models/selectOption";
+import { useUpdateEffect } from "@/shared/hooks/useUpdateEffect";
 
 import { useToggleExecutionState } from "../../hooks/useToggleExecutionState";
 
@@ -58,7 +59,7 @@ export const useFetchAutocomplete = <
     });
   };
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     fetchApi({
       ...BaseFilterParams.initialPagination,
       pageNumber,
