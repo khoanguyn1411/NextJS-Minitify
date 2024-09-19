@@ -28,7 +28,7 @@ export async function createAlbum(data: AlbumData.ServerType) {
             imageUrl: data.image,
           },
         });
-        revalidatePath("/admin/albums"); // This will re-fetch the artist list
+        revalidatePath("/admin/albums"); // This will re-fetch the albums list
         return artist;
       },
     });
