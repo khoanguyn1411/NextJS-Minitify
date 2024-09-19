@@ -28,6 +28,7 @@ type Props<T, E extends AllowedSelectOptionValue> = {
   readonly placeholder: string;
   readonly config: SelectConfig<T, E>;
   readonly errorMessage?: string;
+  readonly label?: string;
   readonly value: SelectOption<E>[];
   readonly onChange: (value: MultiValue<SelectOption<E>>) => void;
 };
@@ -40,6 +41,7 @@ export const AppSelect = <
   placeholder,
   config,
   value,
+  label,
   onChange,
   errorMessage,
 }: Props<TOption, TData>) => {
@@ -90,7 +92,7 @@ export const AppSelect = <
   return (
     <FormItem error={errorMessage}>
       <Card className="bg-input pb-2">
-        <p className="px-container text-sm pt-2">Artists</p>
+        <p className="px-container text-sm pt-2">{label}</p>
         <Select
           isMulti
           value={value}

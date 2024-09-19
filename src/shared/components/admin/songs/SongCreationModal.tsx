@@ -159,6 +159,7 @@ export const SongCreationModal: FC<Props> = (props) => {
                   name="artistIds"
                   render={({ field, fieldState }) => (
                     <AppSelect
+                      label="Artists"
                       errorMessage={fieldState.error?.message}
                       placeholder="Select Artist"
                       config={config}

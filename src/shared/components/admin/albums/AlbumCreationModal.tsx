@@ -11,19 +11,29 @@ import {
   ModalHeader,
   type useDisclosure,
 } from "@nextui-org/react";
+import { type Song } from "@prisma/client";
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { createArtist } from "@/core/apis/artistApis";
+import { createAlbum } from "@/core/apis/albumsApis";
+import { getSongs } from "@/core/apis/songApis";
 import { uploadFile } from "@/core/apis/uploadApis";
-import { ArtistData } from "@/core/models/artistData";
+import { AlbumData } from "@/core/models/albumData";
 import { useError } from "@/shared/hooks/useError";
 import { useNotify } from "@/shared/hooks/useNotify";
 import { convertFileToFormData } from "@/shared/services/uploadService";
+import { assertNonNull } from "@/shared/utils/assertNonNull";
 
+import { AppSelect, type SelectConfig } from "../../AppSelect";
 import { FileUploader } from "../../FileUploader";
 
 type Props = ReturnType<typeof useDisclosure>;
+
+const config: SelectConfig<Song, number> = {
+  toOption: (item) => ({ value: item.id, label: item.name }),
+  fetchApi: (filters) => getSongs(filters),
+  toReadable: (item) => item.name,
+};
 
 export const AlbumCreationModal: FC<Props> = (props) => {
   const { extractErrorsToForm, notifyOnAppError, isSuccess } = useError();
@@ -34,11 +44,11 @@ export const AlbumCreationModal: FC<Props> = (props) => {
     reset,
     setError,
     formState: { isLoading },
-  } = useForm<ArtistData.Type>({
-    resolver: zodResolver(ArtistData.schema),
+  } = useForm<AlbumData.Type>({
+    resolver: zodResolver(AlbumData.schema),
   });
 
-  const onFormSubmit = async (data: ArtistData.Type) => {
+  const onFormSubmit = async (data: AlbumData.Type) => {
     let imageUrl = "";
     if (data.image != null) {
       const filePath = await uploadFile(convertFileToFormData(data.image));
@@ -48,70 +58,60 @@ export const AlbumCreationModal: FC<Props> = (props) => {
       }
       imageUrl = filePath.path;
     }
-    const result = await createArtist({ ...data, image: imageUrl });
+    assertNonNull(data.artistId);
+    const result = await createAlbum({
+      ...data,
+      artistId: data.artistId,
+      image: imageUrl,
+    });
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
-      notify("Created new artist", { type: "success" });
+      notify("Created new album", { type: "success" });
       props.onClose();
-      reset(ArtistData.initialValue);
+      reset(AlbumData.initialValue);
     }
   };
 
   return (
     <Modal
       isOpen={props.isOpen}
+      isDismissable={false}
       onClose={reset}
       onOpenChange={props.onOpenChange}
     >
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="text-2xl">Add New Artist</ModalHeader>
+            <ModalHeader className="text-2xl">Add New Album</ModalHeader>
             <ModalBody className="flex flex-col gap-7">
               <form className="flex flex-col gap-4">
-                <div className="flex gap-4">
-                  <Controller
-                    control={control}
-                    name="firstName"
-                    render={({ field, fieldState }) => (
-                      <Input
-                        label="First name"
-                        placeholder="Danny"
-                        errorMessage={fieldState.error?.message}
-                        isInvalid={!!fieldState.error?.message}
-                        {...field}
-                      />
-                    )}
-                  />
-                  <Controller
-                    control={control}
-                    name="lastName"
-                    render={({ field, fieldState }) => (
-                      <Input
-                        label="Last name"
-                        placeholder="John"
-                        errorMessage={fieldState.error?.message}
-                        isInvalid={!!fieldState.error?.message}
-                        {...field}
-                      />
-                    )}
-                  />
-                </div>
                 <Controller
                   control={control}
-                  name="biography"
+                  name="name"
                   render={({ field, fieldState }) => (
-                    <Textarea
-                      label="Biography"
-                      autoComplete="biography"
+                    <Input
+                      label="Name"
+                      placeholder="Good Album"
                       errorMessage={fieldState.error?.message}
                       isInvalid={!!fieldState.error?.message}
                       {...field}
                     />
                   )}
                 />
-
+                <Controller
+                  control={control}
+                  name="description"
+                  render={({ field, fieldState }) => (
+                    <Textarea
+                      label="Description"
+                      placeholder="Your description"
+                      errorMessage={fieldState.error?.message}
+                      isInvalid={!!fieldState.error?.message}
+                      {...field}
+                    />
+                  )}
+                />
                 <Controller
                   control={control}
                   name="image"
@@ -120,6 +120,19 @@ export const AlbumCreationModal: FC<Props> = (props) => {
                       fileAccepted=".jpg,.jpeg,.png"
                       label="Image"
                       errorMessage={fieldState.error?.message}
+                      {...field}
+                    />
+                  )}
+                />
+                <Controller
+                  control={control}
+                  name="songIds"
+                  render={({ field, fieldState }) => (
+                    <AppSelect
+                      label="Songs"
+                      errorMessage={fieldState.error?.message}
+                      placeholder="Select Songs"
+                      config={config}
                       {...field}
                     />
                   )}
