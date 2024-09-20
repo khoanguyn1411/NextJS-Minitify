@@ -116,7 +116,9 @@ export const AlbumCreationModal: FC<Props> = (props) => {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="text-2xl">Add New Album</ModalHeader>
+            <ModalHeader className="text-2xl">
+              {isEditMode ? "Add" : "Edit"} Album
+            </ModalHeader>
             <ModalBody className="flex flex-col gap-7">
               <form className="flex flex-col gap-4">
                 <Controller
