@@ -19,7 +19,7 @@ export async function createSong(data: SongData.ServerType) {
       schema: SongData.serverSchema,
       async onPassed(data) {
         const duration = await getMp3Duration(`public${data.song}`);
-        const songs = await appPrisma.song.create({
+        const createSongRequest = appPrisma.song.create({
           data: {
             name: data.name,
             imageUrl: data.image,
@@ -33,6 +33,24 @@ export async function createSong(data: SongData.ServerType) {
             playlistId: null,
           },
         });
+        const updateArtistRequest = appPrisma.artist.updateMany({
+          where: {
+            id: {
+              in: data.artistIds.map((option) => option.value),
+            },
+          },
+          data: {
+            songCount: {
+              increment: 1,
+            },
+          },
+        });
+
+        const [songs] = await Promise.all([
+          createSongRequest,
+          updateArtistRequest,
+        ]);
+
         revalidatePath("/admin/songs"); // This will re-fetch the song list
         return songs;
       },
