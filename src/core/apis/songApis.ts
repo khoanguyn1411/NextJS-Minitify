@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { type Song } from "@prisma/client";
 
 import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
@@ -20,6 +21,55 @@ export async function createSong(data: SongData.ServerType) {
       async onPassed(data) {
         const duration = await getMp3Duration(`public${data.song}`);
         const createSongRequest = appPrisma.song.create({
+          data: {
+            name: data.name,
+            imageUrl: data.image,
+            albumId: data.albumId,
+            duration: duration,
+            songUrl: data.song,
+            artists: {
+              connect: data.artistIds.map((option) => ({ id: option.value })),
+            },
+            playTime: 0,
+            playlistId: null,
+          },
+        });
+        const updateArtistRequest = appPrisma.artist.updateMany({
+          where: {
+            id: {
+              in: data.artistIds.map((option) => option.value),
+            },
+          },
+          data: {
+            songCount: {
+              increment: 1,
+            },
+          },
+        });
+
+        const [songs] = await Promise.all([
+          createSongRequest,
+          updateArtistRequest,
+        ]);
+
+        revalidatePath("/admin/songs"); // This will re-fetch the song list
+        return songs;
+      },
+    });
+  });
+}
+
+export async function updateSongs(id: Song["id"], data: SongData.ServerType) {
+  return createPrismaRequest(() => {
+    return validateWithSchema({
+      data: data,
+      schema: SongData.serverSchema,
+      async onPassed(data) {
+        const duration = await getMp3Duration(`public${data.song}`);
+        const createSongRequest = appPrisma.song.update({
+          where: {
+            id: id,
+          },
           data: {
             name: data.name,
             imageUrl: data.image,
