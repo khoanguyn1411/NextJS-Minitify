@@ -20,6 +20,7 @@ type Props<TOption, TData extends AllowedSelectOptionValue> = {
   readonly label?: string;
   readonly value: SelectOption<TData> | null;
   readonly onChange: (value: SingleValue<SelectOption<TData> | null>) => void;
+  readonly isClearable?: boolean;
 };
 
 export const AppSelect = <
@@ -32,6 +33,7 @@ export const AppSelect = <
   value,
   label,
   onChange,
+  isClearable,
   errorMessage,
 }: Props<TOption, TData>) => {
   const { isLoading, options, setPageNumber, setSearch } =
@@ -57,6 +59,7 @@ export const AppSelect = <
           isLoading={isLoading}
           onInputChange={onInputChange}
           onMenuScrollToBottom={onLoadMore}
+          isClearable={isClearable}
           placeholder={placeholder}
           classNames={{
             control: () =>

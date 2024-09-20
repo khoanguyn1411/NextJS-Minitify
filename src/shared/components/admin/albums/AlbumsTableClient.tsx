@@ -1,16 +1,16 @@
 "use client";
 
 import { User as NextUiUser, Tooltip } from "@nextui-org/react";
-import { type Album } from "@prisma/client";
 import { type FC } from "react";
 
+import { type IAlbum } from "@/core/apis/albumsApis";
 import { type Pagination } from "@/core/models/pagination";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
 import { AppTable, type TableColumn } from "../../AppTable";
 import { AlbumEditButton } from "./AlbumEditButton";
 
-const columns: readonly TableColumn<Album>[] = [
+const columns: readonly TableColumn<IAlbum>[] = [
   { title: "ID", key: "id" },
   {
     title: "Name",
@@ -51,7 +51,7 @@ const columns: readonly TableColumn<Album>[] = [
 ];
 
 type Props = {
-  readonly page: Pagination<Album>;
+  readonly page: Pagination<IAlbum>;
 };
 
 export const AlbumsTableClient: FC<Props> = async ({ page }) => {

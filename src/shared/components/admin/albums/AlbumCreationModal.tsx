@@ -11,11 +11,11 @@ import {
   ModalHeader,
   type useDisclosure,
 } from "@nextui-org/react";
-import { type Album, type Artist, type Song } from "@prisma/client";
-import { type FC } from "react";
+import { type Artist, type Song } from "@prisma/client";
+import { useEffect, type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { createAlbum } from "@/core/apis/albumsApis";
+import { createAlbum, type IAlbum } from "@/core/apis/albumsApis";
 import { getArtists } from "@/core/apis/artistApis";
 import { getSongs } from "@/core/apis/songApis";
 import { uploadFile } from "@/core/apis/uploadApis";
@@ -31,7 +31,7 @@ import { AppSelect } from "../../autocompletes/AppSelect";
 import { type SelectConfig } from "../../autocompletes/useFetchAutocomplete";
 
 type Props = ReturnType<typeof useDisclosure> & {
-  readonly album?: Album;
+  readonly album?: IAlbum;
 };
 
 const songsSelectConfig: SelectConfig<Song, number> = {
@@ -61,6 +61,8 @@ export const AlbumCreationModal: FC<Props> = (props) => {
     resolver: zodResolver(AlbumData.schema),
   });
 
+  const isEditMode = props.album != null;
+
   const onFormSubmit = async (data: AlbumData.Type) => {
     let imageUrl = "";
     if (data.image != null) {
@@ -85,6 +87,24 @@ export const AlbumCreationModal: FC<Props> = (props) => {
       reset(AlbumData.initialValue);
     }
   };
+
+  useEffect(() => {
+    if (!isEditMode) {
+      return;
+    }
+    reset({
+      name: props.album.name,
+      description: props.album.description,
+      artistId: {
+        value: props.album.artist.id,
+        label: artistSelectConfig.toReadable(props.album.artist),
+      },
+      songIds: props.album.songs.map((song) => ({
+        value: song.id,
+        label: songsSelectConfig.toReadable(song),
+      })),
+    });
+  }, [isEditMode]);
 
   return (
     <Modal

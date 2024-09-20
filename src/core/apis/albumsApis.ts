@@ -48,6 +48,10 @@ export async function getAlbums(pagination: BaseFilterParams.Combined) {
     const result = await appPrisma.album.findMany({
       ...paginationFilters,
       ...filters,
+      include: {
+        artist: true,
+        songs: true,
+      },
     });
 
     return createPagination({
@@ -58,3 +62,5 @@ export async function getAlbums(pagination: BaseFilterParams.Combined) {
     });
   });
 }
+
+export type IAlbum = Awaited<ReturnType<typeof getAlbums>>["items"][0];

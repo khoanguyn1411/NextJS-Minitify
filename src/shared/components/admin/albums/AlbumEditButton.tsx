@@ -1,13 +1,14 @@
 import { Button } from "@nextui-org/button";
 import { Tooltip, useDisclosure } from "@nextui-org/react";
-import { type Album } from "@prisma/client";
 import { type FC } from "react";
 import { BiEdit } from "react-icons/bi";
+
+import { type IAlbum } from "@/core/apis/albumsApis";
 
 import { AlbumCreationModal } from "./AlbumCreationModal";
 
 type Props = {
-  readonly album: Album;
+  readonly album: IAlbum;
 };
 
 export const AlbumEditButton: FC<Props> = ({ album }) => {
