@@ -60,7 +60,7 @@ type Props = {
   readonly page: Pagination<Artist>;
 };
 
-export const ArtistsTableClient: FC<Props> = async ({ page }) => {
+export const ArtistsTableClient: FC<Props> = ({ page }) => {
   return (
     <AppTable
       columns={columns}

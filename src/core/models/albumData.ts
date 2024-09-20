@@ -13,9 +13,14 @@ export namespace AlbumData {
     ),
   });
 
-  export const schema = baseSchema.extend({
+  export const createSchema = baseSchema.extend({
     artistId: createSelectOptionSchema(z.number()).nullable(),
     image: ZodUtils.notAllowNullable(z.instanceof(File)),
+  });
+
+  export const editSchema = baseSchema.extend({
+    artistId: createSelectOptionSchema(z.number()).nullable(),
+    image: z.instanceof(File).or(z.null()),
   });
 
   export const serverSchema = baseSchema.extend({
@@ -23,7 +28,7 @@ export namespace AlbumData {
     image: ZodUtils.requiredString(),
   });
 
-  export type Type = z.infer<typeof schema>;
+  export type Type = z.infer<typeof createSchema>;
   export type ServerType = z.infer<typeof serverSchema>;
 
   export const initialValue: Type = {

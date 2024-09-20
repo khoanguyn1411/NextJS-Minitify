@@ -54,7 +54,7 @@ type Props = {
   readonly page: Pagination<IAlbum>;
 };
 
-export const AlbumsTableClient: FC<Props> = async ({ page }) => {
+export const AlbumsTableClient: FC<Props> = ({ page }) => {
   return (
     <AppTable
       columns={columns}

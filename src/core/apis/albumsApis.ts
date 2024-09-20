@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { type Album } from "@prisma/client";
 
 import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
@@ -18,6 +19,34 @@ export async function createAlbum(data: AlbumData.ServerType) {
       schema: AlbumData.serverSchema,
       async onPassed(data) {
         const artist = await appPrisma.album.create({
+          data: {
+            name: data.name,
+            description: data.description,
+            songs: {
+              connect: data.songIds.map((option) => ({ id: option.value })),
+            },
+            songCount: data.songIds.length,
+            artistId: data.artistId,
+            imageUrl: data.image,
+          },
+        });
+        revalidatePath("/admin/albums"); // This will re-fetch the albums list
+        return artist;
+      },
+    });
+  });
+}
+
+export async function updateAlbum(id: Album["id"], data: AlbumData.ServerType) {
+  return createPrismaRequest(() => {
+    return validateWithSchema({
+      data: data,
+      schema: AlbumData.serverSchema,
+      async onPassed(data) {
+        const artist = await appPrisma.album.update({
+          where: {
+            id,
+          },
           data: {
             name: data.name,
             description: data.description,

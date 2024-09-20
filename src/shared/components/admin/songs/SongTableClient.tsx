@@ -59,7 +59,7 @@ type Props = {
   readonly page: Pagination<Song>;
 };
 
-export const SongsTableClient: FC<Props> = async ({ page }) => {
+export const SongsTableClient: FC<Props> = ({ page }) => {
   return (
     <AppTable
       columns={columns}

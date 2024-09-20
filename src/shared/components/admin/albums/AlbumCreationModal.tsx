@@ -15,7 +15,7 @@ import { type Artist, type Song } from "@prisma/client";
 import { useEffect, type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { createAlbum, type IAlbum } from "@/core/apis/albumsApis";
+import { createAlbum, updateAlbum, type IAlbum } from "@/core/apis/albumsApis";
 import { getArtists } from "@/core/apis/artistApis";
 import { getSongs } from "@/core/apis/songApis";
 import { uploadFile } from "@/core/apis/uploadApis";
@@ -51,6 +51,9 @@ const artistSelectConfig: SelectConfig<Artist, number> = {
 export const AlbumCreationModal: FC<Props> = (props) => {
   const { extractErrorsToForm, notifyOnAppError, isSuccess } = useError();
   const { notify } = useNotify();
+
+  const isEditMode = props.album != null;
+
   const {
     control,
     handleSubmit,
@@ -58,13 +61,13 @@ export const AlbumCreationModal: FC<Props> = (props) => {
     setError,
     formState: { isLoading },
   } = useForm<AlbumData.Type>({
-    resolver: zodResolver(AlbumData.schema),
+    resolver: zodResolver(
+      isEditMode ? AlbumData.editSchema : AlbumData.createSchema,
+    ),
   });
 
-  const isEditMode = props.album != null;
-
   const onFormSubmit = async (data: AlbumData.Type) => {
-    let imageUrl = "";
+    let imageUrl = props.album?.imageUrl ?? "";
     if (data.image != null) {
       const filePath = await uploadFile(convertFileToFormData(data.image));
       if (!isSuccess(filePath)) {
@@ -74,21 +77,33 @@ export const AlbumCreationModal: FC<Props> = (props) => {
       imageUrl = filePath.path;
     }
     assertNonNull(data.artistId);
-    const result = await createAlbum({
-      ...data,
-      artistId: data.artistId.value,
-      image: imageUrl,
-    });
+
+    const result = isEditMode
+      ? await updateAlbum(props.album.id, {
+          ...data,
+          artistId: data.artistId.value,
+          image: imageUrl,
+        })
+      : await createAlbum({
+          ...data,
+          artistId: data.artistId.value,
+          image: imageUrl,
+        });
+
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
       notify("Created new album", { type: "success" });
       props.onClose();
+      if (isEditMode) {
+        return;
+      }
       reset(AlbumData.initialValue);
     }
   };
 
   useEffect(() => {
+    console.log({ isEditMode });
     if (!isEditMode) {
       return;
     }
@@ -103,6 +118,7 @@ export const AlbumCreationModal: FC<Props> = (props) => {
         value: song.id,
         label: songsSelectConfig.toReadable(song),
       })),
+      image: null,
     });
   }, [isEditMode]);
 
