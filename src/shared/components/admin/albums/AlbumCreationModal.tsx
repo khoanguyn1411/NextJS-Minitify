@@ -11,7 +11,7 @@ import {
   ModalHeader,
   type useDisclosure,
 } from "@nextui-org/react";
-import { type Artist, type Song } from "@prisma/client";
+import { type Album, type Artist, type Song } from "@prisma/client";
 import { type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -30,7 +30,9 @@ import { AppMultipleSelect } from "../../autocompletes/AppMultipleSelect";
 import { AppSelect } from "../../autocompletes/AppSelect";
 import { type SelectConfig } from "../../autocompletes/useFetchAutocomplete";
 
-type Props = ReturnType<typeof useDisclosure>;
+type Props = ReturnType<typeof useDisclosure> & {
+  readonly album?: Album;
+};
 
 const songsSelectConfig: SelectConfig<Song, number> = {
   toOption: (item) => ({ value: item.id, label: item.name }),

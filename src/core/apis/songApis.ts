@@ -79,8 +79,6 @@ export async function updateSongs(id: Song["id"], data: SongData.ServerType) {
             artists: {
               connect: data.artistIds.map((option) => ({ id: option.value })),
             },
-            playTime: 0,
-            playlistId: null,
           },
         });
         const updateArtistRequest = appPrisma.artist.updateMany({

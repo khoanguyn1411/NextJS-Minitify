@@ -1,14 +1,14 @@
 "use client";
 
-import { Button, User as NextUiUser, Tooltip } from "@nextui-org/react";
+import { User as NextUiUser, Tooltip } from "@nextui-org/react";
 import { type Album } from "@prisma/client";
 import { type FC } from "react";
-import { BiEdit } from "react-icons/bi";
 
 import { type Pagination } from "@/core/models/pagination";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
 import { AppTable, type TableColumn } from "../../AppTable";
+import { AlbumEditButton } from "./AlbumEditButton";
 
 const columns: readonly TableColumn<Album>[] = [
   { title: "ID", key: "id" },
@@ -46,13 +46,7 @@ const columns: readonly TableColumn<Album>[] = [
   {
     title: "Edit",
     key: "edit",
-    render: () => (
-      <Tooltip content="Edit">
-        <Button variant="flat" size="sm" color="primary" isIconOnly>
-          <BiEdit className="text-lg" />
-        </Button>
-      </Tooltip>
-    ),
+    render: (item) => <AlbumEditButton album={item} />,
   },
 ];
 
