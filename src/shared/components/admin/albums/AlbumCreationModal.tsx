@@ -93,7 +93,9 @@ export const AlbumCreationModal: FC<Props> = (props) => {
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
-      notify("Created new album", { type: "success" });
+      notify(isEditMode ? "Edited album successfully" : "Added new album", {
+        type: "success",
+      });
       props.onClose();
       if (isEditMode) {
         return;
