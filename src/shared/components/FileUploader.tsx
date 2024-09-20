@@ -61,7 +61,7 @@ export const FileUploader: FC<Props> = ({
     <Card className="flex flex-col gap-2 bg-input p-container">
       <label className="text-sm">{label}</label>
       <div className="flex flex-col gap-4 items-center">
-        {value == null && (
+        {value == null && currentImageUrl && (
           <Image
             isBlurred
             src={currentImageUrl ?? ""}
