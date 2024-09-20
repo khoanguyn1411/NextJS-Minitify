@@ -37,6 +37,7 @@ const columns: readonly TableColumn<Album>[] = [
     ),
   },
   { title: "Play count", key: "playTime", align: "end" },
+  { title: "Song count", key: "songCount", align: "end" },
   {
     title: "Created date",
     key: "createdDate",

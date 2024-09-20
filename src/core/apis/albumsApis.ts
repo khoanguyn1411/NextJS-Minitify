@@ -24,6 +24,7 @@ export async function createAlbum(data: AlbumData.ServerType) {
             songs: {
               connect: data.songIds.map((option) => ({ id: option.value })),
             },
+            songCount: data.songIds.length,
             artistId: data.artistId,
             imageUrl: data.image,
           },
@@ -43,6 +44,7 @@ export async function getAlbums(pagination: BaseFilterParams.Combined) {
         name: { contains: pagination.search },
       },
     };
+
     const result = await appPrisma.album.findMany({
       ...paginationFilters,
       ...filters,
