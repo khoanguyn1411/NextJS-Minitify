@@ -152,6 +152,7 @@ export const AlbumCreationModal: FC<Props> = (props) => {
                     <FileUploader
                       fileAccepted=".jpg,.jpeg,.png"
                       label="Image"
+                      currentImageUrl={props.album?.imageUrl}
                       errorMessage={fieldState.error?.message}
                       {...field}
                     />

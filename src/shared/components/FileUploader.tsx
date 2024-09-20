@@ -1,4 +1,4 @@
-import { Card } from "@nextui-org/react";
+import { Card, Image } from "@nextui-org/react";
 import classnames from "classnames";
 import { useRef, type ChangeEvent, type FC, type ReactNode } from "react";
 import { BiFile, BiUpload, BiX } from "react-icons/bi";
@@ -14,6 +14,7 @@ type Props = {
   readonly errorMessage?: ReactNode;
   readonly label?: string;
   readonly fileAccepted?: (typeof ACCEPTED_UPLOAD_FILES)[keyof typeof ACCEPTED_UPLOAD_FILES];
+  readonly currentImageUrl?: string;
 };
 
 export const FileUploader: FC<Props> = ({
@@ -21,6 +22,7 @@ export const FileUploader: FC<Props> = ({
   errorMessage,
   label,
   fileAccepted,
+  currentImageUrl,
   onChange,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -58,28 +60,40 @@ export const FileUploader: FC<Props> = ({
   return (
     <Card className="flex flex-col gap-2 bg-input p-container">
       <label className="text-sm">{label}</label>
-      <button
-        type="button"
-        onClick={handleButtonClick}
-        className={classnames(
-          "border-dashed border-1 items-center flex flex-col gap-2 p-4 w-full rounded-sm hover:bg-gray-800",
-          {
-            "border-red-500": errorMessage != null,
-          },
+      <div className="flex flex-col gap-4 items-center">
+        {value == null && (
+          <Image
+            isBlurred
+            src={currentImageUrl ?? ""}
+            width={100}
+            height={100}
+            alt="Preview"
+          />
         )}
-      >
-        <div className="flex flex-col gap-2 items-center">
-          <BiUpload className="text-2xl" />
-          <p className="text-sm">Click to upload file</p>
-        </div>
-        <input
-          type="file"
-          accept={fileAccepted}
-          ref={fileInputRef}
-          className="hidden"
-          onChange={handleFileChange}
-        />
-      </button>
+        <button
+          type="button"
+          onClick={handleButtonClick}
+          className={classnames(
+            "border-dashed border-1 items-center flex flex-col gap-2 p-4 w-full rounded-sm hover:bg-gray-800",
+            {
+              "border-red-500": errorMessage != null,
+            },
+          )}
+        >
+          <div className="flex flex-col gap-2 items-center">
+            <BiUpload className="text-2xl" />
+            <p className="text-sm">Click to upload file</p>
+          </div>
+          <input
+            type="file"
+            accept={fileAccepted}
+            ref={fileInputRef}
+            className="hidden"
+            onChange={handleFileChange}
+          />
+        </button>
+      </div>
+
       <p className="text-xs text-red-500">{errorMessage}</p>
     </Card>
   );
