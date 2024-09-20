@@ -31,6 +31,21 @@ async function increaseSongCountInArtist(currentArtistIds: Artist["id"][]) {
   });
 }
 
+async function decreaseSongCountInArtist(currentArtistIds: Artist["id"][]) {
+  await appPrisma.artist.updateMany({
+    where: {
+      id: {
+        in: currentArtistIds,
+      },
+    },
+    data: {
+      songCount: {
+        decrement: 1,
+      },
+    },
+  });
+}
+
 async function increaseOrDecreaseSongCountInArtist(
   songId: Song["id"],
   newArtistIds: Artist["id"][],
@@ -60,20 +75,7 @@ async function increaseOrDecreaseSongCountInArtist(
 
   // Decrement songCount for removed artist IDs
   if (removedArtistIds.length > 0) {
-    updatePromises.push(
-      appPrisma.artist.updateMany({
-        where: {
-          id: {
-            in: removedArtistIds,
-          },
-        },
-        data: {
-          songCount: {
-            decrement: 1,
-          },
-        },
-      }),
-    );
+    updatePromises.push(decreaseSongCountInArtist(removedArtistIds));
   }
 
   await Promise.all(updatePromises);
