@@ -1,17 +1,83 @@
 "use server";
 
+import { type Artist, type Song } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { type Song } from "@prisma/client";
 
 import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
 import { createPrismaPaginationFilter } from "@/shared/utils/createPrismaPaginationFilter";
 import { createPrismaRequest } from "@/shared/utils/createPrismaRequest";
-import { validateWithSchema } from "@/shared/utils/errorHandlers";
+import {
+  buildAppError,
+  validateWithSchema,
+} from "@/shared/utils/errorHandlers";
 import { getMp3Duration } from "@/shared/utils/getMp3Duration";
 
 import { type BaseFilterParams } from "../models/baseFilterParams";
 import { SongData } from "../models/songData";
+
+async function increaseSongCountInArtist(currentArtistIds: Artist["id"][]) {
+  await appPrisma.artist.updateMany({
+    where: {
+      id: {
+        in: currentArtistIds,
+      },
+    },
+    data: {
+      songCount: {
+        increment: 1,
+      },
+    },
+  });
+}
+
+async function increaseOrDecreaseSongCountInArtist(
+  songId: Song["id"],
+  newArtistIds: Artist["id"][],
+) {
+  const currentSong = await appPrisma.song.findUnique({
+    where: { id: songId },
+    select: { artists: true },
+  });
+
+  if (currentSong == null) {
+    return buildAppError("Invalid song ID.");
+  }
+  const currentArtistIds = currentSong.artists.map((artist) => artist.id);
+  const addedArtistIds = newArtistIds.filter(
+    (id) => !currentArtistIds.includes(id),
+  );
+  const removedArtistIds = currentArtistIds.filter(
+    (id) => !newArtistIds.includes(id),
+  );
+
+  const updatePromises = [];
+
+  // Increment songCount for added artist IDs
+  if (addedArtistIds.length > 0) {
+    updatePromises.push(increaseSongCountInArtist(addedArtistIds));
+  }
+
+  // Decrement songCount for removed artist IDs
+  if (removedArtistIds.length > 0) {
+    updatePromises.push(
+      appPrisma.artist.updateMany({
+        where: {
+          id: {
+            in: removedArtistIds,
+          },
+        },
+        data: {
+          songCount: {
+            decrement: 1,
+          },
+        },
+      }),
+    );
+  }
+
+  await Promise.all(updatePromises);
+}
 
 export async function createSong(data: SongData.ServerType) {
   return createPrismaRequest(() => {
@@ -34,22 +100,11 @@ export async function createSong(data: SongData.ServerType) {
             playlistId: null,
           },
         });
-        const updateArtistRequest = appPrisma.artist.updateMany({
-          where: {
-            id: {
-              in: data.artistIds.map((option) => option.value),
-            },
-          },
-          data: {
-            songCount: {
-              increment: 1,
-            },
-          },
-        });
-
         const [songs] = await Promise.all([
           createSongRequest,
-          updateArtistRequest,
+          increaseSongCountInArtist(
+            data.artistIds.map((option) => option.value),
+          ),
         ]);
 
         revalidatePath("/admin/songs"); // This will re-fetch the song list
@@ -59,16 +114,20 @@ export async function createSong(data: SongData.ServerType) {
   });
 }
 
-export async function updateSongs(id: Song["id"], data: SongData.ServerType) {
+export async function updateSong(
+  songId: Song["id"],
+  data: SongData.ServerType,
+) {
   return createPrismaRequest(() => {
     return validateWithSchema({
       data: data,
       schema: SongData.serverSchema,
       async onPassed(data) {
         const duration = await getMp3Duration(`public${data.song}`);
+
         const createSongRequest = appPrisma.song.update({
           where: {
-            id: id,
+            id: songId,
           },
           data: {
             name: data.name,
@@ -81,22 +140,10 @@ export async function updateSongs(id: Song["id"], data: SongData.ServerType) {
             },
           },
         });
-        const updateArtistRequest = appPrisma.artist.updateMany({
-          where: {
-            id: {
-              in: data.artistIds.map((option) => option.value),
-            },
-          },
-          data: {
-            songCount: {
-              increment: 1,
-            },
-          },
-        });
-
+        const newArtistIds = data.artistIds.map((option) => option.value);
         const [songs] = await Promise.all([
           createSongRequest,
-          updateArtistRequest,
+          increaseOrDecreaseSongCountInArtist(songId, newArtistIds),
         ]);
 
         revalidatePath("/admin/songs"); // This will re-fetch the song list
