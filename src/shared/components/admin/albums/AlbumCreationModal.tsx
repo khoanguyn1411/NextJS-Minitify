@@ -103,7 +103,6 @@ export const AlbumCreationModal: FC<Props> = (props) => {
   };
 
   useEffect(() => {
-    console.log({ isEditMode });
     if (!isEditMode) {
       return;
     }
