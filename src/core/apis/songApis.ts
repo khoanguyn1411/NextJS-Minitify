@@ -56,7 +56,7 @@ async function increaseOrDecreaseSongCountInArtist(
   });
 
   if (currentSong == null) {
-    return buildAppError("Invalid song ID.");
+    throw new Error("Invalid song ID.");
   }
   const currentArtistIds = currentSong.artists.map((artist) => artist.id);
   const addedArtistIds = newArtistIds.filter(
