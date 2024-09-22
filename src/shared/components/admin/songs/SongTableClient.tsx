@@ -1,6 +1,6 @@
 "use client";
 
-import { User as NextUiUser } from "@nextui-org/react";
+import { User as NextUiUser, Tooltip } from "@nextui-org/react";
 import { type FC } from "react";
 
 import { type ISong } from "@/core/apis/songApis";
@@ -45,9 +45,13 @@ const columns: readonly TableColumn<ISong>[] = [
   },
   { title: "Play count", key: "playTime", align: "end" },
   {
-    title: "Created date",
-    key: "createdDate",
-    toReadable: (item) => DateUtils.toReadable(item.createdDate),
+    title: "Album",
+    key: "album",
+    render: (item) => (
+      <Tooltip content={item.album?.name}>
+        <p className="truncate-1">{item.album?.name ?? "-"}</p>
+      </Tooltip>
+    ),
   },
   {
     title: "Edit",
