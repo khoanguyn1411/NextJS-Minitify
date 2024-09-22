@@ -3,7 +3,7 @@
 import { Divider, NextUIProvider } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { type FC } from "react";
-import { BiLibrary, BiMusic, BiTrendingUp, BiWorld } from "react-icons/bi";
+import { BiLibrary, BiTrendingUp } from "react-icons/bi";
 
 import {
   NavigationItem,
@@ -28,16 +28,6 @@ const discoverNarItems: readonly NavigationItemProps[] = [
     title: "Trending Musics",
     url: "/trending-musics",
     icon: <BiTrendingUp />,
-  },
-  {
-    title: "Discover",
-    url: "/discover",
-    icon: <BiWorld />,
-  },
-  {
-    title: "New songs",
-    url: "/new-songs",
-    icon: <BiMusic />,
   },
 ];
 
@@ -64,7 +54,7 @@ export const NavigationAside: FC = () => {
 
       <div className="mt-auto">
         <Divider className="mb-3" />
-        <p className="text-sm">
+        <p className="text-xs">
           This is self-edu project. No commercial purpose.
         </p>
       </div>
