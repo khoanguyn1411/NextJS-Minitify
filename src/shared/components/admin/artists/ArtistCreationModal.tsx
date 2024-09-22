@@ -40,8 +40,9 @@ export const ArtistCreationModal: FC<Props> = (props) => {
     handleSubmit,
     reset,
     setError,
-    formState: { isLoading },
+    formState: { isLoading, isDirty },
   } = useForm<ArtistData.Type>({
+    shouldUnregister: true,
     resolver: zodResolver(
       isEditMode ? ArtistData.editSchema : ArtistData.createSchema,
     ),
@@ -64,7 +65,9 @@ export const ArtistCreationModal: FC<Props> = (props) => {
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
-      notify("Created new artist", { type: "success" });
+      notify(isEditMode ? "Updated successfully" : "Created new artist", {
+        type: "success",
+      });
       props.onClose();
       if (isEditMode) {
         return;
@@ -77,12 +80,15 @@ export const ArtistCreationModal: FC<Props> = (props) => {
     if (!isEditMode) {
       return;
     }
+    if (!props.isOpen) {
+      return;
+    }
     reset({
       name: props.artist.name,
       biography: props.artist.biography,
       image: null,
     });
-  }, [isEditMode]);
+  }, [isEditMode, props.isOpen]);
 
   return (
     <Modal
@@ -93,7 +99,9 @@ export const ArtistCreationModal: FC<Props> = (props) => {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="text-2xl">Add New Artist</ModalHeader>
+            <ModalHeader className="text-2xl">
+              {isEditMode ? "Edit" : "Add"} Artist
+            </ModalHeader>
             <ModalBody className="flex flex-col gap-7">
               <form className="flex flex-col gap-4">
                 <Controller
@@ -145,6 +153,7 @@ export const ArtistCreationModal: FC<Props> = (props) => {
               <Button
                 isLoading={isLoading}
                 color="primary"
+                isDisabled={!isDirty}
                 onClick={handleSubmit(onFormSubmit)}
               >
                 Submit

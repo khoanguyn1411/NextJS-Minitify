@@ -42,9 +42,9 @@ const songsSelectConfig: SelectConfig<Song, number> = {
 };
 
 const artistSelectConfig: SelectConfig<Artist, number> = {
-  toOption: (item) => ({ value: item.id, label: item.fullName }),
+  toOption: (item) => ({ value: item.id, label: item.name }),
   fetchApi: (filters) => getArtists(filters),
-  toReadable: (item) => item.fullName,
+  toReadable: (item) => item.name,
   toKey: (item) => item.id,
 };
 
@@ -59,8 +59,9 @@ export const AlbumCreationModal: FC<Props> = (props) => {
     handleSubmit,
     reset,
     setError,
-    formState: { isLoading },
+    formState: { isLoading, isDirty },
   } = useForm<AlbumData.Type>({
+    shouldUnregister: true,
     resolver: zodResolver(
       isEditMode ? AlbumData.editSchema : AlbumData.createSchema,
     ),
@@ -108,6 +109,9 @@ export const AlbumCreationModal: FC<Props> = (props) => {
     if (!isEditMode) {
       return;
     }
+    if (!props.isOpen) {
+      return;
+    }
     reset({
       name: props.album.name,
       description: props.album.description,
@@ -121,7 +125,7 @@ export const AlbumCreationModal: FC<Props> = (props) => {
       })),
       image: null,
     });
-  }, [isEditMode]);
+  }, [isEditMode, props.isOpen]);
 
   return (
     <Modal
@@ -214,6 +218,7 @@ export const AlbumCreationModal: FC<Props> = (props) => {
               <Button
                 isLoading={isLoading}
                 color="primary"
+                isDisabled={!isDirty}
                 onClick={handleSubmit(onFormSubmit)}
               >
                 Submit

@@ -30,9 +30,9 @@ import { type SelectConfig } from "../../autocompletes/useFetchAutocomplete";
 type Props = ReturnType<typeof useDisclosure>;
 
 const config: SelectConfig<Artist, number> = {
-  toOption: (item) => ({ value: item.id, label: item.fullName }),
+  toOption: (item) => ({ value: item.id, label: item.name }),
   fetchApi: (filters) => getArtists(filters),
-  toReadable: (item) => item.fullName,
+  toReadable: (item) => item.name,
   toKey: (item) => item.id,
 };
 
@@ -44,7 +44,7 @@ export const SongCreationModal: FC<Props> = (props) => {
     handleSubmit,
     reset,
     setError,
-    formState: { isLoading },
+    formState: { isLoading, isDirty },
   } = useForm<SongData.Type>({
     defaultValues: SongData.initialValue,
     resolver: zodResolver(SongData.schema),
@@ -178,6 +178,7 @@ export const SongCreationModal: FC<Props> = (props) => {
               <Button
                 isLoading={isLoading}
                 color="primary"
+                isDisabled={!isDirty}
                 onClick={handleSubmit(onFormSubmit)}
               >
                 Submit
