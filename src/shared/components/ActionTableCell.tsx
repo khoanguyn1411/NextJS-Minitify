@@ -70,7 +70,10 @@ export const ActionTableCell: FC<Props> = ({ onDeleteClick, onEditClick }) => {
               </ModalHeader>
               <ModalBody className="flex flex-col gap-2">
                 <p>Are you sure you want to delete this?</p>
-                <p>This action cannot be undo.</p>
+                <p>
+                  All related data will be removed and this action cannot be
+                  undo.
+                </p>
               </ModalBody>
               <ModalFooter>
                 <Button color="primary" variant="light" onClick={onClose}>
