@@ -71,40 +71,38 @@ export const SongCreationModal: FC<Props> = (props) => {
       imageUrl: props.song?.imageUrl ?? "",
       songUrl: props.song?.songUrl ?? "",
     };
-    if (data.image != null && data.song != null) {
-      const imageFilePathPromise = uploadFile(
-        convertFileToFormData(data.image),
-      );
-      const songFilePathPromise = uploadFile(
-        convertFileToFormData(data.song),
-        "musics",
-      );
-      const [imageFilePath, songFilePath] = await Promise.all([
-        imageFilePathPromise,
-        songFilePathPromise,
-      ]);
-      if (!isSuccess(imageFilePath)) {
-        notifyOnAppError(imageFilePath);
-        return defaultUrls;
-      }
-      if (!isSuccess(songFilePath)) {
-        notifyOnAppError(songFilePath);
-        return defaultUrls;
-      }
-      return {
-        imageUrl: imageFilePath.path,
-        songUrl: songFilePath.path,
-      };
+    const promises = [];
+
+    if (data.image != null) {
+      promises.push(uploadFile(convertFileToFormData(data.image)));
+    } else {
+      promises.push(null);
     }
-    return defaultUrls;
+
+    if (data.song != null) {
+      promises.push(uploadFile(convertFileToFormData(data.song), "musics"));
+    } else {
+      promises.push(null);
+    }
+
+    const [imageFilePath, songFilePath] = await Promise.all(promises);
+
+    if (!isSuccess(imageFilePath)) {
+      notifyOnAppError(imageFilePath);
+      return defaultUrls;
+    }
+    if (!isSuccess(songFilePath)) {
+      notifyOnAppError(songFilePath);
+      return defaultUrls;
+    }
+    return {
+      imageUrl: imageFilePath?.path ?? defaultUrls.imageUrl,
+      songUrl: songFilePath?.path ?? defaultUrls.songUrl,
+    };
   };
 
   const onFormSubmit = async (data: SongData.Type) => {
     const { imageUrl, songUrl } = await getUrls(data);
-    if (!isEditMode && (imageUrl == "" || songUrl == "")) {
-      return;
-    }
-
     const result = isEditMode
       ? await updateSong(props.song.id, {
           ...data,
@@ -116,7 +114,6 @@ export const SongCreationModal: FC<Props> = (props) => {
           image: imageUrl,
           song: songUrl,
         });
-
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
