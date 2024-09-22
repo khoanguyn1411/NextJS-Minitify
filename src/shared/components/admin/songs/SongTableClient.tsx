@@ -54,8 +54,8 @@ const columns: readonly TableColumn<ISong>[] = [
     ),
   },
   {
-    title: "Edit",
-    key: "edit",
+    title: "Actions",
+    key: "actions",
     width: 50,
     align: "center",
     render: (item) => <SongActionsCell song={item} />,
