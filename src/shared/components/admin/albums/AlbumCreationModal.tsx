@@ -82,12 +82,12 @@ export const AlbumCreationModal: FC<Props> = (props) => {
     const result = isEditMode
       ? await updateAlbum(props.album.id, {
           ...data,
-          artistId: data.artistId.value,
+          artistId: data.artistId,
           image: imageUrl,
         })
       : await createAlbum({
           ...data,
-          artistId: data.artistId.value,
+          artistId: data.artistId,
           image: imageUrl,
         });
 

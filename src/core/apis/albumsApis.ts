@@ -42,7 +42,7 @@ export async function createAlbum(data: AlbumData.ServerType) {
             songs: {
               connect: data.songIds.map((option) => ({ id: option.value })),
             },
-            artistId: data.artistId,
+            artistId: data.artistId?.value,
             imageUrl: data.image,
           },
         });
@@ -73,7 +73,7 @@ export async function updateAlbum(id: Album["id"], data: AlbumData.ServerType) {
             name: data.name,
             description: data.description,
             songs: songConnect,
-            artistId: data.artistId,
+            artistId: data.artistId?.value,
             imageUrl: data.image,
           },
         });

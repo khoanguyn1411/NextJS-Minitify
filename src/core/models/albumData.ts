@@ -11,20 +11,19 @@ export namespace AlbumData {
     songIds: ZodUtils.notAllowEmptyArray(
       createSelectOptionSchema(z.number()).array(),
     ),
+    artistId: createSelectOptionSchema(z.number()).nullable(),
   });
 
   export const createSchema = baseSchema.extend({
-    artistId: createSelectOptionSchema(z.number()).nullable(),
     image: ZodUtils.notAllowNullable(z.instanceof(File)),
   });
 
   export const editSchema = baseSchema.extend({
-    artistId: createSelectOptionSchema(z.number()).nullable(),
     image: z.instanceof(File).or(z.null()),
   });
 
   export const serverSchema = baseSchema.extend({
-    artistId: ZodUtils.requiredNumber(),
+    artistId: createSelectOptionSchema(z.number()),
     image: ZodUtils.requiredString(),
   });
 
