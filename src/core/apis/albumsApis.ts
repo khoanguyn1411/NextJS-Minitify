@@ -43,7 +43,7 @@ export async function updateAlbum(id: Album["id"], data: AlbumData.ServerType) {
       data: data,
       schema: AlbumData.serverSchema,
       async onPassed(data) {
-        const artist = await appPrisma.album.update({
+        const album = await appPrisma.album.update({
           where: {
             id,
           },
@@ -59,7 +59,7 @@ export async function updateAlbum(id: Album["id"], data: AlbumData.ServerType) {
           },
         });
         revalidatePath("/admin/albums"); // This will re-fetch the albums list
-        return artist;
+        return album;
       },
     });
   });

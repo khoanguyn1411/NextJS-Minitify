@@ -11,10 +11,14 @@ import {
   ModalHeader,
   type useDisclosure,
 } from "@nextui-org/react";
-import { type FC } from "react";
+import { useEffect, type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { createArtist } from "@/core/apis/artistApis";
+import {
+  createArtist,
+  updateArtist,
+  type IArtist,
+} from "@/core/apis/artistApis";
 import { uploadFile } from "@/core/apis/uploadApis";
 import { ArtistData } from "@/core/models/artistData";
 import { useError } from "@/shared/hooks/useError";
@@ -23,11 +27,14 @@ import { convertFileToFormData } from "@/shared/services/uploadService";
 
 import { FileUploader } from "../../FileUploader";
 
-type Props = ReturnType<typeof useDisclosure>;
+type Props = ReturnType<typeof useDisclosure> & {
+  readonly artist?: IArtist;
+};
 
 export const ArtistCreationModal: FC<Props> = (props) => {
   const { extractErrorsToForm, notifyOnAppError, isSuccess } = useError();
   const { notify } = useNotify();
+  const isEditMode = props.artist != null;
   const {
     control,
     handleSubmit,
@@ -35,7 +42,9 @@ export const ArtistCreationModal: FC<Props> = (props) => {
     setError,
     formState: { isLoading },
   } = useForm<ArtistData.Type>({
-    resolver: zodResolver(ArtistData.schema),
+    resolver: zodResolver(
+      isEditMode ? ArtistData.editSchema : ArtistData.createSchema,
+    ),
   });
 
   const onFormSubmit = async (data: ArtistData.Type) => {
@@ -48,15 +57,33 @@ export const ArtistCreationModal: FC<Props> = (props) => {
       }
       imageUrl = filePath.path;
     }
-    const result = await createArtist({ ...data, image: imageUrl });
+    const result = isEditMode
+      ? await updateArtist(props.artist.id, { ...data, image: imageUrl })
+      : await createArtist({ ...data, image: imageUrl });
+
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
       notify("Created new artist", { type: "success" });
       props.onClose();
+      if (isEditMode) {
+        return;
+      }
       reset(ArtistData.initialValue);
     }
   };
+
+  useEffect(() => {
+    if (!isEditMode) {
+      return;
+    }
+    reset({
+      lastName: props.artist.lastName,
+      firstName: props.artist.firstName,
+      biography: props.artist.biography,
+      image: null,
+    });
+  }, [isEditMode]);
 
   return (
     <Modal

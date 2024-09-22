@@ -9,15 +9,19 @@ export namespace ArtistData {
     biography: ZodUtils.requiredString(),
   });
 
-  export const schema = baseSchema.extend({
+  export const createSchema = baseSchema.extend({
     image: ZodUtils.notAllowNullable(z.instanceof(File)),
+  });
+
+  export const editSchema = baseSchema.extend({
+    image: z.instanceof(File).or(z.null()),
   });
 
   export const serverSchema = baseSchema.extend({
     image: ZodUtils.requiredString(),
   });
 
-  export type Type = z.infer<typeof schema>;
+  export type Type = z.infer<typeof createSchema>;
   export type ServerType = z.infer<typeof serverSchema>;
 
   export const initialValue: Type = {
