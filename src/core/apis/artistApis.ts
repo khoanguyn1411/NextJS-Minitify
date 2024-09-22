@@ -23,7 +23,6 @@ export async function createArtist(data: ArtistData.ServerType) {
             name: data.name,
             biography: data.biography,
             imageUrl: data.image,
-            songCount: 0,
           },
         });
         revalidatePath("/admin/artists"); // This will re-fetch the artist list

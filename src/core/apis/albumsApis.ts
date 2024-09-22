@@ -42,7 +42,6 @@ export async function createAlbum(data: AlbumData.ServerType) {
             songs: {
               connect: data.songIds.map((option) => ({ id: option.value })),
             },
-            songCount: data.songIds.length,
             artistId: data.artistId,
             imageUrl: data.image,
           },
@@ -77,7 +76,6 @@ export async function updateAlbum(id: Album["id"], data: AlbumData.ServerType) {
               connect: albumConnect.fieldToConnect,
               disconnect: albumConnect.fieldToDisconnect,
             },
-            songCount: data.songIds.length,
             artistId: data.artistId,
             imageUrl: data.image,
           },

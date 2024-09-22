@@ -1,6 +1,6 @@
 "use server";
 
-import { type Artist, type Song } from "@prisma/client";
+import { type Song } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 import { appPrisma } from "@/shared/configs/prisma.config";
@@ -13,71 +13,6 @@ import { getMp3Duration } from "@/shared/utils/getMp3Duration";
 
 import { type BaseFilterParams } from "../models/baseFilterParams";
 import { SongData } from "../models/songData";
-
-async function increaseSongCountInArtist(currentArtistIds: Artist["id"][]) {
-  await appPrisma.artist.updateMany({
-    where: {
-      id: {
-        in: currentArtistIds,
-      },
-    },
-    data: {
-      songCount: {
-        increment: 1,
-      },
-    },
-  });
-}
-
-async function decreaseSongCountInArtist(currentArtistIds: Artist["id"][]) {
-  await appPrisma.artist.updateMany({
-    where: {
-      id: {
-        in: currentArtistIds,
-      },
-    },
-    data: {
-      songCount: {
-        decrement: 1,
-      },
-    },
-  });
-}
-
-async function increaseOrDecreaseSongCountInArtist(
-  songId: Song["id"],
-  newArtistIds: Artist["id"][],
-) {
-  const currentSong = await appPrisma.song.findUnique({
-    where: { id: songId },
-    select: { artists: true },
-  });
-
-  if (currentSong == null) {
-    throw new Error("Invalid song ID.");
-  }
-  const currentArtistIds = currentSong.artists.map((artist) => artist.id);
-  const addedArtistIds = newArtistIds.filter(
-    (id) => !currentArtistIds.includes(id),
-  );
-  const removedArtistIds = currentArtistIds.filter(
-    (id) => !newArtistIds.includes(id),
-  );
-
-  const updatePromises = [];
-
-  // Increment songCount for added artist IDs
-  if (addedArtistIds.length > 0) {
-    updatePromises.push(increaseSongCountInArtist(addedArtistIds));
-  }
-
-  // Decrement songCount for removed artist IDs
-  if (removedArtistIds.length > 0) {
-    updatePromises.push(decreaseSongCountInArtist(removedArtistIds));
-  }
-
-  await Promise.all(updatePromises);
-}
 
 async function findCurrentSong(songId: Song["id"]) {
   const currentSong = await appPrisma.song.findUnique({
@@ -116,12 +51,7 @@ export async function createSong(data: SongData.ServerType) {
             playlistId: null,
           },
         });
-        const [songs] = await Promise.all([
-          createSongRequest,
-          increaseSongCountInArtist(
-            data.artistIds.map((option) => option.value),
-          ),
-        ]);
+        const [songs] = await Promise.all([createSongRequest]);
 
         revalidatePath("/admin/songs"); // This will re-fetch the song list
         return songs;
@@ -163,11 +93,7 @@ export async function updateSong(
             },
           },
         });
-        const newArtistIds = data.artistIds.map((option) => option.value);
-        const [songs] = await Promise.all([
-          createSongRequest,
-          increaseOrDecreaseSongCountInArtist(songId, newArtistIds),
-        ]);
+        const [songs] = await Promise.all([createSongRequest]);
 
         revalidatePath("/admin/songs"); // This will re-fetch the song list
         return songs;
