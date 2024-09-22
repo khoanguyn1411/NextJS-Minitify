@@ -60,7 +60,7 @@ export async function updateAlbum(id: Album["id"], data: AlbumData.ServerType) {
       schema: AlbumData.serverSchema,
       async onPassed(data) {
         const currentAlbum = await findCurrentAlbum(id);
-        const albumConnect = determineConnectField({
+        const songConnect = determineConnectField({
           currentFieldIds: currentAlbum?.songs.map((song) => song.id) ?? [],
           newFieldIds: data.songIds.map((option) => option.value),
         });
@@ -72,10 +72,7 @@ export async function updateAlbum(id: Album["id"], data: AlbumData.ServerType) {
           data: {
             name: data.name,
             description: data.description,
-            songs: {
-              connect: albumConnect.fieldToConnect,
-              disconnect: albumConnect.fieldToDisconnect,
-            },
+            songs: songConnect,
             artistId: data.artistId,
             imageUrl: data.image,
           },

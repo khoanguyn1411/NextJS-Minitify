@@ -101,14 +101,8 @@ export async function updateSong(
             albumId: data.albumId?.value ?? null,
             duration: duration,
             songUrl: data.song,
-            artists: {
-              connect: artistConnect.fieldToConnect,
-              disconnect: artistConnect.fieldToDisconnect,
-            },
-            tags: {
-              connect: tagConnect.fieldToConnect,
-              disconnect: tagConnect.fieldToDisconnect,
-            },
+            artists: artistConnect,
+            tags: tagConnect,
           },
         });
         const [songs] = await Promise.all([createSongRequest]);

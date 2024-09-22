@@ -17,7 +17,7 @@ export function determineConnectField({ currentFieldIds, newFieldIds }: Field) {
     (id) => !newFieldIds.includes(id),
   );
   return {
-    fieldToConnect: fieldToConnect.map((id) => ({ id })),
-    fieldToDisconnect: fieldToDisconnect.map((id) => ({ id })),
+    connect: fieldToConnect.map((id) => ({ id })),
+    disconnect: fieldToDisconnect.map((id) => ({ id })),
   };
 }
