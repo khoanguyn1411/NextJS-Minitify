@@ -38,6 +38,7 @@ model Song {
   playlist    Playlist? @relation(fields: [playlistId], references: [id])
   playlistId  Int?
   updatedAt   DateTime  @updatedAt
+  tags        Tag[]
 }
 
 model Album {
@@ -83,6 +84,11 @@ model Session {
   id        String   @id
   userId    Int
   expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+}
 
-  user User @relation(references: [id], fields: [userId], onDelete: Cascade)
+model Tag {
+  id    Int    @id @default(autoincrement())
+  songs Song[]
+  name  String
 }

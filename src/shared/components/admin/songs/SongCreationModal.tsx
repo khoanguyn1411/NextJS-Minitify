@@ -145,7 +145,7 @@ export const SongCreationModal: FC<Props> = (props) => {
           : null,
       artistIds: props.song.artists.map((artist) => ({
         value: artist.id,
-        label: artistSelectConfig.toReadable(artist),
+        label: artist.name,
       })),
     });
   }, [isEditMode, props.isOpen]);
