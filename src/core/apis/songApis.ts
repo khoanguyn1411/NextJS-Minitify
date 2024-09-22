@@ -163,6 +163,9 @@ export async function getSongs(pagination: BaseFilterParams.Combined) {
     const songs = await appPrisma.song.findMany({
       ...paginationFilters,
       ...filters,
+      include: {
+        artists: true,
+      },
     });
 
     return createPagination({
@@ -173,3 +176,5 @@ export async function getSongs(pagination: BaseFilterParams.Combined) {
     });
   });
 }
+
+export type ISong = Awaited<ReturnType<typeof getSongs>>["items"][0];

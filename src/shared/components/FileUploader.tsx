@@ -14,7 +14,7 @@ type Props = {
   readonly errorMessage?: ReactNode;
   readonly label?: string;
   readonly fileAccepted?: (typeof ACCEPTED_UPLOAD_FILES)[keyof typeof ACCEPTED_UPLOAD_FILES];
-  readonly currentImageUrl?: string;
+  readonly currentUrl?: string;
 };
 
 export const FileUploader: FC<Props> = ({
@@ -22,10 +22,12 @@ export const FileUploader: FC<Props> = ({
   errorMessage,
   label,
   fileAccepted,
-  currentImageUrl,
+  currentUrl,
   onChange,
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const isCurrentFileShown = value == null && currentUrl;
 
   const handleButtonClick = () => {
     fileInputRef.current?.click(); // Simulate click on file input
@@ -61,10 +63,15 @@ export const FileUploader: FC<Props> = ({
     <Card className="flex flex-col gap-2 bg-input p-container">
       <label className="text-sm">{label}</label>
       <div className="flex flex-col gap-4 items-center">
-        {value == null && currentImageUrl && (
+        {isCurrentFileShown && fileAccepted === ".mp3" && (
+          <audio controls>
+            <source src={currentUrl} />
+          </audio>
+        )}
+        {isCurrentFileShown && fileAccepted === ".jpg,.jpeg,.png" && (
           <Image
             isBlurred
-            src={currentImageUrl ?? ""}
+            src={currentUrl ?? ""}
             width={100}
             height={100}
             alt="Preview"

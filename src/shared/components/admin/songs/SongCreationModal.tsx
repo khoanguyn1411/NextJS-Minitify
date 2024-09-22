@@ -12,11 +12,11 @@ import {
   type useDisclosure,
 } from "@nextui-org/react";
 import { type Artist } from "@prisma/client";
-import { type FC } from "react";
+import { useEffect, type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 import { getArtists } from "@/core/apis/artistApis";
-import { createSong } from "@/core/apis/songApis";
+import { createSong, type ISong } from "@/core/apis/songApis";
 import { uploadFile } from "@/core/apis/uploadApis";
 import { SongData } from "@/core/models/songData";
 import { useError } from "@/shared/hooks/useError";
@@ -27,7 +27,9 @@ import { FileUploader } from "../../FileUploader";
 import { AppMultipleSelect } from "../../autocompletes/AppMultipleSelect";
 import { type SelectConfig } from "../../autocompletes/useFetchAutocomplete";
 
-type Props = ReturnType<typeof useDisclosure>;
+type Props = ReturnType<typeof useDisclosure> & {
+  readonly song?: ISong;
+};
 
 const config: SelectConfig<Artist, number> = {
   toOption: (item) => ({ value: item.id, label: item.name }),
@@ -39,6 +41,8 @@ const config: SelectConfig<Artist, number> = {
 export const SongCreationModal: FC<Props> = (props) => {
   const { extractErrorsToForm, notifyOnAppError, isSuccess } = useError();
   const { notify } = useNotify();
+  const isEditMode = props.song != null;
+
   const {
     control,
     handleSubmit,
@@ -104,6 +108,24 @@ export const SongCreationModal: FC<Props> = (props) => {
     }
   };
 
+  useEffect(() => {
+    if (!isEditMode) {
+      return;
+    }
+    if (!props.isOpen) {
+      return;
+    }
+    reset({
+      name: props.song.name,
+      image: null,
+      song: null,
+      artistIds: props.song.artists.map((artist) => ({
+        value: artist.id,
+        label: config.toReadable(artist),
+      })),
+    });
+  }, [isEditMode, props.isOpen]);
+
   return (
     <Modal
       isOpen={props.isOpen}
@@ -135,6 +157,7 @@ export const SongCreationModal: FC<Props> = (props) => {
                   name="image"
                   render={({ field, fieldState }) => (
                     <FileUploader
+                      currentUrl={props.song?.imageUrl}
                       fileAccepted=".jpg,.jpeg,.png"
                       label="Image"
                       errorMessage={fieldState.error?.message}
@@ -148,6 +171,7 @@ export const SongCreationModal: FC<Props> = (props) => {
                   name="song"
                   render={({ field, fieldState }) => (
                     <FileUploader
+                      currentUrl={props.song?.songUrl}
                       fileAccepted=".mp3"
                       label="Song"
                       errorMessage={fieldState.error?.message}

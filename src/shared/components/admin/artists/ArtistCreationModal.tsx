@@ -138,7 +138,7 @@ export const ArtistCreationModal: FC<Props> = (props) => {
                     <FileUploader
                       fileAccepted=".jpg,.jpeg,.png"
                       label="Image"
-                      currentImageUrl={props.artist?.imageUrl}
+                      currentUrl={props.artist?.imageUrl}
                       errorMessage={fieldState.error?.message}
                       {...field}
                     />

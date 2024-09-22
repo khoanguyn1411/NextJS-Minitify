@@ -1,7 +1,6 @@
 "use client";
 
 import { User as NextUiUser, Tooltip } from "@nextui-org/react";
-import { type Artist } from "@prisma/client";
 import { type FC } from "react";
 
 import { type IArtist } from "@/core/apis/artistApis";
@@ -11,7 +10,7 @@ import { DateUtils } from "@/shared/utils/dateUtils";
 import { AppTable, type TableColumn } from "../../AppTable";
 import { ArtistEditButton } from "./ArtistEditButton";
 
-const columns: readonly TableColumn<Artist>[] = [
+const columns: readonly TableColumn<IArtist>[] = [
   { title: "ID", key: "id" },
   {
     title: "Artist",
