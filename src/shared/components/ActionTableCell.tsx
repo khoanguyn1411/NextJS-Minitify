@@ -15,13 +15,24 @@ import { BiEdit, BiTrash } from "react-icons/bi";
 import { MdWarning } from "react-icons/md";
 import { isDirty } from "zod";
 
+import { useToggleExecutionState } from "../hooks/useToggleExecutionState";
+
 type Props = {
   readonly onEditClick: () => void;
-  readonly onDeleteClick: () => void;
+  readonly onDeleteClick: () => Promise<void>;
 };
 
 export const ActionTableCell: FC<Props> = ({ onDeleteClick, onEditClick }) => {
-  const { onOpen, onOpenChange, isOpen } = useDisclosure();
+  const { onOpen, onOpenChange, isOpen, onClose } = useDisclosure();
+  const [isLoading, toggleExecutionState] = useToggleExecutionState();
+
+  const handleDeleteClick = () => {
+    toggleExecutionState(async () => {
+      await onDeleteClick();
+      onClose();
+    });
+  };
+
   return (
     <>
       <div className="flex gap-2">
@@ -67,8 +78,9 @@ export const ActionTableCell: FC<Props> = ({ onDeleteClick, onEditClick }) => {
                 </Button>
                 <Button
                   color="primary"
+                  isLoading={isLoading}
                   isDisabled={!isDirty}
-                  onClick={onDeleteClick}
+                  onClick={handleDeleteClick}
                 >
                   Confirm
                 </Button>

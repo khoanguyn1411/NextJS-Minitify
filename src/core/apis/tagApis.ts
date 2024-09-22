@@ -84,6 +84,7 @@ export async function deleteTagById(songId: Tag["id"]) {
         id: songId,
       },
     });
+    revalidatePath("/admin/tags"); // This will re-fetch the song list
   });
 }
 
