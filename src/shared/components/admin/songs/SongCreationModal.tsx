@@ -154,6 +154,7 @@ export const SongCreationModal: FC<Props> = (props) => {
     <Modal
       isOpen={props.isOpen}
       onClose={reset}
+      scrollBehavior="inside"
       isDismissable={false}
       onOpenChange={props.onOpenChange}
     >

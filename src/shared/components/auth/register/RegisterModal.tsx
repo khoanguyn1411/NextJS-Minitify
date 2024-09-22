@@ -45,6 +45,7 @@ export const RegisterModal: FC<Props> = (props) => {
     <Modal
       isOpen={props.isOpen}
       onOpenChange={props.onOpenChange}
+      scrollBehavior="inside"
       onClose={reset}
     >
       <ModalContent>

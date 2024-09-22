@@ -131,6 +131,7 @@ export const AlbumCreationModal: FC<Props> = (props) => {
     <Modal
       isOpen={props.isOpen}
       isDismissable={false}
+      scrollBehavior="inside"
       onClose={reset}
       onOpenChange={props.onOpenChange}
     >

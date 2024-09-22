@@ -42,6 +42,7 @@ export const LoginModal: FC<Props> = (props) => {
     <Modal
       isOpen={props.isOpen}
       onClose={reset}
+      scrollBehavior="inside"
       onOpenChange={props.onOpenChange}
     >
       <ModalContent>
