@@ -90,6 +90,7 @@ export async function deleteArtistById(artistId: Artist["id"]) {
         id: artistId,
       },
     });
+    revalidatePath("/admin/artists"); // This will re-fetch the artist list
   });
 }
 

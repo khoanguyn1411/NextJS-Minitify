@@ -25,19 +25,18 @@ model Artist {
 }
 
 model Song {
-  id          Int       @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   name        String
-  playTime    Int       @default(0)
+  playTime    Int        @default(0)
   imageUrl    String
-  createdDate DateTime  @default(now())
+  createdDate DateTime   @default(now())
   duration    Float
-  songUrl     String    @default("")
+  songUrl     String     @default("")
   artists     Artist[]
-  album       Album?    @relation(fields: [albumId], references: [id])
+  album       Album?     @relation(fields: [albumId], references: [id], onDelete: Cascade)
   albumId     Int?
-  playlist    Playlist? @relation(fields: [playlistId], references: [id])
-  playlistId  Int?
-  updatedAt   DateTime  @updatedAt
+  playlists   Playlist[]
+  updatedAt   DateTime   @updatedAt
   tags        Tag[]
 }
 
@@ -49,7 +48,7 @@ model Album {
   playTime    Int      @default(0)
   createdDate DateTime @default(now())
   songs       Song[]
-  artist      Artist   @relation(fields: [artistId], references: [id])
+  artist      Artist   @relation(fields: [artistId], references: [id], onDelete: Cascade)
   artistId    Int
   updatedAt   DateTime @updatedAt
 }

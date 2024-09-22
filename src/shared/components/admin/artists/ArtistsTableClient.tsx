@@ -8,7 +8,7 @@ import { type Pagination } from "@/core/models/pagination";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
 import { AppTable, type TableColumn } from "../../AppTable";
-import { ArtistEditButton } from "./ArtistEditButton";
+import { ArtistActionsCell } from "./ArtistActionsCell";
 
 const columns: readonly TableColumn<IArtist>[] = [
   { title: "ID", key: "id" },
@@ -48,10 +48,11 @@ const columns: readonly TableColumn<IArtist>[] = [
     toReadable: (item) => DateUtils.toReadable(item.createdDate),
   },
   {
-    title: "Edit",
-    key: "edit",
+    title: "Actions",
+    key: "actions",
+    align: "center",
     width: 50,
-    render: (item) => <ArtistEditButton artist={item} />,
+    render: (item) => <ArtistActionsCell artist={item} />,
   },
 ];
 

@@ -56,7 +56,6 @@ export async function createSong(data: SongData.ServerType) {
               connect: data.tagIds.map((option) => ({ id: option.value })),
             },
             playTime: 0,
-            playlistId: null,
           },
         });
         const [songs] = await Promise.all([createSongRequest]);
