@@ -19,7 +19,7 @@ export async function createPagination<
   pagination,
   filters,
 }: Params<T, M>): Promise<Pagination<M>> {
-  const skip = (pagination.pageNumber - 1) * pagination.pageSize;
+  const skip = pagination.pageNumber * pagination.pageSize;
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-expect-error

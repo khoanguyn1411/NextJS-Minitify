@@ -68,6 +68,7 @@ export const AppTable = <TData extends Record<string, any>>(
               onChange={handlePaginationChange}
               showControls
               showShadow
+              isDisabled={props.page.totalCount === 0}
               total={props.page.totalPages}
               page={props.page.pageNumber + 1}
             />
