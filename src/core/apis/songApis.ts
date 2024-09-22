@@ -148,6 +148,7 @@ export async function deleteSongById(songId: Song["id"]) {
         id: songId,
       },
     });
+    revalidatePath("/admin/songs"); // This will re-fetch the song list
   });
 }
 

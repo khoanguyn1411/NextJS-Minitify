@@ -8,7 +8,7 @@ import { type Pagination } from "@/core/models/pagination";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
 import { AppTable, type TableColumn } from "../../AppTable";
-import { SongEditButton } from "./SongEditButton";
+import { SongActionsCell } from "./SongActionsCell";
 
 const columns: readonly TableColumn<ISong>[] = [
   { title: "ID", key: "id" },
@@ -57,7 +57,8 @@ const columns: readonly TableColumn<ISong>[] = [
     title: "Edit",
     key: "edit",
     width: 50,
-    render: (item) => <SongEditButton song={item} />,
+    align: "center",
+    render: (item) => <SongActionsCell song={item} />,
   },
 ];
 
