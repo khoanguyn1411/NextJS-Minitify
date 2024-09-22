@@ -117,7 +117,9 @@ export const SongCreationModal: FC<Props> = (props) => {
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
-      notify("Created new artist", { type: "success" });
+      notify(isEditMode ? "Created new song" : "Song updated", {
+        type: "success",
+      });
       props.onClose();
       reset(SongData.initialValue);
     }
@@ -158,7 +160,9 @@ export const SongCreationModal: FC<Props> = (props) => {
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader className="text-2xl">Add New Song</ModalHeader>
+            <ModalHeader className="text-2xl">
+              {isEditMode ? "Edit Song" : "Add Song"}
+            </ModalHeader>
             <ModalBody className="flex flex-col gap-7">
               <form className="flex flex-col gap-4">
                 <Controller
