@@ -118,6 +118,7 @@ export async function deleteAlbumId(albumId: Album["id"]) {
         id: albumId,
       },
     });
+    revalidatePath("/admin/albums"); // This will re-fetch the albums list
   });
 }
 

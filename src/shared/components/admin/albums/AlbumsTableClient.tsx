@@ -8,7 +8,7 @@ import { type Pagination } from "@/core/models/pagination";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
 import { AppTable, type TableColumn } from "../../AppTable";
-import { AlbumEditButton } from "./AlbumEditButton";
+import { AlbumActionsCell } from "./AlbumActionsCell";
 
 const columns: readonly TableColumn<IAlbum>[] = [
   { title: "ID", key: "id" },
@@ -52,7 +52,8 @@ const columns: readonly TableColumn<IAlbum>[] = [
     title: "Actions",
     key: "edit",
     width: 50,
-    render: (item) => <AlbumEditButton album={item} />,
+    align: "center",
+    render: (item) => <AlbumActionsCell album={item} />,
   },
 ];
 
