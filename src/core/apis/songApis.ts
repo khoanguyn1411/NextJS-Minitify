@@ -106,7 +106,7 @@ export async function createSong(data: SongData.ServerType) {
           data: {
             name: data.name,
             imageUrl: data.image,
-            albumId: data.albumId?.value,
+            albumId: data.albumId?.value ?? null,
             duration: duration,
             songUrl: data.song,
             artists: {
@@ -154,7 +154,7 @@ export async function updateSong(
           data: {
             name: data.name,
             imageUrl: data.image,
-            albumId: data.albumId?.value,
+            albumId: data.albumId?.value ?? null,
             duration: duration,
             songUrl: data.song,
             artists: {

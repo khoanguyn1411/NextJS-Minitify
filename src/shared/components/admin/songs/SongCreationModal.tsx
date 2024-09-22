@@ -117,7 +117,7 @@ export const SongCreationModal: FC<Props> = (props) => {
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
-      notify(isEditMode ? "Created new song" : "Song updated", {
+      notify(!isEditMode ? "Created new song" : "Song updated", {
         type: "success",
       });
       props.onClose();
