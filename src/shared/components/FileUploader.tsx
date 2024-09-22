@@ -71,6 +71,7 @@ export const FileUploader: FC<Props> = ({
         {isCurrentFileShown && fileAccepted === ".jpg,.jpeg,.png" && (
           <Image
             isBlurred
+            className="object-cover"
             src={currentUrl ?? ""}
             width={100}
             height={100}
