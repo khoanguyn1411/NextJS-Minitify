@@ -227,6 +227,7 @@ export const SongCreationModal: FC<Props> = (props) => {
                   render={({ field, fieldState }) => (
                     <AppSelect
                       label="Album"
+                      isClearable
                       errorMessage={fieldState.error?.message}
                       placeholder="Select Album"
                       config={albumSelectConfig}
