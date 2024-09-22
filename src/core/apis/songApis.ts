@@ -89,7 +89,7 @@ export async function createSong(data: SongData.ServerType) {
           data: {
             name: data.name,
             imageUrl: data.image,
-            albumId: data.albumId,
+            albumId: data.albumId?.value,
             duration: duration,
             songUrl: data.song,
             artists: {
@@ -131,7 +131,7 @@ export async function updateSong(
           data: {
             name: data.name,
             imageUrl: data.image,
-            albumId: data.albumId,
+            albumId: data.albumId?.value,
             duration: duration,
             songUrl: data.song,
             artists: {
@@ -165,6 +165,7 @@ export async function getSongs(pagination: BaseFilterParams.Combined) {
       ...filters,
       include: {
         artists: true,
+        album: true,
       },
     });
 

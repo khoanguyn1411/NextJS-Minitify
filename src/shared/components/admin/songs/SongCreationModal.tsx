@@ -11,12 +11,12 @@ import {
   ModalHeader,
   type useDisclosure,
 } from "@nextui-org/react";
-import { type Artist } from "@prisma/client";
 import { useEffect, type FC } from "react";
 import { Controller, useForm } from "react-hook-form";
 
-import { getArtists } from "@/core/apis/artistApis";
-import { createSong, type ISong } from "@/core/apis/songApis";
+import { getAlbums, type IAlbum } from "@/core/apis/albumsApis";
+import { getArtists, type IArtist } from "@/core/apis/artistApis";
+import { createSong, updateSong, type ISong } from "@/core/apis/songApis";
 import { uploadFile } from "@/core/apis/uploadApis";
 import { SongData } from "@/core/models/songData";
 import { useError } from "@/shared/hooks/useError";
@@ -25,15 +25,23 @@ import { convertFileToFormData } from "@/shared/services/uploadService";
 
 import { FileUploader } from "../../FileUploader";
 import { AppMultipleSelect } from "../../autocompletes/AppMultipleSelect";
+import { AppSelect } from "../../autocompletes/AppSelect";
 import { type SelectConfig } from "../../autocompletes/useFetchAutocomplete";
 
 type Props = ReturnType<typeof useDisclosure> & {
   readonly song?: ISong;
 };
 
-const config: SelectConfig<Artist, number> = {
+const artistSelectConfig: SelectConfig<IArtist, number> = {
   toOption: (item) => ({ value: item.id, label: item.name }),
   fetchApi: (filters) => getArtists(filters),
+  toReadable: (item) => item.name,
+  toKey: (item) => item.id,
+};
+
+const albumSelectConfig: SelectConfig<IAlbum, number> = {
+  toOption: (item) => ({ value: item.id, label: item.name }),
+  fetchApi: (filters) => getAlbums(filters),
   toReadable: (item) => item.name,
   toKey: (item) => item.id,
 };
@@ -51,15 +59,17 @@ export const SongCreationModal: FC<Props> = (props) => {
     formState: { isLoading, isDirty },
   } = useForm<SongData.Type>({
     defaultValues: SongData.initialValue,
-    resolver: zodResolver(SongData.schema),
+    resolver: zodResolver(
+      isEditMode ? SongData.editSchema : SongData.createSchema,
+    ),
   });
 
   const getUrls = async (
     data: SongData.Type,
   ): Promise<{ songUrl: string; imageUrl: string }> => {
     const defaultUrls = {
-      imageUrl: "",
-      songUrl: "",
+      imageUrl: props.song?.imageUrl ?? "",
+      songUrl: props.song?.songUrl ?? "",
     };
     if (data.image != null && data.song != null) {
       const imageFilePathPromise = uploadFile(
@@ -91,14 +101,22 @@ export const SongCreationModal: FC<Props> = (props) => {
 
   const onFormSubmit = async (data: SongData.Type) => {
     const { imageUrl, songUrl } = await getUrls(data);
-    if (imageUrl == "" || songUrl == "") {
+    if (!isEditMode && (imageUrl == "" || songUrl == "")) {
       return;
     }
-    const result = await createSong({
-      ...data,
-      image: imageUrl,
-      song: songUrl,
-    });
+
+    const result = isEditMode
+      ? await updateSong(props.song.id, {
+          ...data,
+          image: imageUrl,
+          song: songUrl,
+        })
+      : await createSong({
+          ...data,
+          image: imageUrl,
+          song: songUrl,
+        });
+
     extractErrorsToForm({ result, setError });
     notifyOnAppError(result);
     if (isSuccess(result)) {
@@ -119,9 +137,16 @@ export const SongCreationModal: FC<Props> = (props) => {
       name: props.song.name,
       image: null,
       song: null,
+      albumId:
+        props.song.album != null
+          ? {
+              value: props.song.album.id,
+              label: props.song.album.name,
+            }
+          : null,
       artistIds: props.song.artists.map((artist) => ({
         value: artist.id,
-        label: config.toReadable(artist),
+        label: artistSelectConfig.toReadable(artist),
       })),
     });
   }, [isEditMode, props.isOpen]);
@@ -188,7 +213,21 @@ export const SongCreationModal: FC<Props> = (props) => {
                       label="Artists"
                       errorMessage={fieldState.error?.message}
                       placeholder="Select Artist"
-                      config={config}
+                      config={artistSelectConfig}
+                      {...field}
+                    />
+                  )}
+                />
+
+                <Controller
+                  control={control}
+                  name="albumId"
+                  render={({ field, fieldState }) => (
+                    <AppSelect
+                      label="Album"
+                      errorMessage={fieldState.error?.message}
+                      placeholder="Select Album"
+                      config={albumSelectConfig}
                       {...field}
                     />
                   )}
