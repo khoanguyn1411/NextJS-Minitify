@@ -25,6 +25,11 @@ async function findCurrentSong(songId: Song["id"]) {
           id: true,
         },
       },
+      tags: {
+        select: {
+          id: true,
+        },
+      },
     },
   });
   return currentSong;
@@ -46,6 +51,9 @@ export async function createSong(data: SongData.ServerType) {
             songUrl: data.song,
             artists: {
               connect: data.artistIds.map((option) => ({ id: option.value })),
+            },
+            tags: {
+              connect: data.tagIds.map((option) => ({ id: option.value })),
             },
             playTime: 0,
             playlistId: null,
@@ -71,10 +79,16 @@ export async function updateSong(
       async onPassed(data) {
         const duration = await getMp3Duration(`public${data.song}`);
         const currentSong = await findCurrentSong(songId);
+
         const artistConnect = determineConnectField({
           currentFieldIds:
             currentSong?.artists.map((artist) => artist.id) ?? [],
           newFieldIds: data.artistIds.map((option) => option.value),
+        });
+
+        const tagConnect = determineConnectField({
+          currentFieldIds: currentSong?.tags.map((artist) => artist.id) ?? [],
+          newFieldIds: data.tagIds.map((option) => option.value),
         });
 
         const createSongRequest = appPrisma.song.update({
@@ -90,6 +104,10 @@ export async function updateSong(
             artists: {
               connect: artistConnect.fieldToConnect,
               disconnect: artistConnect.fieldToDisconnect,
+            },
+            tags: {
+              connect: tagConnect.fieldToConnect,
+              disconnect: tagConnect.fieldToDisconnect,
             },
           },
         });
@@ -116,6 +134,7 @@ export async function getSongs(pagination: BaseFilterParams.Combined) {
       include: {
         artists: true,
         album: true,
+        tags: true,
       },
     });
 

@@ -9,6 +9,7 @@ export namespace SongData {
     artistIds: ZodUtils.notAllowEmptyArray(
       createSelectOptionSchema(z.number()).array(),
     ),
+    tagIds: createSelectOptionSchema(z.number()).array(),
     albumId: createSelectOptionSchema(z.number()).nullable(),
     name: ZodUtils.requiredString(),
   });
@@ -35,6 +36,7 @@ export namespace SongData {
     name: "",
     song: null,
     artistIds: [],
+    tagIds: [],
     albumId: null,
     image: null,
   };

@@ -17,6 +17,7 @@ import { Controller, useForm } from "react-hook-form";
 import { getAlbums, type IAlbum } from "@/core/apis/albumsApis";
 import { getArtists, type IArtist } from "@/core/apis/artistApis";
 import { createSong, updateSong, type ISong } from "@/core/apis/songApis";
+import { getTags, type ITag } from "@/core/apis/tagApis";
 import { uploadFile } from "@/core/apis/uploadApis";
 import { SongData } from "@/core/models/songData";
 import { useError } from "@/shared/hooks/useError";
@@ -35,6 +36,13 @@ type Props = ReturnType<typeof useDisclosure> & {
 const artistSelectConfig: SelectConfig<IArtist, number> = {
   toOption: (item) => ({ value: item.id, label: item.name }),
   fetchApi: (filters) => getArtists(filters),
+  toReadable: (item) => item.name,
+  toKey: (item) => item.id,
+};
+
+const tagSelectConfig: SelectConfig<ITag, number> = {
+  toOption: (item) => ({ value: item.id, label: item.name }),
+  fetchApi: (filters) => getTags(filters),
   toReadable: (item) => item.name,
   toKey: (item) => item.id,
 };
@@ -147,6 +155,10 @@ export const SongCreationModal: FC<Props> = (props) => {
         value: artist.id,
         label: artist.name,
       })),
+      tagIds: props.song.tags.map((tag) => ({
+        value: tag.id,
+        label: tag.name,
+      })),
     });
   }, [isEditMode, props.isOpen]);
 
@@ -216,6 +228,20 @@ export const SongCreationModal: FC<Props> = (props) => {
                       errorMessage={fieldState.error?.message}
                       placeholder="Select Artist"
                       config={artistSelectConfig}
+                      {...field}
+                    />
+                  )}
+                />
+
+                <Controller
+                  control={control}
+                  name="tagIds"
+                  render={({ field, fieldState }) => (
+                    <AppMultipleSelect
+                      label="Tags"
+                      errorMessage={fieldState.error?.message}
+                      placeholder="Select Tag"
+                      config={tagSelectConfig}
                       {...field}
                     />
                   )}

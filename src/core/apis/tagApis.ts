@@ -52,12 +52,12 @@ export async function updateTag(songId: Tag["id"], data: TagData.Type) {
   });
 }
 
-export async function getTags(pagination: BaseFilterParams.Combined) {
+export async function getTags(params: BaseFilterParams.Combined) {
   return createPrismaRequest(async () => {
-    const paginationFilters = createPrismaPaginationFilter(pagination);
+    const paginationFilters = createPrismaPaginationFilter(params);
     const filters: Parameters<typeof appPrisma.tag.findMany>[0] = {
       where: {
-        name: { contains: pagination.search },
+        name: { contains: params.search },
       },
     };
     const tags = await appPrisma.tag.findMany({
@@ -69,7 +69,7 @@ export async function getTags(pagination: BaseFilterParams.Combined) {
     });
 
     return createPagination({
-      pagination: pagination,
+      pagination: params,
       result: tags,
       model: "tag",
       filters,
