@@ -7,6 +7,7 @@ import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
 import { createPrismaPaginationFilter } from "@/shared/utils/createPrismaPaginationFilter";
 import { createPrismaRequest } from "@/shared/utils/createPrismaRequest";
+import { determineConnectField } from "@/shared/utils/determineConnectFields";
 import { validateWithSchema } from "@/shared/utils/errorHandlers";
 import { getMp3Duration } from "@/shared/utils/getMp3Duration";
 
@@ -78,6 +79,22 @@ async function increaseOrDecreaseSongCountInArtist(
   await Promise.all(updatePromises);
 }
 
+async function findCurrentSong(songId: Song["id"]) {
+  const currentSong = await appPrisma.song.findUnique({
+    where: {
+      id: songId,
+    },
+    select: {
+      artists: {
+        select: {
+          id: true,
+        },
+      },
+    },
+  });
+  return currentSong;
+}
+
 export async function createSong(data: SongData.ServerType) {
   return createPrismaRequest(() => {
     return validateWithSchema({
@@ -123,6 +140,12 @@ export async function updateSong(
       schema: SongData.serverSchema,
       async onPassed(data) {
         const duration = await getMp3Duration(`public${data.song}`);
+        const currentSong = await findCurrentSong(songId);
+        const artistConnect = determineConnectField({
+          currentFieldIds:
+            currentSong?.artists.map((artist) => artist.id) ?? [],
+          newFieldIds: data.artistIds.map((option) => option.value),
+        });
 
         const createSongRequest = appPrisma.song.update({
           where: {
@@ -135,7 +158,8 @@ export async function updateSong(
             duration: duration,
             songUrl: data.song,
             artists: {
-              connect: data.artistIds.map((option) => ({ id: option.value })),
+              connect: artistConnect.fieldToConnect,
+              disconnect: artistConnect.fieldToDisconnect,
             },
           },
         });

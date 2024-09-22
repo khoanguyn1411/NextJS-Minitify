@@ -36,6 +36,13 @@ const columns: readonly TableColumn<ISong>[] = [
       );
     },
   },
+  {
+    title: "Artist",
+    key: "artists",
+    render: (item) => (
+      <span>{item.artists.map((artist) => artist.name).join(", ")}</span>
+    ),
+  },
   { title: "Play count", key: "playTime", align: "end" },
   {
     title: "Created date",
