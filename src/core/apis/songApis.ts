@@ -141,4 +141,14 @@ export async function getSongs(pagination: BaseFilterParams.Combined) {
   });
 }
 
+export async function deleteSongById(songId: Song["id"]) {
+  return createPrismaRequest(async () => {
+    await appPrisma.song.delete({
+      where: {
+        id: songId,
+      },
+    });
+  });
+}
+
 export type ISong = Awaited<ReturnType<typeof getSongs>>["items"][0];

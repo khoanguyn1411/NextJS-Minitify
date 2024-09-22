@@ -49,7 +49,7 @@ const columns: readonly TableColumn<IAlbum>[] = [
     toReadable: (item) => item.songs.length.toString(),
   },
   {
-    title: "Edit",
+    title: "Actions",
     key: "edit",
     width: 50,
     render: (item) => <AlbumEditButton album={item} />,

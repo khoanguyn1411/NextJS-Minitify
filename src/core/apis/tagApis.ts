@@ -77,4 +77,14 @@ export async function getTags(params: BaseFilterParams.Combined) {
   });
 }
 
+export async function deleteTagById(songId: Tag["id"]) {
+  return createPrismaRequest(async () => {
+    await appPrisma.tag.delete({
+      where: {
+        id: songId,
+      },
+    });
+  });
+}
+
 export type ITag = Awaited<ReturnType<typeof getTags>>["items"][0];

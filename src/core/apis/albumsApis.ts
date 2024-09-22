@@ -111,4 +111,14 @@ export async function getAlbums(pagination: BaseFilterParams.Combined) {
   });
 }
 
+export async function deleteAlbumId(albumId: Album["id"]) {
+  return createPrismaRequest(async () => {
+    await appPrisma.album.delete({
+      where: {
+        id: albumId,
+      },
+    });
+  });
+}
+
 export type IAlbum = Awaited<ReturnType<typeof getAlbums>>["items"][0];

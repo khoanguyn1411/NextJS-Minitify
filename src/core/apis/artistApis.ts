@@ -83,4 +83,14 @@ export async function getArtists(pagination: BaseFilterParams.Combined) {
   });
 }
 
+export async function deleteArtistById(artistId: Artist["id"]) {
+  return createPrismaRequest(async () => {
+    await appPrisma.artist.delete({
+      where: {
+        id: artistId,
+      },
+    });
+  });
+}
+
 export type IArtist = Awaited<ReturnType<typeof getArtists>>["items"][0];

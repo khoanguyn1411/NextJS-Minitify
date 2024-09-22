@@ -6,7 +6,7 @@ import { type ITag } from "@/core/apis/tagApis";
 import { type Pagination } from "@/core/models/pagination";
 
 import { AppTable, type TableColumn } from "../../AppTable";
-import { TagEditButton } from "./TagEditButton";
+import { TagActionsCell } from "./TagActionsCell";
 
 const columns: readonly TableColumn<ITag>[] = [
   { title: "ID", key: "id" },
@@ -20,10 +20,11 @@ const columns: readonly TableColumn<ITag>[] = [
     toReadable: (item) => item._count.songs,
   },
   {
-    title: "Edit",
-    key: "edit",
+    title: "Actions",
+    key: "actions",
+    align: "center",
     width: 50,
-    render: (item) => <TagEditButton tag={item} />,
+    render: (item) => <TagActionsCell tag={item} />,
   },
 ];
 
