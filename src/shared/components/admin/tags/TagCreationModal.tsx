@@ -93,7 +93,7 @@ export const TagCreationModal: FC<Props> = (props) => {
                   render={({ field, fieldState }) => (
                     <Input
                       label="Name"
-                      placeholder="#abcxzy"
+                      placeholder="abcxzy"
                       errorMessage={fieldState.error?.message}
                       isInvalid={!!fieldState.error?.message}
                       {...field}
