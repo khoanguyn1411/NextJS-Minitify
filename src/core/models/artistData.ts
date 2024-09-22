@@ -4,8 +4,7 @@ import { ZodUtils } from "@/shared/utils/zodUtils";
 
 export namespace ArtistData {
   export const baseSchema = z.object({
-    firstName: ZodUtils.requiredString(),
-    lastName: ZodUtils.requiredString(),
+    name: ZodUtils.requiredString(),
     biography: ZodUtils.requiredString(),
   });
 
@@ -25,8 +24,7 @@ export namespace ArtistData {
   export type ServerType = z.infer<typeof serverSchema>;
 
   export const initialValue: Type = {
-    firstName: "",
-    lastName: "",
+    name: "",
     biography: "",
     image: null,
   };

@@ -17,9 +17,7 @@ model Artist {
   id          Int      @id @default(autoincrement())
   biography   String
   imageUrl    String
-  firstName   String
-  lastName    String
-  fullName    String   @default("")
+  name        String   @default("")
   songCount   Int
   createdDate DateTime @default(now())
   song        Song[]

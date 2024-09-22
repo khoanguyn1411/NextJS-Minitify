@@ -48,7 +48,7 @@ export const ArtistCreationModal: FC<Props> = (props) => {
   });
 
   const onFormSubmit = async (data: ArtistData.Type) => {
-    let imageUrl = "";
+    let imageUrl = props.artist?.imageUrl ?? "";
     if (data.image != null) {
       const filePath = await uploadFile(convertFileToFormData(data.image));
       if (!isSuccess(filePath)) {
@@ -78,8 +78,7 @@ export const ArtistCreationModal: FC<Props> = (props) => {
       return;
     }
     reset({
-      lastName: props.artist.lastName,
-      firstName: props.artist.firstName,
+      name: props.artist.name,
       biography: props.artist.biography,
       image: null,
     });
@@ -97,34 +96,19 @@ export const ArtistCreationModal: FC<Props> = (props) => {
             <ModalHeader className="text-2xl">Add New Artist</ModalHeader>
             <ModalBody className="flex flex-col gap-7">
               <form className="flex flex-col gap-4">
-                <div className="flex gap-4">
-                  <Controller
-                    control={control}
-                    name="firstName"
-                    render={({ field, fieldState }) => (
-                      <Input
-                        label="First name"
-                        placeholder="Danny"
-                        errorMessage={fieldState.error?.message}
-                        isInvalid={!!fieldState.error?.message}
-                        {...field}
-                      />
-                    )}
-                  />
-                  <Controller
-                    control={control}
-                    name="lastName"
-                    render={({ field, fieldState }) => (
-                      <Input
-                        label="Last name"
-                        placeholder="John"
-                        errorMessage={fieldState.error?.message}
-                        isInvalid={!!fieldState.error?.message}
-                        {...field}
-                      />
-                    )}
-                  />
-                </div>
+                <Controller
+                  control={control}
+                  name="name"
+                  render={({ field, fieldState }) => (
+                    <Input
+                      label="Name"
+                      placeholder="Danny"
+                      errorMessage={fieldState.error?.message}
+                      isInvalid={!!fieldState.error?.message}
+                      {...field}
+                    />
+                  )}
+                />
                 <Controller
                   control={control}
                   name="biography"
@@ -146,6 +130,7 @@ export const ArtistCreationModal: FC<Props> = (props) => {
                     <FileUploader
                       fileAccepted=".jpg,.jpeg,.png"
                       label="Image"
+                      currentImageUrl={props.artist?.imageUrl}
                       errorMessage={fieldState.error?.message}
                       {...field}
                     />

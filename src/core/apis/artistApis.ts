@@ -1,7 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { type Artist } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
@@ -20,8 +20,7 @@ export async function createArtist(data: ArtistData.ServerType) {
       async onPassed(data) {
         const artist = await appPrisma.artist.create({
           data: {
-            firstName: data.firstName,
-            lastName: data.lastName,
+            name: data.name,
             biography: data.biography,
             imageUrl: data.image,
             songCount: 0,
@@ -48,8 +47,7 @@ export async function updateArtist(
             id: artistId,
           },
           data: {
-            firstName: data.firstName,
-            lastName: data.lastName,
+            name: data.name,
             biography: data.biography,
             imageUrl: data.image,
           },
@@ -66,7 +64,7 @@ export async function getArtists(pagination: BaseFilterParams.Combined) {
     const paginationFilters = createPrismaPaginationFilter(pagination);
     const filters: Parameters<typeof appPrisma.artist.findMany>[0] = {
       where: {
-        fullName: { contains: pagination.search },
+        name: { contains: pagination.search },
       },
     };
     const artists = await appPrisma.artist.findMany({

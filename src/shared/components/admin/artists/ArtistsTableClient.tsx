@@ -1,15 +1,15 @@
 "use client";
 
-import { Button, User as NextUiUser, Tooltip } from "@nextui-org/react";
+import { User as NextUiUser, Tooltip } from "@nextui-org/react";
 import { type Artist } from "@prisma/client";
 import { type FC } from "react";
-import { BiEdit } from "react-icons/bi";
 
+import { type IArtist } from "@/core/apis/artistApis";
 import { type Pagination } from "@/core/models/pagination";
-import { User } from "@/core/models/user";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
 import { AppTable, type TableColumn } from "../../AppTable";
+import { ArtistEditButton } from "./ArtistEditButton";
 
 const columns: readonly TableColumn<Artist>[] = [
   { title: "ID", key: "id" },
@@ -20,7 +20,7 @@ const columns: readonly TableColumn<Artist>[] = [
       <NextUiUser
         avatarProps={{ radius: "lg", src: item.imageUrl }}
         description={`Last updated: ${DateUtils.toReadable(item.updatedAt)}`}
-        name={User.getFullName(item)}
+        name={item.name}
       />
     ),
     width: 220,
@@ -46,18 +46,12 @@ const columns: readonly TableColumn<Artist>[] = [
   {
     title: "Edit",
     key: "edit",
-    render: () => (
-      <Tooltip content="Edit">
-        <Button variant="flat" size="sm" color="primary" isIconOnly>
-          <BiEdit className="text-lg" />
-        </Button>
-      </Tooltip>
-    ),
+    render: (item) => <ArtistEditButton artist={item} />,
   },
 ];
 
 type Props = {
-  readonly page: Pagination<Artist>;
+  readonly page: Pagination<IArtist>;
 };
 
 export const ArtistsTableClient: FC<Props> = ({ page }) => {
