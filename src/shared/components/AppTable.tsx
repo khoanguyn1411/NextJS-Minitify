@@ -20,7 +20,7 @@ import { type LooseAutocomplete } from "../utils/types/looseAutocomplete";
 export type TableColumn<T> = {
   readonly title: string;
   readonly render?: (item: T) => ReactNode;
-  readonly toReadable?: (item: T) => string;
+  readonly toReadable?: (item: T) => string | number;
   readonly key: LooseAutocomplete<keyof T>;
   readonly width?: number | string;
   readonly align?: "start" | "center" | "end";

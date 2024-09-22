@@ -69,6 +69,9 @@ export async function getArtists(pagination: BaseFilterParams.Combined) {
     const artists = await appPrisma.artist.findMany({
       ...paginationFilters,
       ...filters,
+      include: {
+        _count: true,
+      },
     });
 
     return createPagination({

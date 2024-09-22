@@ -36,7 +36,12 @@ const columns: readonly TableColumn<IArtist>[] = [
       </Tooltip>
     ),
   },
-  { title: "Songs", key: "songCount", align: "end" },
+  {
+    title: "Songs",
+    key: "songCount",
+    align: "end",
+    toReadable: (item) => item._count.song,
+  },
   {
     title: "Created date",
     key: "createdDate",

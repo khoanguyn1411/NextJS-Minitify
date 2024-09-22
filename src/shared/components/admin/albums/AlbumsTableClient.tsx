@@ -37,7 +37,12 @@ const columns: readonly TableColumn<IAlbum>[] = [
     ),
   },
   { title: "Play count", key: "playTime", align: "end" },
-  { title: "Song count", key: "songCount", align: "end" },
+  {
+    title: "Song count",
+    key: "songCount",
+    align: "end",
+    toReadable: (item) => item.songs.length.toString(),
+  },
   {
     title: "Created date",
     key: "createdDate",
