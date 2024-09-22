@@ -17,6 +17,7 @@ const columns: readonly TableColumn<ITag>[] = [
   {
     title: "Song count",
     key: "_count",
+    toReadable: (item) => item._count.songs,
   },
   {
     title: "Edit",

@@ -11,7 +11,7 @@ export const TagCreationButton: FC = () => {
   return (
     <>
       <Button onClick={disclosure.onOpen} color="primary">
-        Add new album
+        Add new tag
       </Button>
       <TagCreationModal {...disclosure} />
     </>

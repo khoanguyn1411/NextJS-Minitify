@@ -21,9 +21,6 @@ export async function createTag(data: TagData.Type) {
         const tags = await appPrisma.tag.create({
           data: {
             name: data.name,
-            songs: {
-              connect: data.songIds.map((option) => ({ id: option.value })),
-            },
           },
         });
 
@@ -40,7 +37,7 @@ export async function updateTag(songId: Tag["id"], data: TagData.Type) {
       data: data,
       schema: TagData.schema,
       async onPassed(data) {
-        const tags = await appPrisma.song.update({
+        const tags = await appPrisma.tag.update({
           where: {
             id: songId,
           },

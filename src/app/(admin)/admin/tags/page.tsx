@@ -21,7 +21,7 @@ export default function Page({
 
   return (
     <AdminTableLayout
-      title="Songs"
+      title="Tags"
       Table={<TagsTableServer filters={filters} />}
       Action={<TagCreationButton />}
       initialSearch={filters.search}
