@@ -52,6 +52,7 @@ const columns: readonly TableColumn<ISong>[] = [
   {
     title: "Edit",
     key: "edit",
+    width: 50,
     render: (item) => <SongEditButton song={item} />,
   },
 ];
