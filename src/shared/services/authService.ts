@@ -131,3 +131,9 @@ export async function logout() {
     redirect("/");
   }
 }
+
+export async function getCurrentUser() {
+  const { user } = await validateRequest();
+  const currentUser = user != null ? await findUser({ id: user.id }) : null;
+  return currentUser;
+}

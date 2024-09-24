@@ -1,12 +1,14 @@
 import { type FC, type PropsWithChildren } from "react";
 
+import { getCurrentUser } from "../services/authService";
 import { AdminNavigationAside } from "./adminNavigationAside/AdminNavigationAside";
 import { Header } from "./header/Header";
 
-export const AdminLayout: FC<PropsWithChildren> = ({ children }) => {
+export const AdminLayout: FC<PropsWithChildren> = async ({ children }) => {
+  const currentUser = await getCurrentUser();
   return (
     <div className="p-container flex flex-col">
-      <Header />
+      <Header currentUser={currentUser} />
       <div className="p-container px-container grid grid-cols-[200px,1fr] h-main gap-3">
         <div className="bg-primary-900 h-full rounded-md">
           <AdminNavigationAside />

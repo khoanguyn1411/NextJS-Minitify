@@ -2,15 +2,14 @@ import { type FC } from "react";
 
 import { LoginButton } from "@/shared/components/auth/login/LoginButton";
 import { RegisterButton } from "@/shared/components/auth/register/RegisterButton";
-import { validateRequest } from "@/shared/services/authService";
-import { findUser } from "@/core/apis/userApis";
+import { useCurrentUser } from "@/shared/hooks/useCurrentUser";
 
 import { UserDropdown } from "./UserDropdown";
 
-export const UserAction: FC = async () => {
-  const { user } = await validateRequest();
+export const UserActions: FC = () => {
+  const { currentUser } = useCurrentUser();
 
-  if (user == null) {
+  if (currentUser == null) {
     return (
       <div className="flex gap-4 ml-auto">
         <RegisterButton />
@@ -18,7 +17,6 @@ export const UserAction: FC = async () => {
       </div>
     );
   }
-  const currentUser = await findUser({ id: user.id });
 
   if (currentUser == null) {
     return <div>No user founded.</div>;
