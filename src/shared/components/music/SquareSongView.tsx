@@ -1,5 +1,6 @@
-import { Card, CardBody, Image } from "@nextui-org/react";
+import { Button, Card, CardBody, Image } from "@nextui-org/react";
 import { type FC } from "react";
+import { BiPlay } from "react-icons/bi";
 
 import { type ISong } from "@/core/apis/songApis";
 
@@ -13,7 +14,7 @@ export const SquareSongView: FC<Props> = ({ song }) => {
       isFooterBlurred
       radius="lg"
       isPressable
-      className="rounded shadow-none 
+      className="rounded shadow-none relative group
         p-3 flex flex-col gap-2 bg-transparent cursor-pointer border-none min-w-[160px] w-[160px]"
     >
       <CardBody className="overflow-visible p-0">
@@ -29,6 +30,16 @@ export const SquareSongView: FC<Props> = ({ song }) => {
           {song.artists.map((artist) => artist.name).join(", ")}
         </p>
       </div>
+
+      <Button
+        isIconOnly
+        color="primary"
+        variant="shadow"
+        className="absolute z-50 opacity-0 right-5 transition-[0.2s ease] 
+          bottom-[75px] group-hover:opacity-100"
+      >
+        <BiPlay className="text-3xl" />
+      </Button>
     </Card>
   );
 };
