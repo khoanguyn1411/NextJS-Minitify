@@ -1,6 +1,7 @@
 "use client";
 
 import { Link } from "@nextui-org/react";
+import classNames from "classnames";
 import { usePathname } from "next/navigation";
 import { type FC, type ReactNode } from "react";
 
@@ -13,15 +14,16 @@ export type NavigationItemProps = {
 export const NavigationItem: FC<NavigationItemProps> = (item) => {
   const pathname = usePathname();
 
-  const isCurrentUrl = (url: string) => {
-    return pathname === url;
-  };
+  const isCurrentUrl = pathname === item.url;
 
   return (
     <Link
-      className="flex gap-3 items-center py-2 hover:text-primary-100 w-full self-start"
+      className={classNames(
+        "flex gap-3 items-center p-2 rounded-lg hover:text-primary-100 w-full self-start",
+        isCurrentUrl && "bg-primary-400/10",
+      )}
       key={item.url}
-      color={isCurrentUrl(item.url) ? "primary" : "foreground"}
+      color={isCurrentUrl ? "primary" : "foreground"}
       href={item.url}
     >
       {item.icon}
