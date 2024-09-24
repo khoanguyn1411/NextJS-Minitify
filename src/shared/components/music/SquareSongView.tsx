@@ -15,7 +15,7 @@ export const SquareSongView: FC<Props> = ({ song }) => {
       radius="lg"
       isPressable
       className="rounded shadow-none relative group items-start
-        p-3 flex flex-col gap-2 bg-transparent cursor-pointer border-none w-[170px]"
+        p-3 flex flex-col gap-2 bg-transparent cursor-pointer border-none min-w-[170px] w-[170px]"
     >
       <Image
         alt="Woman listing to music"
@@ -35,6 +35,7 @@ export const SquareSongView: FC<Props> = ({ song }) => {
       </div>
 
       <Button
+        as="div"
         isIconOnly
         color="primary"
         variant="shadow"

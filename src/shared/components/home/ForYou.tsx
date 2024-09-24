@@ -9,7 +9,7 @@ import { SectionWithTitle } from "../SectionWithTitle";
 export const ForYou: FC = async () => {
   const songsPage = await getSongs({
     ...BaseFilterParams.initialPagination,
-    pageSize: 4,
+    pageSize: 6,
     search: "",
   });
   return (

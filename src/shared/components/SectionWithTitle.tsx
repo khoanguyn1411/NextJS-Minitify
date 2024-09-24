@@ -9,9 +9,9 @@ export const SectionWithTitle: FC<PropsWithChildren<Props>> = ({
   title,
 }) => {
   return (
-    <div className="flex flex-col gap-3">
+    <section className="flex flex-col gap-3">
       <h1 className="text-xl mx-3 font-semibold">{title}</h1>
-      <div className="flex flex-row overflow-auto">{children}</div>
-    </div>
+      <div className="flex flex-row overflow-auto flex-wrap">{children}</div>
+    </section>
   );
 };
