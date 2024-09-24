@@ -20,7 +20,7 @@ export const NavigationItem: FC<NavigationItemProps> = (item) => {
     <Link
       className={classNames(
         "flex gap-3 items-center p-2 rounded-lg hover:text-primary-100 w-full self-start",
-        isCurrentUrl && "bg-primary-400/10",
+        isCurrentUrl && "bg-primary-400/15",
       )}
       key={item.url}
       color={isCurrentUrl ? "primary" : "foreground"}
