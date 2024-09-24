@@ -1,6 +1,8 @@
 import { type Metadata } from "next";
 
-import { ForYou } from "@/shared/components/home/for-you/ForYou";
+import { ChillingSongs } from "@/shared/components/home/ChillingSongs";
+import { ForYou } from "@/shared/components/home/ForYou";
+import { HotAlbums } from "@/shared/components/home/HotAlbums";
 import { MainLayout } from "@/shared/layouts/MainLayout";
 import { getCurrentUser } from "@/shared/services/authService";
 
@@ -16,6 +18,8 @@ export default async function Home() {
     <MainLayout user={currentUser}>
       <div className="flex flex-col gap-2">
         <ForYou />
+        <ChillingSongs />
+        <HotAlbums />
       </div>
     </MainLayout>
   );

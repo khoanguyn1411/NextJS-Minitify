@@ -11,8 +11,8 @@ import { determineConnectField } from "@/shared/utils/determineConnectFields";
 import { validateWithSchema } from "@/shared/utils/errorHandlers";
 import { getMp3Duration } from "@/shared/utils/getMp3Duration";
 
-import { type BaseFilterParams } from "../models/baseFilterParams";
 import { SongData } from "../models/songData";
+import { type SongsFilterParams } from "../models/songsFilterParams";
 
 async function findCurrentSong(songId: Song["id"]) {
   const currentSong = await appPrisma.song.findUnique({
@@ -113,12 +113,17 @@ export async function updateSong(
   });
 }
 
-export async function getSongs(pagination: BaseFilterParams.Combined) {
+export async function getSongs(filterParams: SongsFilterParams) {
   return createPrismaRequest(async () => {
-    const paginationFilters = createPrismaPaginationFilter(pagination);
+    const paginationFilters = createPrismaPaginationFilter(filterParams);
     const filters: Parameters<typeof appPrisma.song.findMany>[0] = {
       where: {
-        name: { contains: pagination.search },
+        name: { contains: filterParams.search },
+        tags: {
+          some: {
+            id: { in: filterParams.tagIds },
+          },
+        },
       },
     };
     const songs = await appPrisma.song.findMany({
@@ -132,7 +137,7 @@ export async function getSongs(pagination: BaseFilterParams.Combined) {
     });
 
     return createPagination({
-      pagination: pagination,
+      pagination: filterParams,
       result: songs,
       model: "song",
       filters,
