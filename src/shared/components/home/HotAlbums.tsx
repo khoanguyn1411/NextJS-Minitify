@@ -1,5 +1,7 @@
 import { type FC } from "react";
 
+import { SectionWithTitle } from "../SectionWithTitle";
+
 export const HotAlbums: FC = () => {
-  return <div>HotAlbums</div>;
+  return <SectionWithTitle title="Hot albums"></SectionWithTitle>;
 };
