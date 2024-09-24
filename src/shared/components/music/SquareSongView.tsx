@@ -1,4 +1,4 @@
-import { Button, Card, CardBody, Image } from "@nextui-org/react";
+import { Button, Card, Image } from "@nextui-org/react";
 import { type FC } from "react";
 import { BiPlay } from "react-icons/bi";
 
