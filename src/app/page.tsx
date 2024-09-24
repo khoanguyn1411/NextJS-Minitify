@@ -1,5 +1,6 @@
 import { type Metadata } from "next";
 
+import { ForYou } from "@/shared/components/home/for-you/ForYou";
 import { MainLayout } from "@/shared/layouts/MainLayout";
 import { getCurrentUser } from "@/shared/services/authService";
 
@@ -13,7 +14,9 @@ export default async function Home() {
   const currentUser = await getCurrentUser();
   return (
     <MainLayout user={currentUser}>
-      <div>Home page</div>
+      <div className="flex flex-col gap-2">
+        <ForYou />
+      </div>
     </MainLayout>
   );
 }

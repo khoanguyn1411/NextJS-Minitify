@@ -11,7 +11,7 @@ import { UserContext } from "@/shared/hooks/useCurrentUser";
 import { UserActions } from "./UserActions";
 
 type Props = {
-  readonly currentUser: User | null;
+  readonly currentUser?: User | null;
 };
 
 const HeaderContent: FC = () => {

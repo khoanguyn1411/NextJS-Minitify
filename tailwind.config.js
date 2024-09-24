@@ -15,6 +15,7 @@ module.exports = {
       colors: {
         input: "#272729",
         ["input-hover"]: "#3f4045",
+        background: "#0f0f0f"
       },
       height: {
         header: "40px",
@@ -34,7 +35,7 @@ module.exports = {
       themes: {
         dark: {
           colors: {
-            background: "#0D001A",
+            background: "#000000",
             primary: {
               50: "#ffe2ff",
               100: "#f1b1ff",

@@ -10,10 +10,10 @@ export const AdminLayout: FC<PropsWithChildren> = async ({ children }) => {
     <div className="p-container flex flex-col">
       <Header currentUser={currentUser} />
       <div className="p-container px-container grid grid-cols-[200px,1fr] h-main gap-3">
-        <div className="bg-primary-900 h-full rounded-md">
+        <div className="bg-background h-full rounded-md">
           <AdminNavigationAside />
         </div>
-        <div className="p-container overflow-auto bg-primary-900 max-h-full rounded-md">
+        <div className="p-container overflow-auto bg-background max-h-full rounded-md">
           {children}
         </div>
       </div>

@@ -11,7 +11,7 @@ type Props = {
   readonly user: User | null;
 };
 
-export const MainLayout: FC<PropsWithChildren<Props>> = async ({
+export const MainLayout: FC<PropsWithChildren<Props>> = ({
   children,
   user,
 }) => {
@@ -22,13 +22,13 @@ export const MainLayout: FC<PropsWithChildren<Props>> = async ({
           <Header />
         </header>
         <main className="h-full grid grid-cols-6 px-2 gap-2">
-          <aside className="h-full bg-primary-900 rounded-md">
+          <aside className="h-full bg-background rounded-md">
             <NavigationAside />
           </aside>
-          <div className="p-container col-span-4 max-h-full h-full bg-primary-900 rounded-md">
+          <div className="p-container col-span-4 max-h-full h-full bg-background rounded-md">
             {children}
           </div>
-          <aside className="p-container h-full bg-primary-900 rounded-md">
+          <aside className="p-container h-full bg-background rounded-md">
             This is aside right
           </aside>
         </main>
