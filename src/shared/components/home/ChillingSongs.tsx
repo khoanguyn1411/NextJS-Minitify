@@ -3,7 +3,7 @@ import { type FC } from "react";
 import { getSongs } from "@/core/apis/songApis";
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 
-import { SquareSongView } from "../song/SquareSongView";
+import { SquareSongView } from "../items-view/SquareSongView";
 import { SectionWithTitle } from "../SectionWithTitle";
 
 export const ChillingSongs: FC = async () => {
