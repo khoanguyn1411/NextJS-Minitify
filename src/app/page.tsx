@@ -5,6 +5,7 @@ import { ForYou } from "@/shared/components/home/ForYou";
 import { HotAlbums } from "@/shared/components/home/HotAlbums";
 import { MainLayout } from "@/shared/layouts/MainLayout";
 import { getCurrentUser } from "@/shared/services/authService";
+import { FamousArtists } from "@/shared/components/home/FamousArtists";
 
 export const metadata: Metadata = {
   title: "Minitify",
@@ -20,6 +21,7 @@ export default async function Home() {
         <ForYou />
         <ChillingSongs />
         <HotAlbums />
+        <FamousArtists />
       </div>
     </MainLayout>
   );

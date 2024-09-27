@@ -1,28 +1,32 @@
-import { Card, Image } from "@nextui-org/react";
+import { Button, Card, Image } from "@nextui-org/react";
+import classNames from "classnames";
 import { type FC } from "react";
-
-import { PlayableButton } from "../PlayableButton";
+import { BiPlay } from "react-icons/bi";
 
 type Props = {
   readonly imageUrl: string;
   readonly primaryText: string;
   readonly secondaryText: string;
+  readonly isRounded?: boolean;
+  readonly onClick?: () => void;
 };
 
 export const BaseSquareItemView: FC<Props> = ({
   imageUrl,
   primaryText,
   secondaryText,
+  isRounded = false,
+  onClick,
 }) => {
   return (
     <Card
-      isFooterBlurred
       radius="lg"
       isPressable
       className="rounded shadow-none relative group items-start
     p-3 flex flex-col gap-2 bg-transparent cursor-pointer border-none min-w-[170px] w-[170px]"
     >
       <Image
+        radius={isRounded ? "full" : "lg"}
         alt="Woman listing to music"
         className="object-cover"
         classNames={{
@@ -38,7 +42,19 @@ export const BaseSquareItemView: FC<Props> = ({
           {secondaryText}
         </p>
       </div>
-      <PlayableButton />
+      <Button
+        as="div"
+        isIconOnly
+        color="primary"
+        variant="shadow"
+        onClick={onClick}
+        className={classNames(
+          "absolute z-50 opacity-0 right-5 transition-[0.2s ease]",
+          "top-[110px] group-hover:opacity-100",
+        )}
+      >
+        <BiPlay className="text-3xl" />
+      </Button>
     </Card>
   );
 };
