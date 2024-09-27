@@ -9,7 +9,7 @@ import { SectionWithTitle } from "../SectionWithTitle";
 export const ChillingSongs: FC = async () => {
   const songsPage = await getSongs({
     ...BaseFilterParams.initialPagination,
-    pageSize: 4,
+    pageSize: 6,
     search: "",
     tagIds: [1, 4],
   });
