@@ -3,7 +3,7 @@
 import { Divider, NextUIProvider } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { type FC } from "react";
-import { BiLibrary, BiTrendingUp } from "react-icons/bi";
+import { BiLibrary, BiMusic, BiTrendingUp } from "react-icons/bi";
 
 import {
   NavigationItem,
@@ -28,6 +28,11 @@ const discoverNarItems: readonly NavigationItemProps[] = [
     title: "Trending Musics",
     url: "/trending-musics",
     icon: <BiTrendingUp />,
+  },
+  {
+    title: "Discover",
+    url: "/discover",
+    icon: <BiMusic />,
   },
 ];
 
