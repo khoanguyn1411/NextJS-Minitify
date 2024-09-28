@@ -7,6 +7,8 @@ import { type AudioStatus } from "./Footer";
 
 type Props = {
   readonly song: ISong;
+  readonly isRepeated: boolean;
+
   readonly audioStatus: AudioStatus;
   readonly setAudioStatus: (status: AudioStatus) => void;
 
@@ -20,6 +22,7 @@ type Props = {
 export const AudioPlay: FC<Props> = ({
   song,
   audioStatus,
+  isRepeated,
   setAudioStatus,
   setCurrentTime,
   duration,
@@ -57,16 +60,20 @@ export const AudioPlay: FC<Props> = ({
     }
   };
 
-  const handleAudioEnd = () => {
-    setAudioStatus("paused");
-  };
-
   const resetAudio = () => {
     if (audioRef.current == null) {
       return;
     }
     audioRef.current.currentTime = 0;
     audioRef.current.play();
+  };
+
+  const handleAudioEnd = () => {
+    if (isRepeated) {
+      resetAudio();
+      return;
+    }
+    setAudioStatus("paused");
   };
 
   useEffect(() => {
@@ -108,7 +115,6 @@ export const AudioPlay: FC<Props> = ({
         value={progress}
         onChange={handleProgressChange}
         color="foreground"
-        defaultValue={33}
         size="sm"
       />
     </>
