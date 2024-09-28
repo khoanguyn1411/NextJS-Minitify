@@ -3,7 +3,7 @@ import { useEffect, useRef, useState, type FC } from "react";
 
 import { type ISong } from "@/core/apis/songApis";
 
-import { type AudioStatus } from "./Footer";
+import { type AudioStatus, type VolumeSetting } from "./Footer";
 
 type Props = {
   readonly song: ISong;
@@ -17,6 +17,9 @@ type Props = {
 
   readonly currentTime: number;
   readonly setCurrentTime: (time: number) => void;
+
+  readonly volume: VolumeSetting;
+  readonly setVolume: (volume: VolumeSetting) => void;
 };
 
 export const AudioPlay: FC<Props> = ({
@@ -27,6 +30,8 @@ export const AudioPlay: FC<Props> = ({
   setCurrentTime,
   duration,
   setDuration,
+  volume,
+  setVolume,
 }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [progress, setProgress] = useState(0);

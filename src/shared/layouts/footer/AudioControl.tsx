@@ -13,19 +13,24 @@ import { Tooltip } from "@nextui-org/react";
 import { type ISong } from "@/core/apis/songApis";
 
 import { AudioPlay } from "./AudioPlay";
-import { type AudioStatus } from "./Footer";
+import { type VolumeSetting, type AudioStatus } from "./Footer";
 
 type Props = {
   readonly song: ISong;
 
   readonly audioStatus: AudioStatus;
   readonly setAudioStatus: Dispatch<SetStateAction<AudioStatus>>;
+
+  readonly volume: VolumeSetting;
+  readonly setVolume: (volume: VolumeSetting) => void;
 };
 
 export const AudioControl: FC<Props> = ({
   song,
   audioStatus,
   setAudioStatus,
+  volume,
+  setVolume,
 }) => {
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -61,6 +66,8 @@ export const AudioControl: FC<Props> = ({
       <div className="flex items-center w-full gap-2">
         <p className="text-xs">{formatTime(currentTime)}</p>
         <AudioPlay
+          volume={volume}
+          setVolume={setVolume}
           audioStatus={audioStatus}
           song={song}
           isRepeated={isRepeated}

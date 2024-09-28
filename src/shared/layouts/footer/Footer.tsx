@@ -7,13 +7,19 @@ import { useEffect, useState, type FC } from "react";
 import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
 
 import { AudioControl } from "./AudioControl";
+import { VolumeSettings } from "./VolumeSettings";
 
 export type AudioStatus = "playing" | "paused";
+export type VolumeSetting = { prev: number; current: number };
 
 export const Footer: FC = () => {
   const { playingSong } = usePlayingSong();
   const [isSpinning, setIsSpinning] = useState(false);
   const [audioStatus, setAudioStatus] = useState<AudioStatus>("playing");
+  const [volume, setVolume] = useState<VolumeSetting>({
+    prev: 50,
+    current: 50,
+  });
 
   const handleResetSpinner = () => {
     setIsSpinning(false); // Stop the animation briefly to reset
@@ -62,8 +68,12 @@ export const Footer: FC = () => {
         song={playingSong}
         audioStatus={audioStatus}
         setAudioStatus={setAudioStatus}
+        volume={volume}
+        setVolume={setVolume}
       />
-      <div className="flex justify-end">Test</div>
+      <div className="flex justify-end">
+        <VolumeSettings volume={volume} setVolume={setVolume} />
+      </div>
     </div>
   );
 };
