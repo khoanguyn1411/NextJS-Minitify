@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@nextui-org/button";
-import { Slider } from "@nextui-org/react";
-import { type FC } from "react";
+import { Slider, User } from "@nextui-org/react";
+import { useEffect, useState, type FC } from "react";
 import {
   BiArrowFromRight,
   BiArrowToRight,
@@ -10,11 +10,42 @@ import {
   BiRepeat,
   BiShuffle,
 } from "react-icons/bi";
+import classNames from "classnames";
+
+import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
 
 export const Footer: FC = () => {
+  const { playingSong } = usePlayingSong();
+  const [isSpinning, setIsSpinning] = useState(false);
+
+  const handleResetSpinner = () => {
+    setIsSpinning(false); // Stop the animation briefly to reset
+    setTimeout(() => {
+      setIsSpinning(true); // Restart the animation
+    }, 0); // Use a timeout of 0 to restart the animation immediately
+  };
+
+  useEffect(() => {
+    if (playingSong != null) {
+      handleResetSpinner();
+    }
+  }, [playingSong]);
+
+  if (playingSong == null) {
+    return <p>Select a song to play.</p>;
+  }
   return (
-    <div className="flex-col gap-2 grid grid-cols-3">
-      <div>Test</div>
+    <div className="flex-col gap-2 grid grid-cols-3 items-center">
+      <div>
+        <User
+          name={playingSong.name}
+          description={playingSong.artists.map((artist) => artist.name)}
+          avatarProps={{
+            src: playingSong.imageUrl,
+            className: classNames(isSpinning ? "animate-spin" : ""),
+          }}
+        />
+      </div>
       <div className="flex justify-center flex-col">
         <div className="flex items-center w-full gap-2">
           <p className="text-xs">1:23</p>

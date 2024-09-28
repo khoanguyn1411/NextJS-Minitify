@@ -9,6 +9,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      animation: {
+        spin: 'spin 10s linear infinite', // Custom spin animation
+      },
       padding: {
         container: "1rem",
       },
