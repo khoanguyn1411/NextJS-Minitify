@@ -1,6 +1,6 @@
 "use client";
 
-import { User as NextUiUser, Tooltip } from "@nextui-org/react";
+import { User as NextUiUser } from "@nextui-org/react";
 import { type FC } from "react";
 
 import { type IArtist } from "@/core/apis/artistApis";
