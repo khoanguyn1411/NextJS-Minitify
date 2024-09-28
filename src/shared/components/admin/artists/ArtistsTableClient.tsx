@@ -27,14 +27,7 @@ const columns: readonly TableColumn<IArtist>[] = [
   {
     title: "Biography",
     key: "biography",
-    render: (item) => (
-      <Tooltip
-        className="max-w-48 overflow-auto max-h-40"
-        content={item.biography}
-      >
-        <p className="truncate-2">{item.biography}</p>
-      </Tooltip>
-    ),
+    render: (item) => <p className="truncate-2">{item.biography}</p>,
   },
   {
     title: "Songs",
