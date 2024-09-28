@@ -18,21 +18,21 @@ export const MainLayout: FC<PropsWithChildren<Props>> = ({
   return (
     <UserContext.Provider value={user}>
       <div className="flex flex-col gap-2 h-screen">
-        <header className="p-container">
+        <header className="p-container sticky top-0">
           <Header />
         </header>
-        <main className="h-full grid grid-cols-6 px-2 gap-2">
-          <aside className="h-full bg-background rounded-md">
+        <main className="h-main overflow-auto grid grid-cols-6 px-2 gap-2">
+          <aside className="h-main overflow-auto bg-background rounded-md">
             <NavigationAside />
           </aside>
-          <div className="p-container col-span-4 max-h-full h-full bg-background rounded-md">
+          <div className="p-container col-span-4 max-h-full h-main overflow-auto bg-background rounded-md">
             {children}
           </div>
-          <aside className="p-container h-full bg-background rounded-md">
+          <aside className="p-container h-main overflow-auto bg-background rounded-md">
             This is aside right
           </aside>
         </main>
-        <footer className="mt-auto p-container">This is footer</footer>
+        <footer className="mt-auto h-footer p-container">This is footer</footer>
       </div>
     </UserContext.Provider>
   );

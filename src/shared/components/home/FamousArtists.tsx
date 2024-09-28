@@ -13,7 +13,7 @@ export const FamousArtists: FC = async () => {
     search: "",
   });
   return (
-    <SectionWithTitle title="For you">
+    <SectionWithTitle title="Famous artists">
       {artistsPage.items.map((artist) => (
         <SquareArtistView key={artist.id} artist={artist} />
       ))}

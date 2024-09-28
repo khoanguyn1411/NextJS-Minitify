@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Card, Image } from "@nextui-org/react";
 import classNames from "classnames";
 import { type FC } from "react";
