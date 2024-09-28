@@ -49,7 +49,7 @@ const columns: readonly TableColumn<ISong>[] = [
     key: "album",
     render: (item) => (
       <Tooltip content={item.album?.name}>
-        <p className="truncate-1">{item.album?.name ?? "-"}</p>
+        <p className="truncate-2">{item.album?.name ?? "-"}</p>
       </Tooltip>
     ),
   },

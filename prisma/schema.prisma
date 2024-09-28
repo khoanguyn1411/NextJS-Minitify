@@ -15,7 +15,7 @@ datasource db {
 
 model Artist {
   id          Int      @id @default(autoincrement())
-  biography   String
+  biography   String   @db.LongText
   imageUrl    String
   name        String   @default("")
   createdDate DateTime @default(now())
