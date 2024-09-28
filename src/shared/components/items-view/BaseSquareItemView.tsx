@@ -24,6 +24,7 @@ export const BaseSquareItemView: FC<Props> = ({
     <Card
       radius="lg"
       isPressable
+      onClick={onClick}
       className="rounded shadow-none relative group items-start
     p-3 flex flex-col gap-2 bg-transparent cursor-pointer border-none min-w-[170px] w-[170px]"
     >
