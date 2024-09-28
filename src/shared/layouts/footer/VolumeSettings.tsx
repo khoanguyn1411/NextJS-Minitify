@@ -1,4 +1,4 @@
-import { Button, Slider } from "@nextui-org/react";
+import { Button, Slider, Tooltip } from "@nextui-org/react";
 import { type FC } from "react";
 import { BiVolumeFull, BiVolumeMute } from "react-icons/bi";
 
@@ -39,14 +39,16 @@ export const VolumeSettings: FC<Props> = ({ volume, setVolume }) => {
 
   return (
     <div className="w-1/3 flex gap-2 items-center">
-      <Button
-        onClick={handleToggleVolume}
-        isIconOnly
-        radius="full"
-        variant="light"
-      >
-        {isMuted ? <BiVolumeMute /> : <BiVolumeFull />}
-      </Button>
+      <Tooltip content={isMuted ? "Unmute" : "Mute"}>
+        <Button
+          onClick={handleToggleVolume}
+          isIconOnly
+          radius="full"
+          variant="light"
+        >
+          {isMuted ? <BiVolumeMute /> : <BiVolumeFull />}
+        </Button>
+      </Tooltip>
       <Slider
         aria-label="Music progress"
         classNames={{

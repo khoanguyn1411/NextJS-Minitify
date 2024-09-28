@@ -31,7 +31,6 @@ export const AudioPlay: FC<Props> = ({
   duration,
   setDuration,
   volume,
-  setVolume,
 }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [progress, setProgress] = useState(0);
@@ -99,6 +98,13 @@ export const AudioPlay: FC<Props> = ({
     resetAudio();
     setAudioStatus("playing");
   }, [song]);
+
+  useEffect(() => {
+    if (audioRef.current == null) {
+      return;
+    }
+    audioRef.current.volume = volume.current / 100;
+  }, [volume]);
 
   return (
     <>
