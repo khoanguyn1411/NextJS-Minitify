@@ -1,6 +1,7 @@
+import { Card, CardBody, CardFooter, Divider } from "@nextui-org/react";
 import { type FC } from "react";
-import { Card, CardBody, CardFooter, Divider, Image } from "@nextui-org/react";
 
+import { AppImage } from "@/shared/components/AppImage";
 import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
 
 export const TrackInfoAside: FC = () => {
@@ -14,7 +15,7 @@ export const TrackInfoAside: FC = () => {
   }
   return (
     <div className="flex flex-col gap-4">
-      <Image
+      <AppImage
         isBlurred
         classNames={{ wrapper: "!max-w-full", img: "w-full" }}
         alt={playingSong.name}
@@ -29,7 +30,7 @@ export const TrackInfoAside: FC = () => {
         <div key={artist.name}>
           <Card>
             <CardBody>
-              <Image
+              <AppImage
                 classNames={{ wrapper: "!max-w-full", img: "w-full" }}
                 src={artist.imageUrl}
                 alt={artist.name}

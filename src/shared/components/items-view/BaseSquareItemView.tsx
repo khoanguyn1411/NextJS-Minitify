@@ -1,9 +1,11 @@
 "use client";
 
-import { Button, Card, Image } from "@nextui-org/react";
+import { Button, Card } from "@nextui-org/react";
 import classNames from "classnames";
 import { type FC } from "react";
 import { BiPlay } from "react-icons/bi";
+
+import { AppImage } from "../AppImage";
 
 type Props = {
   readonly imageUrl: string;
@@ -28,7 +30,7 @@ export const BaseSquareItemView: FC<Props> = ({
       className="rounded shadow-none relative group items-start
     p-3 flex flex-col gap-2 bg-transparent cursor-pointer border-none min-w-[170px] w-[170px]"
     >
-      <Image
+      <AppImage
         radius={isRounded ? "full" : "lg"}
         alt="Woman listing to music"
         className="object-cover"

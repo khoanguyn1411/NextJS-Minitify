@@ -1,7 +1,9 @@
-import { Card, Image } from "@nextui-org/react";
+import { Card } from "@nextui-org/react";
 import classnames from "classnames";
 import { useRef, type ChangeEvent, type FC, type ReactNode } from "react";
 import { BiFile, BiUpload, BiX } from "react-icons/bi";
+
+import { AppImage } from "./AppImage";
 
 export const ACCEPTED_UPLOAD_FILES = {
   mp3: ".mp3",
@@ -69,7 +71,7 @@ export const FileUploader: FC<Props> = ({
           </audio>
         )}
         {isCurrentFileShown && fileAccepted === ".jpg,.jpeg,.png" && (
-          <Image
+          <AppImage
             isBlurred
             className="object-cover"
             src={currentUrl ?? ""}
