@@ -30,6 +30,7 @@ export const AudioControl: FC<Props> = ({
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isRepeated, setIsRepeated] = useState(false);
+  const [isShuffle, setIsShuffle] = useState(false);
 
   // Format time in mm:ss format
   const formatTime = (time: number) => {
@@ -47,8 +48,12 @@ export const AudioControl: FC<Props> = ({
     });
   };
 
-  const toggleRepeatedState = () => {
+  const toggleRepeatState = () => {
     setIsRepeated((prev) => !prev);
+  };
+
+  const toggleShuffleState = () => {
+    setIsShuffle((prev) => !prev);
   };
 
   return (
@@ -75,7 +80,7 @@ export const AudioControl: FC<Props> = ({
             radius="full"
             variant="light"
             color={isRepeated ? "primary" : "default"}
-            onClick={toggleRepeatedState}
+            onClick={toggleRepeatState}
           >
             <BiRepeat className="text-lg" />
           </Button>
@@ -118,11 +123,13 @@ export const AudioControl: FC<Props> = ({
           </Button>
         </Tooltip>
 
-        <Tooltip content="Shuffle">
+        <Tooltip content={isShuffle ? "Not Shuffle" : "Shuffle"}>
           <Button
             isIconOnly
+            onClick={toggleShuffleState}
             className="data-[hover]:bg-foreground/10"
             radius="full"
+            color={isShuffle ? "primary" : "default"}
             variant="light"
           >
             <BiShuffle className="text-lg" />

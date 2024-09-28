@@ -49,7 +49,9 @@ export const Footer: FC = () => {
       <div>
         <User
           name={playingSong.name}
-          description={playingSong.artists.map((artist) => artist.name)}
+          description={playingSong.artists
+            .map((artist) => artist.name)
+            .join(", ")}
           avatarProps={{
             src: playingSong.imageUrl,
             className: classNames(isSpinning ? "animate-spin" : ""),
