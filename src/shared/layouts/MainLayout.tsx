@@ -4,6 +4,7 @@ import { type User } from "@prisma/client";
 import { type FC, type PropsWithChildren } from "react";
 
 import { UserContext } from "../hooks/useCurrentUser";
+import { Footer } from "./footer/Footer";
 import { Header } from "./header/Header";
 import { NavigationAside } from "./navigationAside/NavigationAside";
 
@@ -32,7 +33,9 @@ export const MainLayout: FC<PropsWithChildren<Props>> = ({
             This is aside right
           </aside>
         </main>
-        <footer className="mt-auto h-footer p-container">This is footer</footer>
+        <footer className="h-footer px-container">
+          <Footer />
+        </footer>
       </div>
     </UserContext.Provider>
   );
