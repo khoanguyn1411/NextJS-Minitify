@@ -6,7 +6,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 
-import { SCROLLABLE_TARGET_ID } from "../constants/ids";
 import { type LooseAutocomplete } from "../utils/types/looseAutocomplete";
 
 export type ListViewColumn<T> = {
@@ -20,7 +19,7 @@ export type ListViewColumn<T> = {
 
 type ListViewProps<T> = {
   readonly columns: readonly ListViewColumn<T>[];
-  readonly fetchApi: (
+  readonly fetchApi?: (
     param: BaseFilterParams.Pagination,
   ) => Promise<Pagination<T>>;
   readonly toKey: (item: T) => string | number;
@@ -28,6 +27,8 @@ type ListViewProps<T> = {
   readonly gridTemplate?: string;
   readonly onRowClick?: (item: T, index: number) => void;
   readonly page: Pagination<T>;
+  readonly scrollableTargetId?: string;
+  readonly isActiveRow?: (item: T, index: number) => boolean;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -41,6 +42,9 @@ export const ListView = <TData extends Record<string, any>>(
   const [hasNext, setHasNext] = useState(props.page.hasNext);
 
   const fetchItems = async () => {
+    if (props.fetchApi == null) {
+      return;
+    }
     const result = await props.fetchApi({
       ...BaseFilterParams.initialPagination,
       pageNumber,
@@ -85,6 +89,8 @@ export const ListView = <TData extends Record<string, any>>(
         className="p-container"
         next={fetchItems}
         hasMore={hasNext}
+        scrollableTarget={props.scrollableTargetId}
+        dataLength={items.length}
         loader={
           <div className="flex flex-col gap-4">
             {Array.from({ length: 2 }).map((_, index) => {
@@ -103,8 +109,6 @@ export const ListView = <TData extends Record<string, any>>(
             })}
           </div>
         }
-        dataLength={items.length}
-        scrollableTarget={SCROLLABLE_TARGET_ID}
       >
         {items.map((item, index) => {
           return (
@@ -114,7 +118,10 @@ export const ListView = <TData extends Record<string, any>>(
               className={classNames(
                 `grid ${props.gridTemplate} gap-4`,
                 "items-center rounded-md py-2 transition-[0.2s ease]",
-                { "hover:bg-input-hover cursor-pointer": isClickable },
+                {
+                  "hover:bg-input-hover cursor-pointer": isClickable,
+                  "text-primary-200": props.isActiveRow?.(item, index),
+                },
               )}
             >
               {props.columns.map((col) => {

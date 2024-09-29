@@ -1,9 +1,8 @@
 "use client";
 
-import { User } from "@nextui-org/react";
-import classNames from "classnames";
 import { useEffect, useState, type FC } from "react";
 
+import { SongBaseInfoView } from "@/shared/components/items-view/SongBaseInfoView";
 import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
 
 import { AudioControl } from "./AudioControl";
@@ -53,16 +52,7 @@ export const Footer: FC = () => {
   return (
     <div className="flex-col gap-2 grid grid-cols-3 items-center">
       <div>
-        <User
-          name={playingSong.name}
-          description={playingSong.artists
-            .map((artist) => artist.name)
-            .join(", ")}
-          avatarProps={{
-            src: playingSong.imageUrl,
-            className: classNames(isSpinning ? "animate-spin" : ""),
-          }}
-        />
+        <SongBaseInfoView song={playingSong} isSpinning={isSpinning} />
       </div>
       <AudioControl
         song={playingSong}
