@@ -52,7 +52,7 @@ type Props = {
   readonly page: Pagination<ISong>;
 };
 
-export const DiscoverSongsListViewClient: FC<Props> = ({ page }) => {
+export const SongListView: FC<Props> = ({ page }) => {
   const { setPlayingSong } = usePlayingSong();
   const handleRowClick = (song: ISong) => {
     setPlayingSong(song);

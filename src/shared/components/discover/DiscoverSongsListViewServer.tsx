@@ -3,7 +3,7 @@ import { type FC } from "react";
 import { getSongs } from "@/core/apis/songApis";
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 
-import { DiscoverSongsListViewClient } from "./DiscoverSongsListViewClient";
+import { SongListView } from "../items-view/SongListView";
 
 export const DiscoverSongsListViewServer: FC = async () => {
   const songPage = await getSongs({
@@ -11,5 +11,5 @@ export const DiscoverSongsListViewServer: FC = async () => {
     search: "",
   });
 
-  return <DiscoverSongsListViewClient page={songPage} />;
+  return <SongListView page={songPage} />;
 };
