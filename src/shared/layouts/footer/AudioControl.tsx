@@ -37,7 +37,7 @@ export const AudioControl: FC<Props> = ({
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isRepeated, setIsRepeated] = useState(false);
-  const { setIsShuffle, isShuffle } = usePlayingSong();
+  const { setIsShuffle, isShuffle, moveToNextSong } = usePlayingSong();
 
   const toggleAudioStatus = () => {
     setAudioStatus((status) => {
@@ -121,7 +121,7 @@ export const AudioControl: FC<Props> = ({
             radius="full"
             variant="light"
           >
-            <BiSkipNext className="text-3xl" />
+            <BiSkipNext onClick={moveToNextSong} className="text-3xl" />
           </Button>
         </Tooltip>
 
