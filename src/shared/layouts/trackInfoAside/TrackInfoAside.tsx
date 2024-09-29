@@ -22,7 +22,7 @@ function shuffleSongsKeepFirst(
     [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
   }
 
-  return [firstValue, ...shuffledArray]; // Add firstValue to the start of the shuffled array
+  return [...shuffledArray]; // Add firstValue to the start of the shuffled array
 }
 
 export const TrackInfoAside: FC = () => {

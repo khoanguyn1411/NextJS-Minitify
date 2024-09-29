@@ -23,6 +23,7 @@ export const MainLayout: FC<PropsWithChildren<Props>> = ({
   user,
 }) => {
   const [playingSong, setPlayingSong] = useState<ISong | null>(null);
+
   const [isShuffle, setIsShuffle] = useState<boolean>(false);
   const [belongTo, setBelongTo] = useState<BelongTo>(null);
   const [songsToPlay, setSongsToPlay] = useState<readonly ISong[]>([]);
