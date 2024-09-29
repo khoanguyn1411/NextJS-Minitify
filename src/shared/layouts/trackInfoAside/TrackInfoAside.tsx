@@ -6,10 +6,10 @@ import { type FC } from "react";
 import { type ISong } from "@/core/apis/songApis";
 import { AppImage } from "@/shared/components/AppImage";
 import { SongBaseInfoView } from "@/shared/components/items-view/SongBaseInfoView";
-import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
+import { usePlayingSongStore } from "@/shared/stores/usePlayingSongStore";
 
 export const TrackInfoAside: FC = () => {
-  const { playingSong, nextSongs, setPlayingSong } = usePlayingSong();
+  const { playingSong, nextSongs, setPlayingSong } = usePlayingSongStore();
 
   const handleSongClick = (song: ISong) => {
     setPlayingSong(song);

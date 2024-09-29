@@ -6,7 +6,7 @@ import { BiSearch } from "react-icons/bi";
 import Link from "next/link";
 import { type User } from "@prisma/client";
 
-import { UserContext } from "@/shared/hooks/useCurrentUser";
+import { UserContext } from "@/shared/stores/useCurrentUserStore";
 
 import { UserActions } from "./UserActions";
 

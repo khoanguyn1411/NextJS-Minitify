@@ -127,7 +127,7 @@ export const PlayingSongContext = createContext<
 });
 
 /** Get current song. Only available with users app. */
-export const usePlayingSong = () => {
+export const usePlayingSongStore = () => {
   const value = useContext(PlayingSongContext);
   return value;
 };

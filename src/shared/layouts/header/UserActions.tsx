@@ -2,12 +2,12 @@ import { type FC } from "react";
 
 import { LoginButton } from "@/shared/components/auth/login/LoginButton";
 import { RegisterButton } from "@/shared/components/auth/register/RegisterButton";
-import { useCurrentUser } from "@/shared/hooks/useCurrentUser";
+import { useCurrentUserStore } from "@/shared/stores/useCurrentUserStore";
 
 import { UserDropdown } from "./UserDropdown";
 
 export const UserActions: FC = () => {
-  const { currentUser } = useCurrentUser();
+  const { currentUser } = useCurrentUserStore();
 
   if (currentUser == null) {
     return (

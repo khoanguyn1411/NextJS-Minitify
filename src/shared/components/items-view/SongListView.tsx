@@ -7,7 +7,7 @@ import { getSongs, type ISong } from "@/core/apis/songApis";
 import { type BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 import { SCROLLABLE_TARGET_ID } from "@/shared/constants/ids";
-import { type BelongTo, usePlayingSong } from "@/shared/hooks/usePlayingSong";
+import { type BelongTo, usePlayingSongStore } from "@/shared/stores/usePlayingSongStore";
 import { formatTime } from "@/shared/utils/formatTime";
 
 import { ListView, type ListViewColumn } from "../ListView";
@@ -50,7 +50,7 @@ type Props = {
 };
 
 export const SongListView: FC<Props> = ({ page, belongTo }) => {
-  const { setPlayingSong, playingSong, setBelongTo } = usePlayingSong();
+  const { setPlayingSong, playingSong, setBelongTo } = usePlayingSongStore();
 
   const handleRowClick = (song: ISong) => {
     setPlayingSong(song);

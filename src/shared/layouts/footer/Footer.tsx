@@ -3,7 +3,7 @@
 import { useEffect, useState, type FC } from "react";
 
 import { SongBaseInfoView } from "@/shared/components/items-view/SongBaseInfoView";
-import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
+import { usePlayingSongStore } from "@/shared/stores/usePlayingSongStore";
 
 import { AudioControl } from "./AudioControl";
 import { VolumeSettings } from "./VolumeSettings";
@@ -12,7 +12,7 @@ export type AudioStatus = "playing" | "paused";
 export type VolumeSetting = { prev: number; current: number };
 
 export const Footer: FC = () => {
-  const { playingSong } = usePlayingSong();
+  const { playingSong } = usePlayingSongStore();
   const [isSpinning, setIsSpinning] = useState(false);
   const [audioStatus, setAudioStatus] = useState<AudioStatus>("playing");
   const [volume, setVolume] = useState<VolumeSetting>({

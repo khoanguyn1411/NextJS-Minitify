@@ -5,11 +5,11 @@ import classNames from "classnames";
 import { type FC, type PropsWithChildren } from "react";
 
 import { SCROLLABLE_TARGET_ID } from "../constants/ids";
-import { UserContext } from "../hooks/useCurrentUser";
+import { UserContext } from "../stores/useCurrentUserStore";
 import {
   PlayingSongContext,
   usePlayingSongContext,
-} from "../hooks/usePlayingSong";
+} from "../stores/usePlayingSongStore";
 import { Footer } from "./footer/Footer";
 import { Header } from "./header/Header";
 import { NavigationAside } from "./navigationAside/NavigationAside";

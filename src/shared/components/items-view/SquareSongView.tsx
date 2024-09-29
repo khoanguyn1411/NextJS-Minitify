@@ -3,7 +3,7 @@
 import { type FC } from "react";
 
 import { type ISong } from "@/core/apis/songApis";
-import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
+import { usePlayingSongStore } from "@/shared/stores/usePlayingSongStore";
 
 import { BaseSquareItemView } from "./BaseSquareItemView";
 
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const SquareSongView: FC<Props> = ({ song }) => {
-  const { setPlayingSong } = usePlayingSong();
+  const { setPlayingSong } = usePlayingSongStore();
   const handleSongClick = () => {
     setPlayingSong(song);
   };
