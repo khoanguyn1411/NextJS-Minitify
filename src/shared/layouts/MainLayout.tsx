@@ -1,11 +1,12 @@
 "use client";
 
 import { type User } from "@prisma/client";
-import { useState, type FC, type PropsWithChildren } from "react";
 import classNames from "classnames";
+import { useState, type FC, type PropsWithChildren } from "react";
 
 import { type ISong } from "@/core/apis/songApis";
 
+import { SCROLLABLE_TARGET_ID } from "../constants/ids";
 import { UserContext } from "../hooks/useCurrentUser";
 import { PlayingSongContext } from "../hooks/usePlayingSong";
 import { Footer } from "./footer/Footer";
@@ -40,6 +41,7 @@ export const MainLayout: FC<PropsWithChildren<Props>> = ({
               <NavigationAside />
             </aside>
             <div
+              id={SCROLLABLE_TARGET_ID}
               className={classNames(
                 "max-h-full h-main overflow-auto bg-background rounded-md",
               )}

@@ -4,7 +4,8 @@ import { User as NextUiUser } from "@nextui-org/react";
 import { type FC } from "react";
 import { BiTime } from "react-icons/bi";
 
-import { type ISong } from "@/core/apis/songApis";
+import { getSongs, type ISong } from "@/core/apis/songApis";
+import { type BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
 import { formatTime } from "@/shared/utils/formatTime";
@@ -57,9 +58,15 @@ export const SongListView: FC<Props> = ({ page }) => {
   const handleRowClick = (song: ISong) => {
     setPlayingSong(song);
   };
+
+  const fetchFunction = (page: BaseFilterParams.Pagination) => {
+    return getSongs({ ...page, search: "" });
+  };
+
   return (
     <ListView
       onRowClick={handleRowClick}
+      fetchApi={fetchFunction}
       gridTemplate="grid-cols-[40px_1fr_100px_200px_100px]"
       columns={columns}
       toKey={(item) => item.id}

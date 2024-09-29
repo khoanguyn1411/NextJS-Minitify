@@ -1,9 +1,12 @@
 import { Divider } from "@nextui-org/react";
 import classNames from "classnames";
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
 
+import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 
+import { SCROLLABLE_TARGET_ID } from "../constants/ids";
 import { type LooseAutocomplete } from "../utils/types/looseAutocomplete";
 
 export type ListViewColumn<T> = {
@@ -17,17 +20,36 @@ export type ListViewColumn<T> = {
 
 type ListViewProps<T> = {
   readonly columns: readonly ListViewColumn<T>[];
-  readonly page: Pagination<T>;
+  readonly fetchApi: (
+    param: BaseFilterParams.Pagination,
+  ) => Promise<Pagination<T>>;
   readonly toKey: (item: T) => string | number;
   readonly isLoading?: boolean;
   readonly gridTemplate?: string;
   readonly onRowClick?: (item: T, index: number) => void;
+  readonly page: Pagination<T>;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const ListView = <TData extends Record<string, any>>(
   props: ListViewProps<TData>,
 ) => {
+  const [pageNumber, setPageNumber] = useState<number>(
+    props.page.pageNumber + 1,
+  );
+  const [items, setItems] = useState<readonly TData[]>(props.page.items);
+  const [hasNext, setHasNext] = useState(props.page.hasNext);
+
+  const fetchItems = async () => {
+    const result = await props.fetchApi({
+      ...BaseFilterParams.initialPagination,
+      pageNumber,
+    });
+    setHasNext(result.hasNext);
+    setPageNumber((prev) => prev + 1);
+    setItems((prev) => [...prev, ...result.items]);
+  };
+
   const getCellContent = (
     col: ListViewColumn<TData>,
     item: TData,
@@ -59,8 +81,32 @@ export const ListView = <TData extends Record<string, any>>(
         ))}
       </div>
       <Divider />
-      <div className="p-container">
-        {props.page.items.map((item, index) => {
+      <InfiniteScroll
+        className="p-container"
+        next={fetchItems}
+        hasMore={hasNext}
+        loader={
+          <div className="flex flex-col gap-4">
+            {Array.from({ length: 2 }).map((_, index) => {
+              return (
+                <div key={index} className={`grid ${props.gridTemplate} gap-2`}>
+                  {Array.from({ length: props.columns.length }).map(
+                    (_, index) => (
+                      <div
+                        key={index}
+                        className="h-[24px] rounded-lg bg-input"
+                      />
+                    ),
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        }
+        dataLength={items.length}
+        scrollableTarget={SCROLLABLE_TARGET_ID}
+      >
+        {items.map((item, index) => {
           return (
             <div
               key={props.toKey(item)}
@@ -83,7 +129,7 @@ export const ListView = <TData extends Record<string, any>>(
             </div>
           );
         })}
-      </div>
+      </InfiniteScroll>
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { DiscoverSongsListViewServer } from "@/shared/components/discover/DiscoverSongsListViewServer";
+import { DiscoverSongsListView } from "@/shared/components/discover/DiscoverSongsListView";
 
 export default async function Page() {
   return (
@@ -6,7 +6,7 @@ export default async function Page() {
       <h1 className="text-xl font-semibold bg-primary-800 sticky top-0 px-container h-[60px] z-10 items-center flex">
         Discover
       </h1>
-      <DiscoverSongsListViewServer />
+      <DiscoverSongsListView />
     </div>
   );
 }
