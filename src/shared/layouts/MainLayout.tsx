@@ -41,7 +41,7 @@ export const MainLayout: FC<PropsWithChildren<Props>> = ({
             </aside>
             <div
               className={classNames(
-                "p-container max-h-full h-main overflow-auto bg-background rounded-md",
+                "max-h-full h-main overflow-auto bg-background rounded-md",
               )}
             >
               {children}

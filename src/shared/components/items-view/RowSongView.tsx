@@ -1,5 +1,5 @@
 import { type FC } from "react";
 
-export const RowMusicView: FC = () => {
+export const RowSongView: FC = () => {
   return <div>RowMusicView</div>;
 };

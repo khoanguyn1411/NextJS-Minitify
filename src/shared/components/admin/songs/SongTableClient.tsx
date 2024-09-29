@@ -5,7 +5,6 @@ import { type FC } from "react";
 
 import { type ISong } from "@/core/apis/songApis";
 import { type Pagination } from "@/core/models/pagination";
-import { DateUtils } from "@/shared/utils/dateUtils";
 
 import { AppTable, type TableColumn } from "../../AppTable";
 import { SongActionsCell } from "./SongActionsCell";
@@ -18,7 +17,7 @@ const columns: readonly TableColumn<ISong>[] = [
     render: (item) => (
       <NextUiUser
         avatarProps={{ radius: "full", src: item.imageUrl }}
-        description={`Last updated: ${DateUtils.toReadable(item.updatedAt)}`}
+        description={item.artists.map((artist) => artist.name).join(", ")}
         name={item.name}
       />
     ),
@@ -35,13 +34,6 @@ const columns: readonly TableColumn<ISong>[] = [
         </audio>
       );
     },
-  },
-  {
-    title: "Artist",
-    key: "artists",
-    render: (item) => (
-      <span>{item.artists.map((artist) => artist.name).join(", ")}</span>
-    ),
   },
   { title: "Play count", key: "playTime", align: "end" },
   {
