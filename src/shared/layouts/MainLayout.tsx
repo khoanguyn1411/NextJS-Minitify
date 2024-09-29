@@ -8,7 +8,7 @@ import { type ISong } from "@/core/apis/songApis";
 
 import { SCROLLABLE_TARGET_ID } from "../constants/ids";
 import { UserContext } from "../hooks/useCurrentUser";
-import { PlayingSongContext } from "../hooks/usePlayingSong";
+import { PlayingSongContext, type BelongTo } from "../hooks/usePlayingSong";
 import { Footer } from "./footer/Footer";
 import { Header } from "./header/Header";
 import { NavigationAside } from "./navigationAside/NavigationAside";
@@ -23,10 +23,25 @@ export const MainLayout: FC<PropsWithChildren<Props>> = ({
   user,
 }) => {
   const [playingSong, setPlayingSong] = useState<ISong | null>(null);
+  const [isShuffle, setIsShuffle] = useState<boolean>(false);
+  const [belongTo, setBelongTo] = useState<BelongTo>(null);
+  const [songsToPlay, setSongsToPlay] = useState<readonly ISong[]>([]);
+
   const hasPlayingSong = playingSong != null;
   return (
     <UserContext.Provider value={user}>
-      <PlayingSongContext.Provider value={{ playingSong, setPlayingSong }}>
+      <PlayingSongContext.Provider
+        value={{
+          songsToPlay,
+          setSongsToPlay,
+          playingSong,
+          setPlayingSong,
+          belongTo,
+          isShuffle,
+          setBelongTo,
+          setIsShuffle,
+        }}
+      >
         <div className="flex flex-col gap-2 h-screen">
           <header className="p-container sticky top-0">
             <Header />

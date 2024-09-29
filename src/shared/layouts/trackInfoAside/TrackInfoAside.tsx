@@ -1,11 +1,44 @@
-import { Card, CardBody, CardFooter, Divider } from "@nextui-org/react";
-import { type FC } from "react";
+"use client";
 
+import { Card, CardBody, CardFooter, Divider } from "@nextui-org/react";
+import { useEffect, useMemo, type FC } from "react";
+
+import { getSongs, type ISong } from "@/core/apis/songApis";
+import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { AppImage } from "@/shared/components/AppImage";
-import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
+import { SongBaseInfoView } from "@/shared/components/items-view/SongBaseInfoView";
+import { usePlayingSong, type BelongTo } from "@/shared/hooks/usePlayingSong";
 
 export const TrackInfoAside: FC = () => {
-  const { playingSong } = usePlayingSong();
+  const { playingSong, belongTo, setSongsToPlay, songsToPlay, setPlayingSong } =
+    usePlayingSong();
+
+  const setPlaylistSongToPlayByTurn = async (belongTo: BelongTo) => {
+    if (belongTo?.type === "discover") {
+      const songPages = await getSongs({
+        ...BaseFilterParams.initialPagination,
+        pageSize: 50,
+        search: "",
+      });
+      setSongsToPlay(songPages.items);
+    }
+  };
+
+  const nextSongs = useMemo(() => {
+    const currentSongIndex = songsToPlay.findIndex(
+      (song) => song.id === playingSong?.id,
+    );
+    return songsToPlay.slice(currentSongIndex + 1);
+  }, [songsToPlay, playingSong]);
+
+  const handleSongClick = (song: ISong) => {
+    setPlayingSong(song);
+  };
+
+  useEffect(() => {
+    setPlaylistSongToPlayByTurn(belongTo);
+  }, [belongTo]);
+
   if (playingSong == null) {
     return (
       <div>
@@ -13,6 +46,7 @@ export const TrackInfoAside: FC = () => {
       </div>
     );
   }
+
   return (
     <div className="flex flex-col gap-4">
       <AppImage
@@ -43,6 +77,24 @@ export const TrackInfoAside: FC = () => {
           </Card>
         </div>
       ))}
+      <Divider />
+      <div className="flex flex-col gap-4">
+        <p className="font-bold">Playing</p>
+        <SongBaseInfoView isSpinning song={playingSong} />
+      </div>
+      <Divider />
+      <div className="flex flex-col gap-4">
+        <p className="font-bold">Next songs</p>
+        <Card className="flex flex-col max-h-[200px] overflow-auto justify-start">
+          {nextSongs.map((song) => (
+            <SongBaseInfoView
+              onClick={handleSongClick}
+              key={song.id}
+              song={song}
+            />
+          ))}
+        </Card>
+      </div>
     </div>
   );
 };

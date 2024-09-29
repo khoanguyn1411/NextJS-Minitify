@@ -1,5 +1,3 @@
-"use-client";
-
 import { type FC } from "react";
 
 import { getSongs } from "@/core/apis/songApis";
@@ -13,5 +11,5 @@ export const DiscoverSongsListView: FC = async () => {
     search: "",
   });
 
-  return <SongListView page={songPage} />;
+  return <SongListView belongTo={{ type: "discover" }} page={songPage} />;
 };

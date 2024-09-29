@@ -7,7 +7,7 @@ import { getSongs, type ISong } from "@/core/apis/songApis";
 import { type BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 import { SCROLLABLE_TARGET_ID } from "@/shared/constants/ids";
-import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
+import { type BelongTo, usePlayingSong } from "@/shared/hooks/usePlayingSong";
 import { formatTime } from "@/shared/utils/formatTime";
 
 import { ListView, type ListViewColumn } from "../ListView";
@@ -46,12 +46,15 @@ const columns: readonly ListViewColumn<ISong>[] = [
 
 type Props = {
   readonly page: Pagination<ISong>;
+  readonly belongTo: BelongTo;
 };
 
-export const SongListView: FC<Props> = ({ page }) => {
-  const { setPlayingSong, playingSong } = usePlayingSong();
+export const SongListView: FC<Props> = ({ page, belongTo }) => {
+  const { setPlayingSong, playingSong, setBelongTo } = usePlayingSong();
+
   const handleRowClick = (song: ISong) => {
     setPlayingSong(song);
+    setBelongTo(belongTo);
   };
 
   const fetchFunction = (page: BaseFilterParams.Pagination) => {
