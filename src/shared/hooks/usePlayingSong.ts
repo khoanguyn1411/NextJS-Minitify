@@ -41,6 +41,7 @@ export const usePlayingSong = () => {
     setBelongTo,
     setIsShuffle,
     setSongsToPlay,
+    isShuffle,
     songsToPlay,
   } = useContext(PlayingSongContext);
 
@@ -54,6 +55,7 @@ export const usePlayingSong = () => {
     playingSong,
     songsToPlay,
     belongTo,
+    isShuffle,
     setSongsToPlay,
     setPlayingSong,
     setBelongTo,

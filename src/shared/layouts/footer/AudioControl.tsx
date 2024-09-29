@@ -11,6 +11,7 @@ import {
 } from "react-icons/bi";
 
 import { type ISong } from "@/core/apis/songApis";
+import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
 import { formatTime } from "@/shared/utils/formatTime";
 
 import { AudioPlay } from "./AudioPlay";
@@ -36,7 +37,7 @@ export const AudioControl: FC<Props> = ({
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isRepeated, setIsRepeated] = useState(false);
-  const [isShuffle, setIsShuffle] = useState(false);
+  const { setIsShuffle, isShuffle } = usePlayingSong();
 
   const toggleAudioStatus = () => {
     setAudioStatus((status) => {
@@ -52,7 +53,7 @@ export const AudioControl: FC<Props> = ({
   };
 
   const toggleShuffleState = () => {
-    setIsShuffle((prev) => !prev);
+    setIsShuffle(!isShuffle);
   };
 
   return (
