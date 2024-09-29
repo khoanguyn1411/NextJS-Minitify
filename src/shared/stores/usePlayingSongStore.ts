@@ -62,7 +62,7 @@ export const usePlayingSongContext = () => {
     return shuffleSongsKeepFirst(songsToPlay, playingSong);
   }, [songsToPlay, isShuffle]);
 
-  const setPlaylistSongToPlayByTurn = async (belongTo: BelongTo) => {
+  const fetchSongsToPlays = async (belongTo: BelongTo) => {
     if (belongTo?.type === "discover") {
       const songPages = await getSongs({
         ...BaseFilterParams.initialPagination,
@@ -80,21 +80,23 @@ export const usePlayingSongContext = () => {
     setPlayingSong(nextSongs[0]);
   };
 
+  const toggleShuffle = () => {
+    if (isShuffle) {
+      setIsShuffle(false);
+      setCurrentSongsToPlayList(songsToPlay);
+      return;
+    }
+    setIsShuffle(true);
+    setCurrentSongsToPlayList(shuffledList);
+  };
+
   useEffect(() => {
-    setPlaylistSongToPlayByTurn(belongTo);
+    fetchSongsToPlays(belongTo);
   }, [belongTo]);
 
   useEffect(() => {
     setCurrentSongsToPlayList(songsToPlay);
   }, [songsToPlay]);
-
-  useEffect(() => {
-    if (isShuffle) {
-      setCurrentSongsToPlayList(shuffledList);
-      return;
-    }
-    setCurrentSongsToPlayList(songsToPlay);
-  }, [isShuffle]);
 
   return {
     nextSongs,
@@ -104,13 +106,10 @@ export const usePlayingSongContext = () => {
     setPlayingSong,
 
     isShuffle,
-    setIsShuffle,
+    toggleShuffle,
 
     belongTo,
     setBelongTo,
-
-    songsToPlay,
-    setSongsToPlay,
   };
 };
 
@@ -123,9 +122,7 @@ export const PlayingSongContext = createContext<
   belongTo: null,
   setBelongTo: () => {},
   isShuffle: false,
-  setIsShuffle: () => {},
-  songsToPlay: [],
-  setSongsToPlay: () => {},
+  toggleShuffle: () => {},
   moveToNextSong: () => {},
 });
 

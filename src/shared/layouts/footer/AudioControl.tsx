@@ -37,7 +37,7 @@ export const AudioControl: FC<Props> = ({
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isRepeated, setIsRepeated] = useState(false);
-  const { setIsShuffle, isShuffle, moveToNextSong } = usePlayingSongStore();
+  const { toggleShuffle, isShuffle, moveToNextSong } = usePlayingSongStore();
 
   const toggleAudioStatus = () => {
     setAudioStatus((status) => {
@@ -50,10 +50,6 @@ export const AudioControl: FC<Props> = ({
 
   const toggleRepeatState = () => {
     setIsRepeated((prev) => !prev);
-  };
-
-  const toggleShuffleState = () => {
-    setIsShuffle(!isShuffle);
   };
 
   return (
@@ -128,7 +124,7 @@ export const AudioControl: FC<Props> = ({
         <Tooltip content={isShuffle ? "Not Shuffle" : "Shuffle"}>
           <Button
             isIconOnly
-            onClick={toggleShuffleState}
+            onClick={toggleShuffle}
             className="data-[hover]:bg-foreground/10"
             radius="full"
             color={isShuffle ? "primary" : "default"}
