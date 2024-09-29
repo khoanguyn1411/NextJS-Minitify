@@ -158,4 +158,19 @@ export async function deleteSongById(songId: Song["id"]) {
   });
 }
 
+export async function increaseSongPlaytime(songId: Song["id"]) {
+  return createPrismaRequest(async () => {
+    await appPrisma.song.update({
+      where: {
+        id: songId,
+      },
+      data: {
+        playTime: {
+          increment: 1,
+        },
+      },
+    });
+  });
+}
+
 export type ISong = Awaited<ReturnType<typeof getSongs>>["items"][0];
