@@ -9,7 +9,7 @@ import { AppImage } from "@/shared/components/AppImage";
 import { SongBaseInfoView } from "@/shared/components/items-view/SongBaseInfoView";
 import { usePlayingSong, type BelongTo } from "@/shared/hooks/usePlayingSong";
 
-function shuffleArrayKeepFirst(
+function shuffleSongsKeepFirst(
   array: readonly ISong[],
   firstValue: ISong,
 ): ISong[] {
@@ -50,7 +50,7 @@ export const TrackInfoAside: FC = () => {
     if (playingSong == null) {
       return [];
     }
-    return shuffleArrayKeepFirst(originalSongsToPlayList, playingSong);
+    return shuffleSongsKeepFirst(originalSongsToPlayList, playingSong);
   }, [originalSongsToPlayList, isShuffle]);
 
   const handleSongClick = (song: ISong) => {
