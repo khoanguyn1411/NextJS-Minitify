@@ -58,19 +58,23 @@ export const TrackInfoAside: FC = () => {
         <p className="font-bold">Playing</p>
         <SongBaseInfoView isSpinning song={playingSong} />
       </div>
-      <Divider />
-      <div className="flex flex-col gap-4">
-        <p className="font-bold">Next songs</p>
-        <Card className="flex flex-col max-h-[200px] overflow-auto justify-start">
-          {nextSongs.map((song) => (
-            <SongBaseInfoView
-              onClick={handleSongClick}
-              key={song.id}
-              song={song}
-            />
-          ))}
-        </Card>
-      </div>
+      {nextSongs.length > 0 && (
+        <>
+          <Divider />
+          <div className="flex flex-col gap-4">
+            <p className="font-bold">Next songs</p>
+            <Card className="flex flex-col max-h-[200px] overflow-auto justify-start">
+              {nextSongs.map((song) => (
+                <SongBaseInfoView
+                  onClick={handleSongClick}
+                  key={song.id}
+                  song={song}
+                />
+              ))}
+            </Card>
+          </div>
+        </>
+      )}
     </div>
   );
 };

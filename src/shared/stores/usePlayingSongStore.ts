@@ -74,6 +74,9 @@ export const usePlayingSongContext = () => {
   };
 
   const moveToNextSong = () => {
+    if (nextSongs[0] == null) {
+      return;
+    }
     setPlayingSong(nextSongs[0]);
   };
 
