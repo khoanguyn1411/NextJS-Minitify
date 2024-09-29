@@ -15,7 +15,6 @@ export const TrackInfoAside: FC = () => {
   }
   return (
     <div className="flex flex-col gap-4">
-      {playingSong.imageUrl}
       <AppImage
         isBlurred
         classNames={{ wrapper: "!max-w-full", img: "w-full" }}

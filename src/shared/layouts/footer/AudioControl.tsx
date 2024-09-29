@@ -1,4 +1,5 @@
 import { Button } from "@nextui-org/button";
+import { Tooltip } from "@nextui-org/react";
 import { useState, type Dispatch, type FC, type SetStateAction } from "react";
 import {
   BiPauseCircle,
@@ -8,12 +9,12 @@ import {
   BiSkipNext,
   BiSkipPrevious,
 } from "react-icons/bi";
-import { Tooltip } from "@nextui-org/react";
 
 import { type ISong } from "@/core/apis/songApis";
+import { formatTime } from "@/shared/utils/formatTime";
 
 import { AudioPlay } from "./AudioPlay";
-import { type VolumeSetting, type AudioStatus } from "./Footer";
+import { type AudioStatus, type VolumeSetting } from "./Footer";
 
 type Props = {
   readonly song: ISong;
@@ -36,13 +37,6 @@ export const AudioControl: FC<Props> = ({
   const [currentTime, setCurrentTime] = useState(0);
   const [isRepeated, setIsRepeated] = useState(false);
   const [isShuffle, setIsShuffle] = useState(false);
-
-  // Format time in mm:ss format
-  const formatTime = (time: number) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  };
 
   const toggleAudioStatus = () => {
     setAudioStatus((status) => {

@@ -7,6 +7,7 @@ import { BiTime } from "react-icons/bi";
 import { type ISong } from "@/core/apis/songApis";
 import { type Pagination } from "@/core/models/pagination";
 import { usePlayingSong } from "@/shared/hooks/usePlayingSong";
+import { formatTime } from "@/shared/utils/formatTime";
 
 import { ListView, type ListViewColumn } from "../ListView";
 
@@ -35,9 +36,15 @@ const columns: readonly ListViewColumn<ISong>[] = [
     toReadable: (item) => item.album?.name ?? "-",
   },
   {
+    title: "Play time",
+    key: "playTime",
+    align: "center",
+  },
+  {
     title: <BiTime className="text-xl" />,
     key: "duration",
     align: "center",
+    toReadable: (item) => formatTime(item.duration),
   },
 ];
 
@@ -53,7 +60,7 @@ export const DiscoverSongsListViewClient: FC<Props> = ({ page }) => {
   return (
     <ListView
       onRowClick={handleRowClick}
-      gridTemplate="grid-cols-[40px_1fr_200px_100px]"
+      gridTemplate="grid-cols-[40px_1fr_100px_200px_100px]"
       columns={columns}
       toKey={(item) => item.id}
       page={page}
