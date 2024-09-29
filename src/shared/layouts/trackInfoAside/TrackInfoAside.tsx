@@ -9,13 +9,20 @@ import { AppImage } from "@/shared/components/AppImage";
 import { SongBaseInfoView } from "@/shared/components/items-view/SongBaseInfoView";
 import { usePlayingSong, type BelongTo } from "@/shared/hooks/usePlayingSong";
 
-function shuffleArray<T>(array: readonly T[]): T[] {
-  const shuffledArray = [...array]; // Create a copy of the array to avoid mutating the original array
+function shuffleArrayKeepFirst(
+  array: readonly ISong[],
+  firstValue: ISong,
+): ISong[] {
+  const filteredArray = array.filter((item) => item.id !== firstValue.id); // Remove the firstValue from the array
+  const shuffledArray = [...filteredArray]; // Create a copy of the filtered array to shuffle
+
+  // Shuffle the rest of the array (excluding the firstValue)
   for (let i = shuffledArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1)); // Pick a random index from 0 to i
-    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]]; // Swap elements
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
   }
-  return shuffledArray;
+
+  return [firstValue, ...shuffledArray]; // Add firstValue to the start of the shuffled array
 }
 
 export const TrackInfoAside: FC = () => {
@@ -30,11 +37,7 @@ export const TrackInfoAside: FC = () => {
 
   const [currentSongsToPlayList, setCurrentSongsToPlayList] = useState<
     readonly ISong[]
-  >(originalSongsToPlayList);
-
-  const shuffledList = useMemo(() => {
-    return shuffleArray(originalSongsToPlayList);
-  }, [originalSongsToPlayList]);
+  >(() => originalSongsToPlayList);
 
   const nextSongs = useMemo(() => {
     const currentSongIndex = currentSongsToPlayList.findIndex(
@@ -42,6 +45,13 @@ export const TrackInfoAside: FC = () => {
     );
     return currentSongsToPlayList.slice(currentSongIndex + 1);
   }, [playingSong, currentSongsToPlayList]);
+
+  const shuffledList = useMemo(() => {
+    if (playingSong == null) {
+      return [];
+    }
+    return shuffleArrayKeepFirst(originalSongsToPlayList, playingSong);
+  }, [originalSongsToPlayList, isShuffle]);
 
   const handleSongClick = (song: ISong) => {
     setPlayingSong(song);
@@ -61,6 +71,10 @@ export const TrackInfoAside: FC = () => {
   useEffect(() => {
     setPlaylistSongToPlayByTurn(belongTo);
   }, [belongTo]);
+
+  useEffect(() => {
+    setCurrentSongsToPlayList(originalSongsToPlayList);
+  }, [originalSongsToPlayList]);
 
   useEffect(() => {
     if (isShuffle) {
