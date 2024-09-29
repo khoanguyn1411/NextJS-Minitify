@@ -1,6 +1,6 @@
 import { Image, type ImageProps } from "@nextui-org/react";
 import NextImage from "next/image";
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 
 type Props = ImageProps;
 
@@ -11,6 +11,10 @@ export const AppImage: FC<Props> = (props) => {
   const handleError = () => {
     setImageSrc(placeholderSrc);
   };
+
+  useEffect(() => {
+    setImageSrc(props.src ?? "");
+  }, [props.src]);
 
   return (
     <>
