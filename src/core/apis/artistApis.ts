@@ -7,7 +7,10 @@ import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
 import { createPrismaPaginationFilter } from "@/shared/utils/createPrismaPaginationFilter";
 import { createPrismaRequest } from "@/shared/utils/createPrismaRequest";
-import { validateWithSchema } from "@/shared/utils/errorHandlers";
+import {
+  buildAppError,
+  validateWithSchema,
+} from "@/shared/utils/errorHandlers";
 
 import { ArtistData } from "../models/artistData";
 import { type BaseFilterParams } from "../models/baseFilterParams";
@@ -83,6 +86,32 @@ export async function getArtists(pagination: BaseFilterParams.Combined) {
   });
 }
 
+export async function getArtistById(artistId: Artist["id"]) {
+  return createPrismaRequest(async () => {
+    const totalPlayTime = await appPrisma.song.aggregate({
+      _sum: {
+        playTime: true,
+      },
+      where: {
+        artists: {
+          some: {
+            id: artistId,
+          },
+        },
+      },
+    });
+
+    const artist = await appPrisma.artist.findUnique({
+      where: {
+        id: artistId,
+      },
+    });
+    return artist == null
+      ? null
+      : { ...artist, totalPlayTime: totalPlayTime._sum.playTime };
+  });
+}
+
 export async function deleteArtistById(artistId: Artist["id"]) {
   return createPrismaRequest(async () => {
     await appPrisma.artist.delete({
@@ -95,3 +124,4 @@ export async function deleteArtistById(artistId: Artist["id"]) {
 }
 
 export type IArtist = Awaited<ReturnType<typeof getArtists>>["items"][0];
+export type IArtistDetail = Awaited<ReturnType<typeof getArtistById>>;

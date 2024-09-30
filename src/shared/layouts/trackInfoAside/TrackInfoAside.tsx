@@ -1,6 +1,8 @@
 "use client";
 
 import { Card, CardBody, CardFooter, Divider } from "@nextui-org/react";
+import { type Artist } from "@prisma/client";
+import { useRouter } from "next/navigation";
 import { type FC } from "react";
 
 import { type ISong } from "@/core/apis/songApis";
@@ -10,9 +12,14 @@ import { usePlayingSongStore } from "@/shared/stores/usePlayingSongStore";
 
 export const TrackInfoAside: FC = () => {
   const { playingSong, nextSongs, setPlayingSong } = usePlayingSongStore();
+  const router = useRouter();
 
   const handleSongClick = (song: ISong) => {
     setPlayingSong(song);
+  };
+
+  const handleArtistClick = (artist: Artist) => {
+    router.push(`artist/${artist.id}`);
   };
 
   if (playingSong == null) {
@@ -38,7 +45,7 @@ export const TrackInfoAside: FC = () => {
       <Divider />
       {playingSong.artists.map((artist) => (
         <div key={artist.name}>
-          <Card>
+          <Card isPressable onClick={() => handleArtistClick(artist)}>
             <CardBody>
               <AppImage
                 classNames={{ wrapper: "!max-w-full", img: "w-full" }}
