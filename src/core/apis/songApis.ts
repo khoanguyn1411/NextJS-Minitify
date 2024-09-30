@@ -126,6 +126,13 @@ export async function getSongs(filterParams: SongsFilterParams) {
               },
             }
           : undefined,
+        artists: filterParams.artistIds
+          ? {
+              some: {
+                id: { in: filterParams.artistIds },
+              },
+            }
+          : undefined,
       },
     };
     const songs = await appPrisma.song.findMany({

@@ -9,7 +9,7 @@ import { BaseFilterParams } from "@/core/models/baseFilterParams";
 
 export type BelongTo =
   | {
-      readonly type: "playlist" | "album";
+      readonly type: "playlist" | "album" | "artist";
       readonly id: number;
     }
   | {

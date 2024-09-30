@@ -47,7 +47,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           </p>
         </div>
       </div>
-      <ArtistSongsListView />
+      <ArtistSongsListView artistId={artist.id} />
     </div>
   );
 }

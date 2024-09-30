@@ -6,7 +6,6 @@ import { BiTime } from "react-icons/bi";
 import { type ISong } from "@/core/apis/songApis";
 import { type BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
-import { SCROLLABLE_TARGET_ID } from "@/shared/constants/ids";
 import {
   type BelongTo,
   usePlayingSongStore,
@@ -54,6 +53,7 @@ type Props = {
   readonly fetchFunction: (
     page: BaseFilterParams.Pagination,
   ) => Promise<Pagination<ISong>>;
+  readonly scrollableTargetId?: string;
 };
 
 export const SongListView: FC<Props> = ({
@@ -61,6 +61,7 @@ export const SongListView: FC<Props> = ({
   belongTo,
   className,
   fetchFunction,
+  scrollableTargetId,
 }) => {
   const { setPlayingSong, playingSong, setBelongTo } = usePlayingSongStore();
 
@@ -79,7 +80,7 @@ export const SongListView: FC<Props> = ({
       toKey={(item) => item.id}
       page={page}
       isActiveRow={(currentSong) => playingSong?.id === currentSong.id}
-      scrollableTargetId={SCROLLABLE_TARGET_ID}
+      scrollableTargetId={scrollableTargetId}
     />
   );
 };
