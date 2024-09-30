@@ -48,6 +48,13 @@ export const usePlayingSongContext = () => {
     _setPlayingSong(song);
   };
 
+  const previousSongs = useMemo(() => {
+    const currentSongIndex = currentSongsToPlayList.findIndex(
+      (song) => song.id === playingSong?.id,
+    );
+    return currentSongsToPlayList.slice(0, currentSongIndex);
+  }, [playingSong, currentSongsToPlayList]);
+
   const nextSongs = useMemo(() => {
     const currentSongIndex = currentSongsToPlayList.findIndex(
       (song) => song.id === playingSong?.id,
@@ -80,6 +87,14 @@ export const usePlayingSongContext = () => {
     setPlayingSong(nextSongs[0]);
   };
 
+  const moveToPreviousSong = () => {
+    const previousSong = previousSongs.at(-1);
+    if (previousSong == null) {
+      return;
+    }
+    setPlayingSong(previousSong);
+  };
+
   const toggleShuffle = () => {
     if (isShuffle) {
       setIsShuffle(false);
@@ -101,6 +116,7 @@ export const usePlayingSongContext = () => {
   return {
     nextSongs,
     moveToNextSong,
+    moveToPreviousSong,
 
     playingSong,
     setPlayingSong,
@@ -124,6 +140,7 @@ export const PlayingSongContext = createContext<
   isShuffle: false,
   toggleShuffle: () => {},
   moveToNextSong: () => {},
+  moveToPreviousSong: () => {},
 });
 
 /** Get current song. Only available with users app. */

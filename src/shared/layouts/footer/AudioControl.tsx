@@ -37,7 +37,8 @@ export const AudioControl: FC<Props> = ({
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isRepeated, setIsRepeated] = useState(false);
-  const { toggleShuffle, isShuffle, moveToNextSong } = usePlayingSongStore();
+  const { toggleShuffle, isShuffle, moveToNextSong, moveToPreviousSong } =
+    usePlayingSongStore();
 
   const toggleAudioStatus = () => {
     setAudioStatus((status) => {
@@ -89,6 +90,7 @@ export const AudioControl: FC<Props> = ({
             className="data-[hover]:bg-foreground/10"
             radius="full"
             variant="light"
+            onClick={moveToPreviousSong}
           >
             <BiSkipPrevious className="text-3xl" />
           </Button>
