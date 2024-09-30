@@ -77,6 +77,17 @@ export const usePlayingSongContext = () => {
         search: "",
       });
       setSongsToPlay(songPages.items);
+      return;
+    }
+    if (belongTo?.type === "artist") {
+      const songPages = await getSongs({
+        ...BaseFilterParams.initialPagination,
+        pageSize: 50,
+        search: "",
+        artistIds: [belongTo.id],
+      });
+      setSongsToPlay(songPages.items);
+      return;
     }
   };
 
