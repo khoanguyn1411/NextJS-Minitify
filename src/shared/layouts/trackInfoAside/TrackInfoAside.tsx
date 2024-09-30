@@ -19,7 +19,7 @@ export const TrackInfoAside: FC = () => {
   };
 
   const handleArtistClick = (artist: Artist) => {
-    router.push(`artist/${artist.id}`);
+    router.push(`artists/${artist.id}`);
   };
 
   if (playingSong == null) {

@@ -29,6 +29,7 @@ type ListViewProps<T> = {
   readonly page: Pagination<T>;
   readonly scrollableTargetId?: string;
   readonly isActiveRow?: (item: T, index: number) => boolean;
+  readonly className?: string;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,7 +74,7 @@ export const ListView = <TData extends Record<string, any>>(
   return (
     <>
       <div
-        className={`grid ${props.gridTemplate} items-center gap-4 p-container bg-input sticky top-[60px] z-10`}
+        className={`grid ${props.gridTemplate} items-center gap-4 p-container bg-input sticky z-10 ${props.className}`}
       >
         {props.columns.map((column) => (
           <div

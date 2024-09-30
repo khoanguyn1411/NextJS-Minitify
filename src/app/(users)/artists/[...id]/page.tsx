@@ -1,7 +1,13 @@
 import { Image } from "@nextui-org/react";
-import { BiCalendar, BiCheckCircle, BiSolidMusic } from "react-icons/bi";
+import {
+  BiCalendar,
+  BiCheckCircle,
+  BiMicrophone,
+  BiSolidMusic,
+} from "react-icons/bi";
 
 import { getArtistById } from "@/core/apis/artistApis";
+import { ArtistSongsListView } from "@/shared/components/artists/ArtistSongsListView";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -10,7 +16,7 @@ export default async function Page({ params }: { params: { id: string } }) {
     return <p>Invalid artist ID.</p>;
   }
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col">
       <div className="p-container flex gap-4">
         <Image
           isBlurred
@@ -32,11 +38,16 @@ export default async function Page({ params }: { params: { id: string } }) {
             <BiSolidMusic /> <span>{artist.totalPlayTime} play times</span>
           </p>
           <p className="font-semibold flex items-center gap-2">
-            <BiCalendar />{" "}
+            <BiCalendar />
             <span>Join at {DateUtils.toReadable(artist.createdDate)}</span>
+          </p>
+          <p className="font-semibold flex items-center gap-2">
+            <BiMicrophone />
+            <span>Singer</span>
           </p>
         </div>
       </div>
+      <ArtistSongsListView />
     </div>
   );
 }

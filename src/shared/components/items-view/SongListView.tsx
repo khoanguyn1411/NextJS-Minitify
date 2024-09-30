@@ -3,11 +3,14 @@
 import { type FC } from "react";
 import { BiTime } from "react-icons/bi";
 
-import { getSongs, type ISong } from "@/core/apis/songApis";
+import { type ISong } from "@/core/apis/songApis";
 import { type BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 import { SCROLLABLE_TARGET_ID } from "@/shared/constants/ids";
-import { type BelongTo, usePlayingSongStore } from "@/shared/stores/usePlayingSongStore";
+import {
+  type BelongTo,
+  usePlayingSongStore,
+} from "@/shared/stores/usePlayingSongStore";
 import { formatTime } from "@/shared/utils/formatTime";
 
 import { ListView, type ListViewColumn } from "../ListView";
@@ -47,9 +50,18 @@ const columns: readonly ListViewColumn<ISong>[] = [
 type Props = {
   readonly page: Pagination<ISong>;
   readonly belongTo: BelongTo;
+  readonly className?: string;
+  readonly fetchFunction: (
+    page: BaseFilterParams.Pagination,
+  ) => Promise<Pagination<ISong>>;
 };
 
-export const SongListView: FC<Props> = ({ page, belongTo }) => {
+export const SongListView: FC<Props> = ({
+  page,
+  belongTo,
+  className,
+  fetchFunction,
+}) => {
   const { setPlayingSong, playingSong, setBelongTo } = usePlayingSongStore();
 
   const handleRowClick = (song: ISong) => {
@@ -57,14 +69,11 @@ export const SongListView: FC<Props> = ({ page, belongTo }) => {
     setBelongTo(belongTo);
   };
 
-  const fetchFunction = (page: BaseFilterParams.Pagination) => {
-    return getSongs({ ...page, search: "" });
-  };
-
   return (
     <ListView
       onRowClick={handleRowClick}
       fetchApi={fetchFunction}
+      className={className}
       gridTemplate="grid-cols-[40px_1fr_100px_200px_100px]"
       columns={columns}
       toKey={(item) => item.id}

@@ -10,12 +10,11 @@ const fetchFunction = async (page: BaseFilterParams.Pagination) => {
   return getSongs({ ...page, search: "" });
 };
 
-export const DiscoverSongsListView: FC = async () => {
+export const ArtistSongsListView: FC = async () => {
   const songPage = await fetchFunction(BaseFilterParams.initialPagination);
 
   return (
     <SongListView
-      className="top-[60px]"
       belongTo={{ type: "discover" }}
       page={songPage}
       fetchFunction={fetchFunction}

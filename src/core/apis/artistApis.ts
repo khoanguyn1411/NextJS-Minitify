@@ -7,10 +7,7 @@ import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
 import { createPrismaPaginationFilter } from "@/shared/utils/createPrismaPaginationFilter";
 import { createPrismaRequest } from "@/shared/utils/createPrismaRequest";
-import {
-  buildAppError,
-  validateWithSchema,
-} from "@/shared/utils/errorHandlers";
+import { validateWithSchema } from "@/shared/utils/errorHandlers";
 
 import { ArtistData } from "../models/artistData";
 import { type BaseFilterParams } from "../models/baseFilterParams";
