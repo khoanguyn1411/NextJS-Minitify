@@ -120,9 +120,9 @@ export const TrendingMusic: FC<Props> = ({ songsPage }) => {
     },
   };
   return (
-    <div className="flex justify-center">
+    <div className="p-container flex justify-center">
       <div className="w-[800px]">
-        {isClient && <Bar data={data} options={options} />}
+        {isClient && <Bar height={120} data={data} options={options} />}
       </div>
     </div>
   );
