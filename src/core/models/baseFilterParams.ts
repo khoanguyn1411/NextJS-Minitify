@@ -1,5 +1,3 @@
-import { type SortOptions } from "./sortOptions";
-
 /** Base filter parameters. */
 export namespace BaseFilterParams {
   /** Search filter. */
@@ -18,13 +16,13 @@ export namespace BaseFilterParams {
   };
 
   /** Sort filter. */
-  export type Sort<T extends number | string> = {
+  export type Sort<T extends Record<string, unknown>> = {
     /** Field by which page should be sorted. */
-    readonly sortOptions?: SortOptions<T>;
+    readonly sortOptions?: T;
   };
 
   /** Search and pagination filters. */
-  export type Combined<T extends number | string = string> = Search &
+  export type Combined<T extends Record<string, unknown>> = Search &
     Pagination &
     Sort<T>;
 

@@ -1,6 +1,6 @@
 "use server";
 
-import { type Song } from "@prisma/client";
+import { type Prisma, type Song } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 import { appPrisma } from "@/shared/configs/prisma.config";
@@ -116,6 +116,10 @@ export async function updateSong(
 export async function getSongs(filterParams: SongsFilterParams) {
   return createPrismaRequest(async () => {
     const paginationFilters = createPrismaPaginationFilter(filterParams);
+    const orderByFields: Parameters<typeof appPrisma.song.findMany>[0] = {
+      orderBy: {},
+    };
+
     const filters: Parameters<typeof appPrisma.song.findMany>[0] = {
       where: {
         name: { contains: filterParams.search },
@@ -137,6 +141,7 @@ export async function getSongs(filterParams: SongsFilterParams) {
     };
     const songs = await appPrisma.song.findMany({
       ...paginationFilters,
+      ...orderByFields,
       ...filters,
       include: {
         artists: true,
@@ -181,3 +186,4 @@ export async function increaseSongPlaytime(songId: Song["id"]) {
 }
 
 export type ISong = Awaited<ReturnType<typeof getSongs>>["items"][0];
+export type SongSortOptions = Prisma.SongOrderByWithRelationInput;
