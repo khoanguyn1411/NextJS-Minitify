@@ -22,9 +22,9 @@ export namespace BaseFilterParams {
   };
 
   /** Search and pagination filters. */
-  export type Combined<T extends Record<string, unknown>> = Search &
-    Pagination &
-    Sort<T>;
+  export type Combined<
+    T extends Record<string, unknown> = Record<string, unknown>,
+  > = Search & Pagination & Sort<T>;
 
   export const initialPagination: Pagination = {
     pageNumber: 0,
