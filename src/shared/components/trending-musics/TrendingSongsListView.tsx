@@ -1,7 +1,7 @@
 import { type FC } from "react";
 
 import { getSongs, type ISong } from "@/core/apis/songApis";
-import { type BaseFilterParams } from "@/core/models/baseFilterParams";
+import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 import { SCROLLABLE_TARGET_ID } from "@/shared/constants/ids";
 
@@ -12,9 +12,16 @@ type Props = {
 };
 
 export const TrendingSongsListView: FC<Props> = async ({ songsPage }) => {
-  const fetchFunction = async (page: BaseFilterParams.Pagination) => {
+  const fetchFunction = async (
+    page: Pick<BaseFilterParams.Pagination, "pageNumber">,
+  ) => {
     "use server";
-    return getSongs({ ...page, search: "", sortOptions: { playTime: "desc" } });
+    return getSongs({
+      ...BaseFilterParams.initialPagination,
+      ...page,
+      search: "",
+      sortOptions: { playTime: "desc" },
+    });
   };
 
   return (

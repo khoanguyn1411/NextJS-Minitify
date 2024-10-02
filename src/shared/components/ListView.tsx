@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { useState, type ReactNode } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { BaseFilterParams } from "@/core/models/baseFilterParams";
+import { type BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 
 import { type LooseAutocomplete } from "../utils/types/looseAutocomplete";
@@ -20,7 +20,7 @@ export type ListViewColumn<T> = {
 type ListViewProps<T> = {
   readonly columns: readonly ListViewColumn<T>[];
   readonly fetchApi?: (
-    param: BaseFilterParams.Pagination,
+    param: Pick<BaseFilterParams.Pagination, "pageNumber">,
   ) => Promise<Pagination<T>>;
   readonly toKey: (item: T) => string | number;
   readonly isLoading?: boolean;
@@ -47,7 +47,6 @@ export const ListView = <TData extends Record<string, any>>(
       return;
     }
     const result = await props.fetchApi({
-      ...BaseFilterParams.initialPagination,
       pageNumber,
     });
     setHasNext(result.hasNext);

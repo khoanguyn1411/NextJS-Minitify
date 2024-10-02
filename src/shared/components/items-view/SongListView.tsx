@@ -51,7 +51,7 @@ type Props = {
   readonly belongTo: BelongTo;
   readonly className?: string;
   readonly fetchFunction: (
-    page: BaseFilterParams.Pagination,
+    page: Pick<BaseFilterParams.Pagination, "pageNumber">,
   ) => Promise<Pagination<ISong>>;
   readonly scrollableTargetId?: string;
 };

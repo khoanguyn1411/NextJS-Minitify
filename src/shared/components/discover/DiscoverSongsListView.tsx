@@ -6,9 +6,15 @@ import { SCROLLABLE_TARGET_ID } from "@/shared/constants/ids";
 
 import { SongListView } from "../items-view/SongListView";
 
-const fetchFunction = async (page: BaseFilterParams.Pagination) => {
+const fetchFunction = async (
+  page: Pick<BaseFilterParams.Pagination, "pageNumber">,
+) => {
   "use server";
-  return getSongs({ ...page, search: "" });
+  return getSongs({
+    ...BaseFilterParams.initialPagination,
+    ...page,
+    search: "",
+  });
 };
 
 export const DiscoverSongsListView: FC = async () => {

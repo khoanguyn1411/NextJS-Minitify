@@ -11,9 +11,16 @@ type Props = {
 };
 
 export const ArtistSongsListView: FC<Props> = async ({ artistId }) => {
-  const fetchFunction = async (page: BaseFilterParams.Pagination) => {
+  const fetchFunction = async (
+    page: Pick<BaseFilterParams.Pagination, "pageNumber">,
+  ) => {
     "use server";
-    return getSongs({ ...page, search: "", artistIds: [artistId] });
+    return getSongs({
+      ...BaseFilterParams.initialPagination,
+      ...page,
+      search: "",
+      artistIds: [artistId],
+    });
   };
 
   const songPage = await fetchFunction(BaseFilterParams.initialPagination);
