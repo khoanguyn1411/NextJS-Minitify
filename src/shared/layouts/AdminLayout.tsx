@@ -8,8 +8,10 @@ export const AdminLayout: FC<PropsWithChildren> = async ({ children }) => {
   const currentUser = await getCurrentUser();
   return (
     <div className="p-container flex flex-col">
-      <Header currentUser={currentUser} />
-      <div className="p-container px-container grid grid-cols-[200px,1fr] h-main-admin gap-3">
+      <div className="pb-2">
+        <Header currentUser={currentUser} />
+      </div>
+      <div className="py-container grid grid-cols-[200px,1fr] h-main-admin gap-3">
         <div className="bg-background h-full rounded-md">
           <AdminNavigationAside />
         </div>

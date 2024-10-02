@@ -23,12 +23,12 @@ module.exports = {
       height: {
         header: "40px",
         footer: "60px",
-        ["main-admin"]: "calc(100vh - 40px - 2rem)", // 2 rem is container padding.
+        ["main-admin"]: "calc(100vh - 40px - 2rem - 10px)", // 2 rem is container padding.
         main: "calc(100vh - 40px - 80px - 2rem)", // 2 rem is container padding.
-        table: "calc(100vh - 40px - 2rem - 130px)", // 2 rem is container padding.
+        table: "calc(100vh - 40px - 2rem - 140px)", // 2 rem is container padding.
       },
       maxHeight: {
-        table: "calc(100vh - 40px - 2rem - 130px)", // 2 rem is container padding.
+        table: "calc(100vh - 40px - 2rem - 140px)", // 2 rem is container padding.
       },
     },
   },

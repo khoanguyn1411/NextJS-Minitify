@@ -34,7 +34,7 @@ export const MainLayout: FC<PropsWithChildren<Props>> = ({
           </header>
           <main
             className={classNames(
-              "h-main overflow-auto grid grid-cols-[250px_1fr_300px] px-2 gap-2",
+              "h-main overflow-auto grid grid-cols-[250px_1fr_300px] px-3 gap-2",
               { "grid-cols-[300px_1fr]": !hasPlayingSong },
             )}
           >
