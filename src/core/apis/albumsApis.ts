@@ -111,6 +111,21 @@ export async function getAlbums(pagination: BaseFilterParams.Combined) {
   });
 }
 
+export async function getAlbumById(albumId: Album["id"]) {
+  return createPrismaRequest(async () => {
+    const album = await appPrisma.album.findUnique({
+      where: {
+        id: albumId,
+      },
+      include: {
+        songs: true,
+        artist: true,
+      },
+    });
+    return album;
+  });
+}
+
 export async function deleteAlbumId(albumId: Album["id"]) {
   return createPrismaRequest(async () => {
     await appPrisma.album.delete({

@@ -123,6 +123,7 @@ export async function getSongs(filterParams: SongsFilterParams) {
     const filters: Parameters<typeof appPrisma.song.findMany>[0] = {
       where: {
         name: { contains: filterParams.search },
+        albumId: filterParams.albumId,
         tags: filterParams.tagIds
           ? {
               some: {

@@ -1,4 +1,4 @@
-import { type Artist } from "@prisma/client";
+import { type Album } from "@prisma/client";
 import { type FC } from "react";
 
 import { getSongs } from "@/core/apis/songApis";
@@ -8,17 +8,17 @@ import { SCROLLABLE_TARGET_ID } from "@/shared/constants/ids";
 import { SongListView } from "../items-view/SongListView";
 
 type Props = {
-  readonly artistId: Artist["id"];
+  readonly albumId: Album["id"];
 };
 
-export const ArtistSongsListView: FC<Props> = async ({ artistId }) => {
+export const AlbumSongsListView: FC<Props> = async ({ albumId }) => {
   const fetchFunction = async (pageNumber: number) => {
     "use server";
     return getSongs({
       ...BaseFilterParams.initialPagination,
       pageNumber,
       search: "",
-      artistIds: [artistId],
+      albumId,
     });
   };
 
@@ -30,7 +30,7 @@ export const ArtistSongsListView: FC<Props> = async ({ artistId }) => {
     <div>
       <SongListView
         className="top-0"
-        belongTo={{ type: "artist", id: artistId }}
+        belongTo={{ type: "artist", id: albumId }}
         page={songPage}
         scrollableTargetId={SCROLLABLE_TARGET_ID}
         fetchFunction={fetchFunction}
