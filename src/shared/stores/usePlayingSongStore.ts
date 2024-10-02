@@ -70,7 +70,10 @@ export const usePlayingSongContext = () => {
   }, [songsToPlay, isShuffle]);
 
   const fetchSongsToPlays = async (belongTo: BelongTo) => {
-    if (belongTo?.type === "discover") {
+    if (belongTo == null) {
+      return;
+    }
+    if (belongTo.type === "discover") {
       const songPages = await getSongs({
         ...BaseFilterParams.initialPagination,
         pageSize: 50,
@@ -79,7 +82,7 @@ export const usePlayingSongContext = () => {
       setSongsToPlay(songPages.items);
       return;
     }
-    if (belongTo?.type === "artist") {
+    if (belongTo.type === "artist") {
       const songPages = await getSongs({
         ...BaseFilterParams.initialPagination,
         pageSize: 50,
@@ -89,7 +92,7 @@ export const usePlayingSongContext = () => {
       setSongsToPlay(songPages.items);
       return;
     }
-    if (belongTo?.type === "trending") {
+    if (belongTo.type === "trending") {
       const songPages = await getSongs({
         ...BaseFilterParams.initialPagination,
         sortOptions: {
