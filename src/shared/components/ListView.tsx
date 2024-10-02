@@ -20,7 +20,7 @@ export type ListViewColumn<T> = {
 type ListViewProps<T> = {
   readonly columns: readonly ListViewColumn<T>[];
   readonly fetchApi?: (
-    param: Pick<BaseFilterParams.Pagination, "pageNumber">,
+    pageNumber: BaseFilterParams.Pagination["pageNumber"],
   ) => Promise<Pagination<T>>;
   readonly toKey: (item: T) => string | number;
   readonly isLoading?: boolean;
@@ -46,9 +46,7 @@ export const ListView = <TData extends Record<string, any>>(
     if (props.fetchApi == null) {
       return;
     }
-    const result = await props.fetchApi({
-      pageNumber,
-    });
+    const result = await props.fetchApi(pageNumber);
     setHasNext(result.hasNext);
     setPageNumber((prev) => prev + 1);
     setItems((prev) => [...prev, ...result.items]);

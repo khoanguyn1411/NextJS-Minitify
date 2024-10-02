@@ -12,13 +12,11 @@ type Props = {
 };
 
 export const TrendingSongsListView: FC<Props> = async ({ songsPage }) => {
-  const fetchFunction = async (
-    page: Pick<BaseFilterParams.Pagination, "pageNumber">,
-  ) => {
+  const fetchFunction = async (pageNumber: number) => {
     "use server";
     return getSongs({
       ...BaseFilterParams.initialPagination,
-      ...page,
+      pageNumber,
       search: "",
       sortOptions: { playTime: "desc" },
     });
