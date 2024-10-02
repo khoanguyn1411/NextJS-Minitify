@@ -14,7 +14,7 @@ type Props = {
 export const SquareArtistView: FC<Props> = ({ artist }) => {
   const router = useRouter();
   const handleArtistClick = () => {
-    router.push(`artists/${artist.id}`);
+    router.push(`/artists/${artist.id}`);
   };
 
   return (

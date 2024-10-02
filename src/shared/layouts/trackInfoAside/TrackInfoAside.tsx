@@ -19,7 +19,7 @@ export const TrackInfoAside: FC = () => {
   };
 
   const handleArtistClick = (artist: Artist) => {
-    router.push(`artists/${artist.id}`);
+    router.push(`/artists/${artist.id}`);
   };
 
   if (playingSong == null) {
@@ -55,7 +55,7 @@ export const TrackInfoAside: FC = () => {
             </CardBody>
             <CardFooter className="flex flex-col gap-2 items-start">
               <p className="font-bold">{artist.name}</p>
-              <p className="truncate-3 text-xs">{artist.biography}</p>
+              <p className="text-left truncate-3 text-xs">{artist.biography}</p>
             </CardFooter>
           </Card>
         </div>
