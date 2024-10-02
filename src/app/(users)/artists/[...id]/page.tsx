@@ -11,10 +11,17 @@ import { ArtistSongsListView } from "@/shared/components/artists/ArtistSongsList
 import { DateUtils } from "@/shared/utils/dateUtils";
 
 export default async function Page({ params }: { params: { id: string } }) {
-  const artist = await getArtistById(params.id ? Number(params.id) : 0);
-  if (artist == null) {
-    return <p>Invalid artist ID.</p>;
+  const artistId = Number(params.id);
+  if (isNaN(artistId)) {
+    return <p className="p-container">Invalid artist ID.</p>;
   }
+
+  const artist = await getArtistById(artistId);
+
+  if (artist == null) {
+    return <p className="p-container">Invalid artist ID.</p>;
+  }
+
   return (
     <div className="flex flex-col">
       <div className="p-container flex gap-4">
