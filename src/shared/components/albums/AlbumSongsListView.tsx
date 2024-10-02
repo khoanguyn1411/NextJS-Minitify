@@ -30,7 +30,7 @@ export const AlbumSongsListView: FC<Props> = async ({ albumId }) => {
     <div>
       <SongListView
         className="top-0"
-        belongTo={{ type: "artist", id: albumId }}
+        belongTo={{ type: "album", id: albumId }}
         page={songPage}
         scrollableTargetId={SCROLLABLE_TARGET_ID}
         fetchFunction={fetchFunction}

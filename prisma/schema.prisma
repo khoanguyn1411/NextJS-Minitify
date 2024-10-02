@@ -44,7 +44,7 @@ model Album {
   id          Int      @id @default(autoincrement())
   name        String
   imageUrl    String
-  description String
+  description String   @db.LongText
   playTime    Int      @default(0)
   createdDate DateTime @default(now())
   songs       Song[]
@@ -55,7 +55,7 @@ model Album {
 
 model Playlist {
   id          Int      @id @default(autoincrement())
-  description String
+  description String   @db.LongText
   createdDate DateTime @default(now())
   song        Song[]
   updatedAt   DateTime @updatedAt

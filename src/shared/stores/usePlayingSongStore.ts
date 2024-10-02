@@ -6,6 +6,7 @@ import {
   type ISong,
 } from "@/core/apis/songApis";
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
+import { type SongsFilterParams } from "@/core/models/songsFilterParams";
 
 export type BelongTo =
   | {
@@ -32,6 +33,12 @@ function shuffleSongsKeepFirst(
 
   return [...shuffledArray]; // Add firstValue to the start of the shuffled array
 }
+
+const baseFilters: BaseFilterParams.Combined = {
+  ...BaseFilterParams.initialPagination,
+  pageSize: 50,
+  search: "",
+};
 
 export const usePlayingSongContext = () => {
   const [playingSong, _setPlayingSong] = useState<ISong | null>(null);
@@ -69,40 +76,39 @@ export const usePlayingSongContext = () => {
     return shuffleSongsKeepFirst(songsToPlay, playingSong);
   }, [songsToPlay, isShuffle]);
 
+  const getAndSetSongsToPlay = async (filters: Partial<SongsFilterParams>) => {
+    const songPages = await getSongs({
+      ...baseFilters,
+      ...filters,
+    });
+    setSongsToPlay(songPages.items);
+  };
+
   const fetchSongsToPlays = async (belongTo: BelongTo) => {
     if (belongTo == null) {
       return;
     }
-    if (belongTo.type === "discover") {
-      const songPages = await getSongs({
-        ...BaseFilterParams.initialPagination,
-        pageSize: 50,
-        search: "",
-      });
-      setSongsToPlay(songPages.items);
-      return;
-    }
-    if (belongTo.type === "artist") {
-      const songPages = await getSongs({
-        ...BaseFilterParams.initialPagination,
-        pageSize: 50,
-        search: "",
-        artistIds: [belongTo.id],
-      });
-      setSongsToPlay(songPages.items);
-      return;
-    }
-    if (belongTo.type === "trending") {
-      const songPages = await getSongs({
-        ...BaseFilterParams.initialPagination,
-        sortOptions: {
-          playTime: "desc",
-        },
-        pageSize: 50,
-        search: "",
-      });
-      setSongsToPlay(songPages.items);
-      return;
+    switch (belongTo.type) {
+      case "discover":
+        getAndSetSongsToPlay(baseFilters);
+        break;
+      case "artist":
+        getAndSetSongsToPlay({
+          artistIds: [belongTo.id],
+        });
+        break;
+      case "trending":
+        getAndSetSongsToPlay({
+          sortOptions: {
+            playTime: "desc",
+          },
+        });
+        break;
+      case "album":
+        getAndSetSongsToPlay({
+          albumId: belongTo.id,
+        });
+        break;
     }
   };
 
