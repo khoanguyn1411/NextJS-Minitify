@@ -13,7 +13,7 @@ export type BelongTo =
       readonly id: number;
     }
   | {
-      readonly type: "discover";
+      readonly type: "discover" | "trending";
     }
   | null;
 
@@ -85,6 +85,18 @@ export const usePlayingSongContext = () => {
         pageSize: 50,
         search: "",
         artistIds: [belongTo.id],
+      });
+      setSongsToPlay(songPages.items);
+      return;
+    }
+    if (belongTo?.type === "trending") {
+      const songPages = await getSongs({
+        ...BaseFilterParams.initialPagination,
+        sortOptions: {
+          playTime: "desc",
+        },
+        pageSize: 50,
+        search: "",
       });
       setSongsToPlay(songPages.items);
       return;

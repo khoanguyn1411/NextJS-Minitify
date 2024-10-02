@@ -26,7 +26,7 @@ export const TrendingSongsListView: FC<Props> = async ({ songsPage }) => {
     <div>
       <SongListView
         className="top-0"
-        belongTo={null}
+        belongTo={{ type: "trending" }}
         page={songsPage}
         scrollableTargetId={SCROLLABLE_TARGET_ID}
         fetchFunction={fetchFunction}
