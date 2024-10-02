@@ -18,10 +18,12 @@ import { signIn } from "@/shared/services/authService";
 
 import { Password } from "../../Password";
 
-type Props = ReturnType<typeof useDisclosure>;
+type Props = ReturnType<typeof useDisclosure> & {
+  readonly onLoginSuccess?: () => void;
+};
 
 export const LoginModal: FC<Props> = (props) => {
-  const { notifyOnAppError, extractErrorsToForm } = useError();
+  const { notifyOnAppError, extractErrorsToForm, isSuccess } = useError();
   const {
     control,
     handleSubmit,
@@ -36,6 +38,9 @@ export const LoginModal: FC<Props> = (props) => {
     const result = await signIn(data);
     notifyOnAppError(result);
     extractErrorsToForm({ result, setError });
+    if (isSuccess(result) && props.onLoginSuccess) {
+      props.onLoginSuccess();
+    }
   };
 
   return (

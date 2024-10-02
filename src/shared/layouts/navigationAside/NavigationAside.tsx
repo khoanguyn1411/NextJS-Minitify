@@ -3,7 +3,7 @@
 import { Divider, NextUIProvider } from "@nextui-org/react";
 import { useRouter } from "next/navigation";
 import { type FC } from "react";
-import { BiLibrary, BiMusic, BiTrendingUp } from "react-icons/bi";
+import { BiHome, BiLibrary, BiMusic, BiTrendingUp } from "react-icons/bi";
 
 import {
   NavigationItem,
@@ -14,12 +14,13 @@ const userNavbarItems: readonly NavigationItemProps[] = [
   {
     title: "Home",
     url: "/",
-    icon: <BiTrendingUp />,
+    icon: <BiHome />,
   },
   {
     title: "Library",
     url: "/library",
     icon: <BiLibrary />,
+    isAuthRequire: true,
   },
 ];
 
