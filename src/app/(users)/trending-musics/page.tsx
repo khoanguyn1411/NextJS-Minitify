@@ -9,7 +9,7 @@ export default async function Page() {
     sortOptions: {
       playTime: "desc",
     },
-    pageSize: 5,
+    pageSize: 10,
     search: "",
   });
 

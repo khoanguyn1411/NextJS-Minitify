@@ -46,14 +46,16 @@ type Props = {
 export const TrendingMusic: FC<Props> = ({ songsPage }) => {
   const isClient = useIsClient();
   const data: ChartData<"bar", number[], string> = {
-    labels: songsPage.items.map((song) => `${song.name}`),
+    labels: songsPage.items.slice(0, 5).map((song) => `${song.name}`),
     datasets: [
       {
         type: "bar",
         label: "Play time",
-        data: songsPage.items.map((song) => song.playTime),
+        data: songsPage.items.slice(0, 5).map((song) => song.playTime),
         borderColor: "rgb(75, 192, 192)",
-        backgroundColor: songsPage.items.map(() => getRandomLightColor()),
+        backgroundColor: songsPage.items
+          .slice(0, 5)
+          .map(() => getRandomLightColor()),
       },
     ],
   };

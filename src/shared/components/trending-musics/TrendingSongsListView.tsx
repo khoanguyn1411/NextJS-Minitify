@@ -3,6 +3,7 @@ import { type FC } from "react";
 import { getSongs, type ISong } from "@/core/apis/songApis";
 import { type BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
+import { SCROLLABLE_TARGET_ID } from "@/shared/constants/ids";
 
 import { SongListView } from "../items-view/SongListView";
 
@@ -16,15 +17,13 @@ export const TrendingSongsListView: FC<Props> = async ({ songsPage }) => {
     return getSongs({ ...page, search: "", sortOptions: { playTime: "desc" } });
   };
 
-  const wrapperId = "artists-song-list-view";
-
   return (
-    <div id={wrapperId} className="max-h-[380px] overflow-auto">
+    <div>
       <SongListView
         className="top-0"
         belongTo={null}
         page={songsPage}
-        scrollableTargetId={wrapperId}
+        scrollableTargetId={SCROLLABLE_TARGET_ID}
         fetchFunction={fetchFunction}
       />
     </div>
