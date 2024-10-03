@@ -12,25 +12,36 @@ import {
   BiAddToQueue,
   BiDotsHorizontalRounded,
   BiSkipNextCircle,
+  BiSkipPreviousCircle,
 } from "react-icons/bi";
+
+import { usePlayingSongStore } from "../stores/usePlayingSongStore";
 
 type Item = {
   readonly label: string;
   readonly icon: ReactNode;
+  readonly onClick?: () => void;
 };
 
-const items: readonly Item[] = [
-  {
-    icon: <BiAddToQueue className="text-lg" />,
-    label: "Add to playlist",
-  },
-  {
-    icon: <BiSkipNextCircle className="text-lg" />,
-    label: "Next song",
-  },
-];
-
 export const UserActionsButton: FC = () => {
+  const { moveToNextSong, moveToPreviousSong } = usePlayingSongStore();
+  const items: readonly Item[] = [
+    {
+      icon: <BiAddToQueue className="text-lg" />,
+      label: "Add to playlist",
+    },
+    {
+      icon: <BiSkipNextCircle className="text-lg" />,
+      label: "Next song",
+      onClick: () => moveToNextSong(),
+    },
+    {
+      icon: <BiSkipPreviousCircle className="text-lg" />,
+      label: "Previous song",
+      onClick: () => moveToPreviousSong(),
+    },
+  ];
+
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -40,7 +51,11 @@ export const UserActionsButton: FC = () => {
       </DropdownTrigger>
       <DropdownMenu items={items}>
         {(item) => (
-          <DropdownItem startContent={item.icon} key={item.label}>
+          <DropdownItem
+            onClick={item.onClick}
+            startContent={item.icon}
+            key={item.label}
+          >
             {item.label}
           </DropdownItem>
         )}
