@@ -43,6 +43,8 @@ const baseColumns: ListViewColumn<ISong>[] = [
 
 function getColumns(
   hoveredRow: ISong | null,
+  activeRow: ISong | null,
+  setActiveRow: (row: ISong | null) => void,
 ): readonly ListViewColumn<ISong>[] {
   return [
     ...baseColumns,
@@ -52,15 +54,17 @@ function getColumns(
       align: "center",
       toReadable: (item) => formatTime(item.duration),
       render: (item) => {
-        const isCurrentItemHovered = item.id === hoveredRow?.id;
-        return (
-          <>
-            <UserActionsButton isHidden={!isCurrentItemHovered} />
-            <p className={isCurrentItemHovered ? "hidden" : ""}>
-              {formatTime(item.duration)}
-            </p>
-          </>
-        );
+        const isCurrentItemHovered =
+          item.id === hoveredRow?.id || activeRow?.id === item.id;
+        if (isCurrentItemHovered) {
+          return (
+            <UserActionsButton
+              onTrigger={() => setActiveRow(item)}
+              onClose={() => setActiveRow(null)}
+            />
+          );
+        }
+        return formatTime(item.duration);
       },
     },
   ];
@@ -85,10 +89,11 @@ export const SongListView: FC<Props> = ({
 }) => {
   const { setPlayingSong, playingSong, setBelongTo } = usePlayingSongStore();
   const [hoveredRow, setHoveredRow] = useState<ISong | null>(null);
+  const [activeRow, setActiveRow] = useState<ISong | null>(null);
 
   const columns = useMemo(() => {
-    return getColumns(hoveredRow);
-  }, [hoveredRow]);
+    return getColumns(hoveredRow, activeRow, setActiveRow);
+  }, [hoveredRow, activeRow]);
 
   const handleRowClick = (song: ISong) => {
     setPlayingSong(song);
