@@ -1,21 +1,22 @@
 "use client";
 
-import { type FC } from "react";
+import { useMemo, useState, type FC } from "react";
 import { BiTime } from "react-icons/bi";
 
 import { type ISong } from "@/core/apis/songApis";
 import { type BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 import {
-  type BelongTo,
   usePlayingSongStore,
+  type BelongTo,
 } from "@/shared/stores/usePlayingSongStore";
 import { formatTime } from "@/shared/utils/formatTime";
 
 import { ListView, type ListViewColumn } from "../ListView";
+import { UserActionsButton } from "../UserActionsButton";
 import { SongBaseInfoView } from "./SongBaseInfoView";
 
-const columns: readonly ListViewColumn<ISong>[] = [
+const baseColumns: ListViewColumn<ISong>[] = [
   {
     title: "#",
     key: "index",
@@ -38,13 +39,27 @@ const columns: readonly ListViewColumn<ISong>[] = [
     key: "playTime",
     align: "center",
   },
-  {
-    title: <BiTime className="text-xl" />,
-    key: "duration",
-    align: "center",
-    toReadable: (item) => formatTime(item.duration),
-  },
 ];
+
+function getColumns(
+  hoveredRow: ISong | null,
+): readonly ListViewColumn<ISong>[] {
+  return [
+    ...baseColumns,
+    {
+      title: <BiTime className="text-xl" />,
+      key: "duration",
+      align: "center",
+      toReadable: (item) => formatTime(item.duration),
+      render: (item) => {
+        if (item.id === hoveredRow?.id) {
+          return <UserActionsButton />;
+        }
+        return formatTime(item.duration);
+      },
+    },
+  ];
+}
 
 type Props = {
   readonly page: Pagination<ISong>;
@@ -64,15 +79,30 @@ export const SongListView: FC<Props> = ({
   scrollableTargetId,
 }) => {
   const { setPlayingSong, playingSong, setBelongTo } = usePlayingSongStore();
+  const [hoveredRow, setHoveredRow] = useState<ISong | null>(null);
+
+  const columns = useMemo(() => {
+    return getColumns(hoveredRow);
+  }, [hoveredRow]);
 
   const handleRowClick = (song: ISong) => {
     setPlayingSong(song);
     setBelongTo(belongTo);
   };
 
+  const handleRowHover = (row: ISong) => {
+    setHoveredRow(row);
+  };
+
+  const handleRowLeave = () => {
+    setHoveredRow(null);
+  };
+
   return (
     <ListView
       onRowClick={handleRowClick}
+      onRowHover={handleRowHover}
+      onRowLeave={handleRowLeave}
       fetchApi={fetchFunction}
       className={className}
       gridTemplate="grid-cols-[40px_1fr_100px_200px_100px]"

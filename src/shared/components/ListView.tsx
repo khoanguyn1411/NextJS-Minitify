@@ -26,6 +26,8 @@ type ListViewProps<T> = {
   readonly isLoading?: boolean;
   readonly gridTemplate?: string;
   readonly onRowClick?: (item: T, index: number) => void;
+  readonly onRowHover?: (item: T, index: number) => void;
+  readonly onRowLeave?: (item: T, index: number) => void;
   readonly page: Pagination<T>;
   readonly scrollableTargetId?: string;
   readonly isActiveRow?: (item: T, index: number) => boolean;
@@ -113,6 +115,8 @@ export const ListView = <TData extends Record<string, any>>(
             <div
               key={props.toKey(item)}
               onClick={() => props.onRowClick?.(item, index)}
+              onMouseEnter={() => props.onRowHover?.(item, index)}
+              onMouseLeave={() => props.onRowLeave?.(item, index)}
               className={classNames(
                 `grid ${props.gridTemplate} gap-4`,
                 "items-center rounded-md py-2 transition-[0.2s ease]",
