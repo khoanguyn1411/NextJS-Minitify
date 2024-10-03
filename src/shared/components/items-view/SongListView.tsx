@@ -110,7 +110,7 @@ export const SongListView: FC<Props> = ({
 
   return (
     <ListView
-      onRowClick={handleRowClick}
+      onRowDoubleClick={handleRowClick}
       onRowHover={handleRowHover}
       onRowLeave={handleRowLeave}
       fetchApi={fetchFunction}
