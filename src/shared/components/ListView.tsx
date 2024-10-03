@@ -69,7 +69,8 @@ export const ListView = <TData extends Record<string, any>>(
     return item[col.key] ?? "-";
   };
 
-  const isClickable = props.onRowClick != null;
+  const isClickable =
+    props.onRowClick != null || props.onRowDoubleClick != null;
 
   return (
     <>
