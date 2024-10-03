@@ -126,7 +126,7 @@ export async function logout() {
     sessionCookie.attributes,
   );
 
-  if (currentPath.startsWith("/admin")) {
+  if (currentPath.startsWith("/admin") || currentPath.startsWith("/library")) {
     redirect("/");
   }
 }
