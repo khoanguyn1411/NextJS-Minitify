@@ -7,6 +7,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/dropdown";
+import { useDisclosure } from "@nextui-org/react";
 import { type FC, type ReactNode } from "react";
 import {
   BiAddToQueue,
@@ -16,6 +17,7 @@ import {
 } from "react-icons/bi";
 
 import { usePlayingSongStore } from "../stores/usePlayingSongStore";
+import { PlaylistsModal } from "./playlists/PlaylistsModal";
 
 type Item = {
   readonly label: string;
@@ -23,12 +25,19 @@ type Item = {
   readonly onClick?: () => void;
 };
 
-export const UserActionsButton: FC = () => {
+type Props = {
+  readonly isHidden?: boolean;
+};
+
+export const UserActionsButton: FC<Props> = ({ isHidden = false }) => {
   const { moveToNextSong, moveToPreviousSong } = usePlayingSongStore();
+  const playlistModalDisclosure = useDisclosure();
+
   const items: readonly Item[] = [
     {
       icon: <BiAddToQueue className="text-lg" />,
       label: "Add to playlist",
+      onClick: () => playlistModalDisclosure.onOpen(),
     },
     {
       icon: <BiSkipNextCircle className="text-lg" />,
@@ -43,23 +52,31 @@ export const UserActionsButton: FC = () => {
   ];
 
   return (
-    <Dropdown>
-      <DropdownTrigger>
-        <Button isIconOnly radius="full" variant="bordered">
-          <BiDotsHorizontalRounded className="text-xl" />
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu items={items}>
-        {(item) => (
-          <DropdownItem
-            onClick={item.onClick}
-            startContent={item.icon}
-            key={item.label}
+    <>
+      <Dropdown>
+        <DropdownTrigger className={isHidden ? "hidden" : ""}>
+          <Button
+            onClick={(e) => e.stopPropagation()}
+            isIconOnly
+            radius="full"
+            variant="bordered"
           >
-            {item.label}
-          </DropdownItem>
-        )}
-      </DropdownMenu>
-    </Dropdown>
+            <BiDotsHorizontalRounded className="text-xl" />
+          </Button>
+        </DropdownTrigger>
+        <DropdownMenu items={items}>
+          {(item) => (
+            <DropdownItem
+              onClick={item.onClick}
+              startContent={item.icon}
+              key={item.label}
+            >
+              {item.label}
+            </DropdownItem>
+          )}
+        </DropdownMenu>
+      </Dropdown>
+      <PlaylistsModal {...playlistModalDisclosure} />
+    </>
   );
 };

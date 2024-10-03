@@ -52,10 +52,15 @@ function getColumns(
       align: "center",
       toReadable: (item) => formatTime(item.duration),
       render: (item) => {
-        if (item.id === hoveredRow?.id) {
-          return <UserActionsButton />;
-        }
-        return formatTime(item.duration);
+        const isCurrentItemHovered = item.id === hoveredRow?.id;
+        return (
+          <>
+            <UserActionsButton isHidden={!isCurrentItemHovered} />
+            <p className={isCurrentItemHovered ? "hidden" : ""}>
+              {formatTime(item.duration)}
+            </p>
+          </>
+        );
       },
     },
   ];
