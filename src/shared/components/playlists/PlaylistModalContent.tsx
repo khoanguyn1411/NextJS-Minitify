@@ -2,7 +2,13 @@ import { Button } from "@nextui-org/button";
 import { Tooltip } from "@nextui-org/react";
 import { type User } from "lucia";
 import { useEffect, useState, type FC } from "react";
-import { BiAddToQueue } from "react-icons/bi";
+import {
+  BiAddToQueue,
+  BiListCheck,
+  BiListUl,
+  BiMenu,
+  BiMusic,
+} from "react-icons/bi";
 
 import { type IPlaylist } from "@/core/apis/playlistApis";
 import { type Pagination } from "@/core/models/pagination";
@@ -52,10 +58,9 @@ export const PlaylistModalContent: FC<Props> = ({
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between gap-2">
-        <p>
-          <span className="text-primary-200 font-bold">
-            {playlistsPage.totalCount}
-          </span>{" "}
+        <p className="flex gap-1 items-center">
+          <BiListUl />
+          <span className="font-bold">{playlistsPage.totalCount}</span>{" "}
           playlists
         </p>
         <Tooltip content="Click to add playlist">
