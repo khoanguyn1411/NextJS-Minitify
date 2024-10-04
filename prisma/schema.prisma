@@ -55,10 +55,13 @@ model Album {
 
 model Playlist {
   id          Int      @id @default(autoincrement())
+  name        String
+  user        User?    @relation(fields: [userId], references: [id])
   description String   @db.LongText
   createdDate DateTime @default(now())
   song        Song[]
   updatedAt   DateTime @updatedAt
+  userId      Int?
 }
 
 enum UserRole {
@@ -67,16 +70,17 @@ enum UserRole {
 }
 
 model User {
-  id          Int       @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   firstName   String
   lastName    String
-  fullName    String    @default("")
+  fullName    String     @default("")
   password    String
-  username    String    @unique
-  createdDate DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  username    String     @unique
+  createdDate DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
   Session     Session[]
-  role        UserRole  @default(user)
+  role        UserRole   @default(user)
+  Playlist    Playlist[]
 }
 
 model Session {
