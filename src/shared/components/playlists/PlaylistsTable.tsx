@@ -25,6 +25,7 @@ const baseColumns: TableColumn<IPlaylist>[] = [
 export const PlaylistsTable: FC<Props> = ({ playlistsPage }) => {
   return (
     <AppTable
+      className="max-h-[200px]"
       hasPagination={false}
       columns={baseColumns}
       toKey={(item) => item.id}
