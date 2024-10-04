@@ -2,13 +2,7 @@ import { Button } from "@nextui-org/button";
 import { Tooltip } from "@nextui-org/react";
 import { type User } from "lucia";
 import { useEffect, useState, type FC } from "react";
-import {
-  BiAddToQueue,
-  BiListCheck,
-  BiListUl,
-  BiMenu,
-  BiMusic,
-} from "react-icons/bi";
+import { BiAddToQueue, BiListUl } from "react-icons/bi";
 
 import { type IPlaylist } from "@/core/apis/playlistApis";
 import { type Pagination } from "@/core/models/pagination";
