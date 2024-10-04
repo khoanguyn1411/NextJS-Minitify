@@ -26,11 +26,16 @@ type Item = {
 };
 
 type Props = {
+  readonly isHidden?: boolean;
   readonly onTrigger?: () => void;
   readonly onClose?: () => void;
 };
 
-export const UserActionsButton: FC<Props> = ({ onTrigger, onClose }) => {
+export const UserActionsButton: FC<Props> = ({
+  isHidden,
+  onTrigger,
+  onClose,
+}) => {
   const { moveToNextSong, moveToPreviousSong } = usePlayingSongStore();
   const playlistModalDisclosure = useDisclosure();
 
@@ -55,7 +60,7 @@ export const UserActionsButton: FC<Props> = ({ onTrigger, onClose }) => {
   return (
     <>
       <Dropdown onClose={onClose}>
-        <DropdownTrigger>
+        <DropdownTrigger className={isHidden ? "hidden" : ""}>
           <Button
             onClick={onTrigger}
             isIconOnly

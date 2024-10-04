@@ -56,15 +56,18 @@ function getColumns(
       render: (item) => {
         const isCurrentItemHovered =
           item.id === hoveredRow?.id || activeRow?.id === item.id;
-        if (isCurrentItemHovered) {
-          return (
+        return (
+          <>
             <UserActionsButton
+              isHidden={!isCurrentItemHovered}
               onTrigger={() => setActiveRow(item)}
               onClose={() => setActiveRow(null)}
             />
-          );
-        }
-        return formatTime(item.duration);
+            <p className={isCurrentItemHovered ? "hidden" : ""}>
+              {formatTime(item.duration)}
+            </p>
+          </>
+        );
       },
     },
   ];
