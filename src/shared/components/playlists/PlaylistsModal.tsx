@@ -33,6 +33,7 @@ export const PlaylistsModal: FC<Props> = (props) => {
     <Modal
       isOpen={props.isOpen}
       scrollBehavior="inside"
+      size="2xl"
       onOpenChange={props.onOpenChange}
     >
       <ModalContent>

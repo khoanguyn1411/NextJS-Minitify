@@ -2,6 +2,7 @@
 
 import {
   Pagination as NextUIPagination,
+  type SelectionMode,
   Spinner,
   Table,
   TableBody,
@@ -32,12 +33,15 @@ type TableProps<T> = {
   readonly toKey: (item: T) => string | number;
   readonly isLoading?: boolean;
   readonly className?: string;
+  readonly hasPagination?: boolean;
+  readonly selectionMode?: SelectionMode;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const AppTable = <TData extends Record<string, any>>(
   props: TableProps<TData>,
 ) => {
+  const hasPagination = props.hasPagination ?? true;
   const { mergeQueryParams } = useAppQueryParams();
 
   const handlePaginationChange = (page: number) => {
@@ -60,19 +64,22 @@ export const AppTable = <TData extends Record<string, any>>(
     <div className="flex flex-col gap-3">
       <Table
         isHeaderSticky
+        selectionMode={props.selectionMode}
         className={props.className}
         bottomContent={
-          <div className="flex w-full justify-center">
-            <NextUIPagination
-              isCompact
-              onChange={handlePaginationChange}
-              showControls
-              showShadow
-              isDisabled={props.page.totalCount === 0}
-              total={props.page.totalPages}
-              page={props.page.pageNumber + 1}
-            />
-          </div>
+          hasPagination && (
+            <div className="flex w-full justify-center">
+              <NextUIPagination
+                isCompact
+                onChange={handlePaginationChange}
+                showControls
+                showShadow
+                isDisabled={props.page.totalCount === 0}
+                total={props.page.totalPages}
+                page={props.page.pageNumber + 1}
+              />
+            </div>
+          )
         }
       >
         <TableHeader>
