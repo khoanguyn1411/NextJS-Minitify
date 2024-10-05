@@ -6,6 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { type BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 
+import { useUpdateEffect } from "../hooks/useUpdateEffect";
 import { type LooseAutocomplete } from "../utils/types/looseAutocomplete";
 
 export type ListViewColumn<T> = {
@@ -71,6 +72,10 @@ export const ListView = <TData extends Record<string, any>>(
 
   const isClickable =
     props.onRowClick != null || props.onRowDoubleClick != null;
+
+  useUpdateEffect(() => {
+    setItems(props.page.items);
+  }, [props.page.items]);
 
   return (
     <>
