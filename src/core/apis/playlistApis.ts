@@ -1,6 +1,7 @@
 "use server";
 
 import { type Playlist, type Song } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 
 import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
@@ -47,8 +48,10 @@ export async function createPlaylist(data: PlaylistData.ServerType) {
             name: data.name,
             description: data.description,
             userId: data.userId,
+            imageUrl: data.image,
           },
         });
+        revalidatePath("/library");
         return playlist;
       },
     });
@@ -72,6 +75,7 @@ export async function addSongToPlaylists(
     );
 
     await Promise.all(updates);
+    revalidatePath("/library");
   });
 }
 
@@ -93,6 +97,7 @@ export async function updatePlaylist(
             description: data.description,
           },
         });
+        revalidatePath("/library");
         return playlist;
       },
     });

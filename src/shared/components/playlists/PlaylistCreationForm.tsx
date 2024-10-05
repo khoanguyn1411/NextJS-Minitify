@@ -6,6 +6,8 @@ import { Controller, useFormContext } from "react-hook-form";
 import { type IPlaylist } from "@/core/apis/playlistApis";
 import { type PlaylistData } from "@/core/models/playListData";
 
+import { FileUploader } from "../FileUploader";
+
 type Props = {
   readonly playlist?: IPlaylist;
   readonly userId: User["id"] | null;
@@ -38,6 +40,18 @@ export const PlaylistCreationForm: FC<Props> = () => {
             placeholder="Good time"
             errorMessage={fieldState.error?.message}
             isInvalid={!!fieldState.error?.message}
+            {...field}
+          />
+        )}
+      />
+      <Controller
+        control={control}
+        name="image"
+        render={({ field, fieldState }) => (
+          <FileUploader
+            fileAccepted=".jpg,.jpeg,.png"
+            label="Playlist"
+            errorMessage={fieldState.error?.message}
             {...field}
           />
         )}

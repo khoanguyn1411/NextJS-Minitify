@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Playlist` ADD COLUMN `imageUrl` VARCHAR(191) NOT NULL DEFAULT '';

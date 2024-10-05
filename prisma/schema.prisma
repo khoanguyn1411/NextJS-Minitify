@@ -61,6 +61,7 @@ model Playlist {
   createdDate DateTime @default(now())
   songs       Song[]
   updatedAt   DateTime @updatedAt
+  imageUrl    String   @default("")
   userId      Int?
 }
 
