@@ -99,6 +99,7 @@ export const usePlayingSongContext = () => {
         break;
       case "playlist":
         getAndSetSongsToPlay({
+          pageSize: 999999,
           playlistId: belongTo.id,
         });
         break;
