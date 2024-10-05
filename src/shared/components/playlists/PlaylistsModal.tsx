@@ -9,7 +9,7 @@ import {
   ModalHeader,
   type useDisclosure,
 } from "@nextui-org/react";
-import { type FC } from "react";
+import { useMemo, type FC } from "react";
 import { FormProvider } from "react-hook-form";
 
 import { addSongToPlaylists } from "@/core/apis/playlistApis";
@@ -46,6 +46,16 @@ export const PlaylistsModal: FC<Props> = (props) => {
     onSubmitSuccess: () => fetchPage(),
   });
 
+  const shouldSubmitButtonDisabled = useMemo(() => {
+    if (mode === "create") {
+      return !form.formState.isDirty;
+    }
+    if (mode === "loading") {
+      return true;
+    }
+    return selectedPlaylists.length === 0;
+  }, [mode, selectedPlaylists]);
+
   const handleModalClose = () => {
     props.onClose();
     setSelectedPlaylists([]);
@@ -56,8 +66,7 @@ export const PlaylistsModal: FC<Props> = (props) => {
       return;
     }
     if (mode === "create") {
-      form.handleSubmit(onFormSubmit);
-      return;
+      return form.handleSubmit(onFormSubmit)();
     }
     const currentSong = props.currentSong;
     if (currentSong == null) {
@@ -100,6 +109,7 @@ export const PlaylistsModal: FC<Props> = (props) => {
               <Button
                 isLoading={isSubmitting || form.formState.isLoading}
                 color="primary"
+                isDisabled={shouldSubmitButtonDisabled}
                 onClick={handleSubmitButtonClick}
               >
                 Submit

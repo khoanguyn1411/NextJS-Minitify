@@ -12,11 +12,7 @@ type Props = {
 };
 
 export const PlaylistCreationForm: FC<Props> = () => {
-  const {
-    control,
-    formState: { errors },
-  } = useFormContext<PlaylistData.Type>();
-  console.log({ errors });
+  const { control } = useFormContext<PlaylistData.Type>();
 
   return (
     <form className="flex flex-col gap-4">
