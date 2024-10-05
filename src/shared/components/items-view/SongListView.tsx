@@ -14,7 +14,7 @@ import {
 import { formatTime } from "@/shared/utils/formatTime";
 
 import { ListView, type ListViewColumn } from "../ListView";
-import { PlaylistsModal } from "../playlists/PlaylistsModal";
+import { PlaylistsModal } from "../playlists/playlists-modal/PlaylistsModal";
 import { UserActionsButton } from "../UserActionsButton";
 import { SongBaseInfoView } from "./SongBaseInfoView";
 

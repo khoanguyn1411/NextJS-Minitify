@@ -14,7 +14,7 @@ import { type FC } from "react";
 import { type ISong } from "@/core/apis/songApis";
 import { AppImage } from "@/shared/components/AppImage";
 import { SongBaseInfoView } from "@/shared/components/items-view/SongBaseInfoView";
-import { PlaylistsModal } from "@/shared/components/playlists/PlaylistsModal";
+import { PlaylistsModal } from "@/shared/components/playlists/playlists-modal/PlaylistsModal";
 import { UserActionsButton } from "@/shared/components/UserActionsButton";
 import { usePlayingSongStore } from "@/shared/stores/usePlayingSongStore";
 

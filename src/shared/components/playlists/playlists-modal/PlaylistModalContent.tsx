@@ -10,8 +10,8 @@ import {
 
 import { assertNonNull } from "@/shared/utils/assertNonNull";
 
-import { PlaylistCreationForm } from "./PlaylistCreationForm";
-import { PlaylistsTable } from "./PlaylistsTable";
+import { PlaylistCreationForm } from "../PlaylistCreationForm";
+import { PlaylistsTable } from "../PlaylistsTable";
 import { usePlaylistsModalStore } from "./usePlaylistsModalStore";
 
 export const PlaylistModalContent: FC = () => {

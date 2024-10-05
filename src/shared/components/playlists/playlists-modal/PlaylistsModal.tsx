@@ -19,7 +19,7 @@ import { useNotify } from "@/shared/hooks/useNotify";
 import { useToggleExecutionState } from "@/shared/hooks/useToggleExecutionState";
 
 import { PlaylistModalContent } from "./PlaylistModalContent";
-import { usePlaylistForm } from "./usePlaylistForm";
+import { usePlaylistForm } from "../usePlaylistForm";
 import {
   PlaylistsModalContext,
   usePlaylistsModalContext,
