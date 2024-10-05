@@ -132,7 +132,7 @@ export const SongListView: FC<Props> = ({
         className={className}
         gridTemplate="grid-cols-[40px_1fr_100px_200px_100px]"
         columns={columns}
-        toKey={(item) => item.id}
+        toKey={(item) => item.id.toString()}
         page={page}
         isActiveRow={(currentSong) => playingSong?.id === currentSong.id}
         scrollableTargetId={scrollableTargetId}

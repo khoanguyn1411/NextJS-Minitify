@@ -43,7 +43,7 @@ export const TagsTableClient: FC<Props> = ({ page }) => {
     <AppTable
       columns={columns}
       className="max-h-table"
-      toKey={(item) => item.id}
+      toKey={(item) => item.id.toString()}
       page={page}
     />
   );
