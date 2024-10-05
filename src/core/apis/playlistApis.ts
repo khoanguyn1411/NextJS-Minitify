@@ -95,7 +95,7 @@ export async function addSongsToPlaylists(
         where: { id: playlistId },
         data: {
           songs: {
-            set: songIds.map((id) => ({ id })),
+            connect: songIds.map((id) => ({ id })),
           },
         },
       });
