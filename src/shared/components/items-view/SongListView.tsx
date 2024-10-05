@@ -138,7 +138,8 @@ export const SongListView: FC<Props> = ({
         scrollableTargetId={scrollableTargetId}
       />
 
-      {/* Note: Need to put the playlist modal outside to prevent clicking outside trigger the click action of row */}
+      {/* Note: Need to put the playlist modal outside of button component 
+      to prevent clicking outside trigger the click action of row */}
       <PlaylistsModal {...playlistModalDisclosure} />
     </>
   );
