@@ -31,7 +31,7 @@ export const PlaylistsTable: FC<Props> = ({
     <AppTable
       selections={selections}
       onSelectionChange={setSections}
-      className="max-h-[200px]"
+      className="max-h-[500px]"
       hasPagination={false}
       columns={baseColumns}
       toKey={(item) => item.id.toString()}

@@ -49,12 +49,16 @@ export const usePlaylistsModalContext = ({ userId }: Params) => {
     });
   };
 
+  const resetMode = () => {
+    setMode(getMode());
+  };
+
   useEffect(() => {
     fetchPage();
   }, []);
 
   useEffect(() => {
-    setMode(getMode());
+    resetMode();
   }, [playlistsPage, isLoading]);
 
   return {
@@ -67,6 +71,7 @@ export const usePlaylistsModalContext = ({ userId }: Params) => {
     selectedPlaylists,
     rawSelectedPlaylists,
     setSelectedPlaylists,
+    resetMode,
   };
 };
 
@@ -78,6 +83,7 @@ export const PlaylistsModalContext = createContext<
   fetchPage: () => Promise.resolve(),
   setMode: () => {},
   setSelectedPlaylists: () => {},
+  resetMode: () => {},
   mode: "loading",
   userId: null,
   selectedPlaylists: [],

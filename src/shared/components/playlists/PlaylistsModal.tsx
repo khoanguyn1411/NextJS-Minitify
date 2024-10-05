@@ -38,8 +38,13 @@ export const PlaylistsModal: FC<Props> = (props) => {
   const { notify } = useNotify();
   const [isSubmitting, toggleExecutionState] = useToggleExecutionState();
 
-  const { mode, fetchPage, selectedPlaylists, setSelectedPlaylists } =
-    contextValue;
+  const {
+    mode,
+    fetchPage,
+    selectedPlaylists,
+    setSelectedPlaylists,
+    resetMode,
+  } = contextValue;
 
   const { form, onFormSubmit } = usePlaylistForm({
     userId,
@@ -54,11 +59,12 @@ export const PlaylistsModal: FC<Props> = (props) => {
       return true;
     }
     return selectedPlaylists.length === 0;
-  }, [mode, selectedPlaylists]);
+  }, [mode, selectedPlaylists, form.formState.isDirty]);
 
   const handleModalClose = () => {
     props.onClose();
     setSelectedPlaylists([]);
+    resetMode();
   };
 
   const handleSubmitButtonClick = async () => {

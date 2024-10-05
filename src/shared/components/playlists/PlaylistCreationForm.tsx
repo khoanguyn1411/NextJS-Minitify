@@ -22,7 +22,7 @@ export const PlaylistCreationForm: FC<Props> = () => {
         render={({ field, fieldState }) => (
           <Input
             label="Name"
-            placeholder="Danny"
+            placeholder="Your awesome playlist"
             errorMessage={fieldState.error?.message}
             isInvalid={!!fieldState.error?.message}
             {...field}
@@ -35,7 +35,7 @@ export const PlaylistCreationForm: FC<Props> = () => {
         render={({ field, fieldState }) => (
           <Textarea
             label="Description"
-            autoComplete="description"
+            placeholder="Good time"
             errorMessage={fieldState.error?.message}
             isInvalid={!!fieldState.error?.message}
             {...field}
