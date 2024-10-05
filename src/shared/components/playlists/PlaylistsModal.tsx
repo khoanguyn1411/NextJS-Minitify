@@ -34,7 +34,10 @@ export const PlaylistsModal: FC<Props> = (props) => {
 
   const userId = currentUser?.id ?? null;
 
-  const contextValue = usePlaylistsModalContext({ userId });
+  const contextValue = usePlaylistsModalContext({
+    userId,
+    currentSong: props.currentSong,
+  });
   const { notify } = useNotify();
   const [isSubmitting, toggleExecutionState] = useToggleExecutionState();
 

@@ -20,6 +20,7 @@ export const PlaylistModalContent: FC = () => {
     userId,
     playlistsPage,
     setMode,
+    currentSong,
     rawSelectedPlaylists,
     setSelectedPlaylists,
   } = usePlaylistsModalStore();
@@ -53,7 +54,14 @@ export const PlaylistModalContent: FC = () => {
   }
   assertNonNull(playlistsPage);
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-2">
+      <h1>
+        Add{" "}
+        <span className="font-semibold text-primary-300">
+          {currentSong?.name}
+        </span>{" "}
+        to playlists.
+      </h1>
       <div className="flex items-center justify-between gap-2">
         <p className="flex gap-1 items-center">
           <BiListUl />

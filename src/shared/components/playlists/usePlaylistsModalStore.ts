@@ -2,6 +2,7 @@ import { type User } from "lucia";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { type IPlaylist, getPlaylists } from "@/core/apis/playlistApis";
+import { type ISong } from "@/core/apis/songApis";
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { type Pagination } from "@/core/models/pagination";
 import { useToggleExecutionState } from "@/shared/hooks/useToggleExecutionState";
@@ -10,9 +11,10 @@ export type PlaylistMode = "view" | "create" | "loading";
 
 type Params = {
   readonly userId: User["id"] | null;
+  readonly currentSong: ISong | null;
 };
 
-export const usePlaylistsModalContext = ({ userId }: Params) => {
+export const usePlaylistsModalContext = ({ userId, currentSong }: Params) => {
   const [playlistsPage, setPlaylistsPage] =
     useState<Pagination<IPlaylist> | null>(null);
 
@@ -72,6 +74,7 @@ export const usePlaylistsModalContext = ({ userId }: Params) => {
     rawSelectedPlaylists,
     setSelectedPlaylists,
     resetMode,
+    currentSong,
   };
 };
 
@@ -88,6 +91,7 @@ export const PlaylistsModalContext = createContext<
   userId: null,
   selectedPlaylists: [],
   rawSelectedPlaylists: [],
+  currentSong: null,
 });
 
 export const usePlaylistsModalStore = () => {

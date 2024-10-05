@@ -1,6 +1,12 @@
 "use client";
 
-import { Card, CardBody, CardFooter, Divider } from "@nextui-org/react";
+import {
+  Card,
+  CardBody,
+  CardFooter,
+  Divider,
+  useDisclosure,
+} from "@nextui-org/react";
 import { type Artist } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { type FC } from "react";
@@ -8,10 +14,13 @@ import { type FC } from "react";
 import { type ISong } from "@/core/apis/songApis";
 import { AppImage } from "@/shared/components/AppImage";
 import { SongBaseInfoView } from "@/shared/components/items-view/SongBaseInfoView";
+import { PlaylistsModal } from "@/shared/components/playlists/PlaylistsModal";
+import { UserActionsButton } from "@/shared/components/UserActionsButton";
 import { usePlayingSongStore } from "@/shared/stores/usePlayingSongStore";
 
 export const TrackInfoAside: FC = () => {
   const { playingSong, nextSongs, setPlayingSong } = usePlayingSongStore();
+  const playlistModalDisclosure = useDisclosure();
   const router = useRouter();
 
   const handleSongClick = (song: ISong) => {
@@ -38,9 +47,18 @@ export const TrackInfoAside: FC = () => {
         alt={playingSong.name}
         src={playingSong.imageUrl}
       />
-      <div className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold">{playingSong.name}</h1>
-        <p>{playingSong.artists.map((artist) => artist.name).join(", ")}</p>
+      <div className="flex gap-2 justify-between">
+        <div className="flex flex-col gap-1">
+          <h1 className="text-xl font-bold">{playingSong.name}</h1>
+          <p>{playingSong.artists.map((artist) => artist.name).join(", ")}</p>
+        </div>
+        <UserActionsButton
+          onPlaylistModalOpen={playlistModalDisclosure.onOpen}
+        />
+        <PlaylistsModal
+          currentSong={playingSong}
+          {...playlistModalDisclosure}
+        />
       </div>
       <Divider />
       {playingSong.artists.map((artist) => (
