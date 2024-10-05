@@ -9,10 +9,10 @@ import { createPrismaPaginationFilter } from "@/shared/utils/createPrismaPaginat
 import { createPrismaRequest } from "@/shared/utils/createPrismaRequest";
 import { validateWithSchema } from "@/shared/utils/errorHandlers";
 
-import { type BaseFilterParams } from "../models/baseFilterParams";
 import { PlaylistData } from "../models/playListData";
+import { type PlaylistsFilterParams } from "../models/playlistsFilterParams";
 
-export async function getPlaylists(pagination: BaseFilterParams.Combined) {
+export async function getPlaylists(pagination: PlaylistsFilterParams) {
   return createPrismaRequest(async () => {
     const paginationFilters = createPrismaPaginationFilter(pagination);
     const filters: Parameters<typeof appPrisma.playlist.findMany>[0] = {

@@ -44,7 +44,7 @@ export const usePlaylistsModalContext = ({ userId, currentSong }: Params) => {
     toggleExecutionState(async () => {
       const page = await getPlaylists({
         ...BaseFilterParams.initialPagination,
-        pageSize: 500,
+        pageSize: 99999,
         search: "",
       });
       setPlaylistsPage(page);
