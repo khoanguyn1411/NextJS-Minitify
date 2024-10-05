@@ -115,7 +115,7 @@ export const PlaylistsModal: FC<Props> = (props) => {
       }
 
       await Promise.all(callbacks);
-      notify("Added to playlist", { type: "success" });
+      notify("Modified playlist successfully", { type: "success" });
       handleModalClose();
     });
   };

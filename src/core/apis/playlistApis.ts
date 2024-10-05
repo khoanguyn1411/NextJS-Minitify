@@ -14,7 +14,6 @@ import { type PlaylistsFilterParams } from "../models/playlistsFilterParams";
 
 export async function getPlaylists(pagination: PlaylistsFilterParams) {
   return createPrismaRequest(async () => {
-    console.log({ idIncluded: pagination.songIdIncluded });
     const paginationFilters = createPrismaPaginationFilter(pagination);
     const filters: Parameters<typeof appPrisma.playlist.findMany>[0] = {
       where: {
@@ -102,7 +101,7 @@ export async function addSongsToPlaylists(
     });
 
     await Promise.all(updates);
-    revalidatePath("/library");
+    revalidatePath("/playlists/[id]", "page");
   });
 }
 
@@ -123,7 +122,7 @@ export async function removeSongsFromPlaylists(
     });
 
     await Promise.all(updates);
-    revalidatePath("/library");
+    revalidatePath("/playlists/[id]", "page");
   });
 }
 
