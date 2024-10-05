@@ -112,37 +112,39 @@ export const ListView = <TData extends Record<string, any>>(
           </div>
         }
       >
-        {items.map((item, index) => {
-          return (
-            <div
-              key={props.toKey(item)}
-              tabIndex={1}
-              role="button"
-              onClick={() => props.onRowClick?.(item, index)}
-              onDoubleClick={() => props.onRowDoubleClick?.(item, index)}
-              onMouseEnter={() => props.onRowHover?.(item, index)}
-              onMouseLeave={() => props.onRowLeave?.(item, index)}
-              className={classNames(
-                `grid ${props.gridTemplate} gap-4`,
-                "items-center rounded-md py-2 transition-[0.2s ease]",
-                {
-                  "hover:bg-input-hover cursor-pointer": isClickable,
-                  "text-primary-200": props.isActiveRow?.(item, index),
-                },
-              )}
-            >
-              {props.columns.map((col) => {
-                return (
-                  <div key={`${col.key.toString()}-${props.toKey(item)}`}>
-                    <div className={`flex justify-${col.align}`}>
-                      {getCellContent(col, item, index)}
+        {items.length === 0 && <p>No data</p>}
+        {items.length > 0 &&
+          items.map((item, index) => {
+            return (
+              <div
+                key={props.toKey(item)}
+                tabIndex={1}
+                role="button"
+                onClick={() => props.onRowClick?.(item, index)}
+                onDoubleClick={() => props.onRowDoubleClick?.(item, index)}
+                onMouseEnter={() => props.onRowHover?.(item, index)}
+                onMouseLeave={() => props.onRowLeave?.(item, index)}
+                className={classNames(
+                  `grid ${props.gridTemplate} gap-4`,
+                  "items-center rounded-md py-2 transition-[0.2s ease]",
+                  {
+                    "hover:bg-input-hover cursor-pointer": isClickable,
+                    "text-primary-200": props.isActiveRow?.(item, index),
+                  },
+                )}
+              >
+                {props.columns.map((col) => {
+                  return (
+                    <div key={`${col.key.toString()}-${props.toKey(item)}`}>
+                      <div className={`flex justify-${col.align}`}>
+                        {getCellContent(col, item, index)}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
+                  );
+                })}
+              </div>
+            );
+          })}
       </InfiniteScroll>
     </>
   );

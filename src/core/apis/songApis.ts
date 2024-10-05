@@ -124,6 +124,13 @@ export async function getSongs(filterParams: SongsFilterParams) {
       where: {
         name: { contains: filterParams.search },
         albumId: filterParams.albumId,
+        playlists: filterParams.playlistId
+          ? {
+              some: {
+                id: filterParams.playlistId,
+              },
+            }
+          : undefined,
         tags: filterParams.tagIds
           ? {
               some: {

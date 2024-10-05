@@ -97,6 +97,11 @@ export const usePlayingSongContext = () => {
           artistIds: [belongTo.id],
         });
         break;
+      case "playlist":
+        getAndSetSongsToPlay({
+          playlistId: belongTo.id,
+        });
+        break;
       case "trending":
         getAndSetSongsToPlay({
           sortOptions: {
