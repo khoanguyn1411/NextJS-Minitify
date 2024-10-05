@@ -1,7 +1,12 @@
 import { Button } from "@nextui-org/button";
 import { Tooltip } from "@nextui-org/react";
 import { type FC } from "react";
-import { BiAddToQueue, BiListUl } from "react-icons/bi";
+import {
+  BiAddToQueue,
+  BiListPlus,
+  BiListUl,
+  BiSolidLeftArrow,
+} from "react-icons/bi";
 
 import { assertNonNull } from "@/shared/utils/assertNonNull";
 
@@ -16,8 +21,25 @@ export const PlaylistModalContent: FC = () => {
     return <div>Loading..</div>;
   }
   if (mode === "create") {
+    const playlistsPageLength = playlistsPage?.items.length ?? 0;
     return (
-      <div>
+      <div className="flex gap-4 flex-col">
+        <div className="flex gap-2">
+          {playlistsPageLength > 0 && (
+            <button
+              onClick={() => setMode("view")}
+              className="flex gap-2 items-center hover:text-primary-300 transition-all"
+            >
+              <BiSolidLeftArrow /> Back to playlist
+            </button>
+          )}
+
+          <p className="flex gap-1 items-center ml-auto">
+            <BiListPlus className="text-2xl" />
+            Add playlist
+          </p>
+        </div>
+
         <PlaylistCreationForm userId={userId} />
       </div>
     );
