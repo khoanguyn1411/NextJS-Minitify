@@ -1,3 +1,5 @@
+"use client";
+
 import { Image, type ImageProps } from "@nextui-org/react";
 import NextImage from "next/image";
 import { useEffect, useState, type FC } from "react";

@@ -1,8 +1,9 @@
-import { Image, User } from "@nextui-org/react";
+import { User } from "@nextui-org/react";
 import { BiCalendar } from "react-icons/bi";
 
 import { getAlbumById } from "@/core/apis/albumsApis";
 import { AlbumSongsListView } from "@/shared/components/albums/AlbumSongsListView";
+import { AppImage } from "@/shared/components/AppImage";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
 export default async function Page({ params }: { params: { id: string } }) {
@@ -19,7 +20,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <div className="flex flex-col">
       <div className="p-container flex gap-4">
-        <Image
+        <AppImage
           isBlurred
           isZoomed
           src={album.imageUrl}

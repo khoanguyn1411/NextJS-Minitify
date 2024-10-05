@@ -1,5 +1,5 @@
 import { PrismaAdapter } from "@lucia-auth/adapter-prisma";
-import { PrismaClient, type UserRole } from "@prisma/client";
+import { PrismaClient, type User } from "@prisma/client";
 import { Lucia } from "lucia";
 
 const client = new PrismaClient();
@@ -13,11 +13,7 @@ export const lucia = new Lucia(adapter, {
     },
   },
   getUserAttributes: (attributes) => {
-    return {
-      // attributes has the type of DatabaseUserAttributes
-      username: attributes.username,
-      role: attributes.role,
-    };
+    return attributes;
   },
 });
 
@@ -29,7 +25,4 @@ declare module "lucia" {
   }
 }
 
-interface DatabaseUserAttributes {
-  username: string;
-  role: UserRole;
-}
+type DatabaseUserAttributes = User;

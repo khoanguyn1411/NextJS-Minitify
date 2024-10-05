@@ -37,6 +37,20 @@ export async function getPlaylists(pagination: PlaylistsFilterParams) {
   });
 }
 
+export async function getPlaylistById(playlistId: Playlist["id"]) {
+  return createPrismaRequest(async () => {
+    const playlist = await appPrisma.playlist.findUnique({
+      where: {
+        id: playlistId,
+      },
+      include: {
+        _count: true,
+      },
+    });
+    return playlist;
+  });
+}
+
 export async function createPlaylist(data: PlaylistData.ServerType) {
   return createPrismaRequest(() => {
     return validateWithSchema({

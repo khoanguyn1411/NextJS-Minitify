@@ -1,4 +1,3 @@
-import { Image } from "@nextui-org/react";
 import {
   BiCalendar,
   BiCheckCircle,
@@ -7,6 +6,7 @@ import {
 } from "react-icons/bi";
 
 import { getArtistById } from "@/core/apis/artistApis";
+import { AppImage } from "@/shared/components/AppImage";
 import { ArtistSongsListView } from "@/shared/components/artists/ArtistSongsListView";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
@@ -25,7 +25,7 @@ export default async function Page({ params }: { params: { id: string } }) {
   return (
     <div className="flex flex-col">
       <div className="p-container flex gap-4">
-        <Image
+        <AppImage
           isBlurred
           isZoomed
           src={artist.imageUrl}
