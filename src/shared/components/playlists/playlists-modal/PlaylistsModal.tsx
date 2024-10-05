@@ -66,7 +66,7 @@ export const PlaylistsModal: FC<Props> = (props) => {
     if (mode === "loading") {
       return true;
     }
-    return selectedPlaylists.length === 0;
+    return false;
   }, [mode, selectedPlaylists, form.formState.isDirty]);
 
   const handleModalClose = () => {

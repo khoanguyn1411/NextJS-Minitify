@@ -41,7 +41,7 @@ export const UserActionsButton: FC<Props> = ({
   const items: readonly Item[] = [
     {
       icon: <BiAddToQueue className="text-lg" />,
-      label: "Add to playlist",
+      label: "Modified playlist",
       onClick: () => onPlaylistModalOpen(),
     },
     {
