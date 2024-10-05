@@ -1,6 +1,6 @@
 "use server";
 
-import { type Playlist } from "@prisma/client";
+import { type Playlist, type Song } from "@prisma/client";
 
 import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
@@ -50,6 +50,24 @@ export async function createPlaylist(data: PlaylistData.ServerType) {
           },
         });
         return playlist;
+      },
+    });
+  });
+}
+
+export async function addSongToPlaylists(
+  playlistId: Playlist["id"],
+  songIds: Song["id"][],
+) {
+  return createPrismaRequest(() => {
+    appPrisma.playlist.update({
+      where: {
+        id: playlistId,
+      },
+      data: {
+        songs: {
+          connect: songIds.map((id) => ({ id })),
+        },
       },
     });
   });

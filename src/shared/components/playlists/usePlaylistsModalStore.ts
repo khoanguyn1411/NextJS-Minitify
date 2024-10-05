@@ -16,6 +16,10 @@ export const usePlaylistsModalContext = ({ userId }: Params) => {
   const [playlistsPage, setPlaylistsPage] =
     useState<Pagination<IPlaylist> | null>(null);
 
+  const [selectedPlaylists, setSelectedPlaylists] = useState<
+    readonly IPlaylist[]
+  >([]);
+
   const [isLoading, toggleExecutionState] = useToggleExecutionState();
 
   const getMode = () => {
@@ -56,6 +60,8 @@ export const usePlaylistsModalContext = ({ userId }: Params) => {
     mode,
     userId,
     setMode,
+    selectedPlaylists,
+    setSelectedPlaylists,
   };
 };
 
@@ -66,8 +72,10 @@ export const PlaylistsModalContext = createContext<
   playlistsPage: null,
   fetchPage: () => Promise.resolve(),
   setMode: () => {},
+  setSelectedPlaylists: () => {},
   mode: "loading",
   userId: null,
+  selectedPlaylists: [],
 });
 
 export const usePlaylistsModalStore = () => {

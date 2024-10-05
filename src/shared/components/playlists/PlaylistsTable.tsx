@@ -1,4 +1,3 @@
-import { type User } from "lucia";
 import { type FC } from "react";
 
 import { type IPlaylist } from "@/core/apis/playlistApis";
@@ -8,7 +7,8 @@ import { AppTable, type TableColumn } from "../AppTable";
 
 type Props = {
   readonly playlistsPage: Pagination<IPlaylist>;
-  readonly userId: User["id"] | null;
+  readonly selections?: readonly IPlaylist[];
+  readonly setSections?: (selections: readonly IPlaylist[]) => void;
 };
 
 const baseColumns: TableColumn<IPlaylist>[] = [
@@ -22,13 +22,19 @@ const baseColumns: TableColumn<IPlaylist>[] = [
   },
 ];
 
-export const PlaylistsTable: FC<Props> = ({ playlistsPage }) => {
+export const PlaylistsTable: FC<Props> = ({
+  playlistsPage,
+  selections,
+  setSections,
+}) => {
   return (
     <AppTable
+      selections={selections}
+      onSelectionChange={setSections}
       className="max-h-[200px]"
       hasPagination={false}
       columns={baseColumns}
-      toKey={(item) => item.id}
+      toKey={(item) => item.id.toString()}
       selectionMode="multiple"
       page={playlistsPage}
     />

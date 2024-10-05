@@ -59,7 +59,7 @@ model Playlist {
   user        User?    @relation(fields: [userId], references: [id])
   description String   @db.LongText
   createdDate DateTime @default(now())
-  song        Song[]
+  songs       Song[]
   updatedAt   DateTime @updatedAt
   userId      Int?
 }

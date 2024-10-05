@@ -15,7 +15,14 @@ import { PlaylistsTable } from "./PlaylistsTable";
 import { usePlaylistsModalStore } from "./usePlaylistsModalStore";
 
 export const PlaylistModalContent: FC = () => {
-  const { mode, userId, playlistsPage, setMode } = usePlaylistsModalStore();
+  const {
+    mode,
+    userId,
+    playlistsPage,
+    setMode,
+    selectedPlaylists,
+    setSelectedPlaylists,
+  } = usePlaylistsModalStore();
 
   if (mode === "loading") {
     return <div>Loading..</div>;
@@ -65,7 +72,11 @@ export const PlaylistModalContent: FC = () => {
           </Button>
         </Tooltip>
       </div>
-      <PlaylistsTable playlistsPage={playlistsPage} userId={userId} />
+      <PlaylistsTable
+        selections={selectedPlaylists}
+        setSections={setSelectedPlaylists}
+        playlistsPage={playlistsPage}
+      />
     </div>
   );
 };

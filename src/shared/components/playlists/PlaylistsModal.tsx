@@ -12,6 +12,7 @@ import {
 import { type FC } from "react";
 import { FormProvider } from "react-hook-form";
 
+import { type ISong } from "@/core/apis/songApis";
 import { useCurrentUserStore } from "@/shared/stores/useCurrentUserStore";
 
 import { PlaylistModalContent } from "./PlaylistModalContent";
@@ -21,17 +22,32 @@ import {
   usePlaylistsModalContext,
 } from "./usePlaylistsModalStore";
 
-type Props = ReturnType<typeof useDisclosure>;
+type Props = ReturnType<typeof useDisclosure> & {
+  readonly currentSong: ISong | null;
+};
 
 export const PlaylistsModal: FC<Props> = (props) => {
   const { currentUser } = useCurrentUserStore();
   const userId = currentUser?.id ?? null;
   const contextValue = usePlaylistsModalContext({ userId });
 
+  const { mode, fetchPage } = contextValue;
+
   const { form, onFormSubmit } = usePlaylistForm({
     userId,
-    onSubmitSuccess: () => contextValue.fetchPage(),
+    onSubmitSuccess: () => fetchPage(),
   });
+
+  const handleSubmitButtonClick = () => {
+    if (mode === "loading") {
+      return;
+    }
+    if (mode === "create") {
+      form.handleSubmit(onFormSubmit);
+      return;
+    }
+    // addSongToPlaylists()
+  };
 
   return (
     <Modal
@@ -45,17 +61,17 @@ export const PlaylistsModal: FC<Props> = (props) => {
           <>
             <ModalHeader className="text-2xl">Playlists</ModalHeader>
             <ModalBody className="flex flex-col gap-7">
-              <FormProvider {...form}>
-                <PlaylistsModalContext.Provider value={contextValue}>
+              <PlaylistsModalContext.Provider value={contextValue}>
+                <FormProvider {...form}>
                   <PlaylistModalContent />
-                </PlaylistsModalContext.Provider>
-              </FormProvider>
+                </FormProvider>
+              </PlaylistsModalContext.Provider>
             </ModalBody>
             <ModalFooter>
               <Button color="primary" variant="light" onClick={onClose}>
                 Cancel
               </Button>
-              <Button color="primary" onClick={form.handleSubmit(onFormSubmit)}>
+              <Button color="primary" onClick={handleSubmitButtonClick}>
                 Submit
               </Button>
             </ModalFooter>

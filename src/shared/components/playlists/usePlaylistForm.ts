@@ -17,6 +17,7 @@ export const usePlaylistForm = (props: Props) => {
   const { notify } = useNotify();
   const form = useForm<PlaylistData.Type>({
     shouldUnregister: true,
+    defaultValues: PlaylistData.initialValue,
     resolver: zodResolver(PlaylistData.schema),
   });
 

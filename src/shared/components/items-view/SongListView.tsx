@@ -140,7 +140,7 @@ export const SongListView: FC<Props> = ({
 
       {/* Note: Need to put the playlist modal outside of button component 
       to prevent clicking outside trigger the click action of row */}
-      <PlaylistsModal {...playlistModalDisclosure} />
+      <PlaylistsModal currentSong={activeRow} {...playlistModalDisclosure} />
     </>
   );
 };

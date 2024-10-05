@@ -2,7 +2,6 @@
 
 import {
   Pagination as NextUIPagination,
-  type SelectionMode,
   Spinner,
   Table,
   TableBody,
@@ -10,8 +9,10 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  type Selection,
+  type SelectionMode,
 } from "@nextui-org/react";
-import { type ReactNode } from "react";
+import { useMemo, type ReactNode } from "react";
 
 import { type Pagination } from "@/core/models/pagination";
 
@@ -30,11 +31,13 @@ export type TableColumn<T> = {
 type TableProps<T> = {
   readonly columns: readonly TableColumn<T>[];
   readonly page: Pagination<T>;
-  readonly toKey: (item: T) => string | number;
+  readonly toKey: (item: T) => string;
   readonly isLoading?: boolean;
   readonly className?: string;
   readonly hasPagination?: boolean;
   readonly selectionMode?: SelectionMode;
+  readonly onSelectionChange?: (data: readonly T[]) => void;
+  readonly selections?: T[] | readonly T[];
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,6 +46,23 @@ export const AppTable = <TData extends Record<string, any>>(
 ) => {
   const hasPagination = props.hasPagination ?? true;
   const { mergeQueryParams } = useAppQueryParams();
+
+  const selectionValue = useMemo<Selection | undefined>(() => {
+    const propsSelections = props.selections;
+    if (propsSelections == null) {
+      return undefined;
+    }
+    const propsSelectionKeys = propsSelections.map((item) => props.toKey(item));
+    const hasItemNotIncludedInPageItems =
+      props.page.items.find(
+        (item) => !propsSelectionKeys.includes(props.toKey(item)),
+      ) != null;
+
+    if (hasItemNotIncludedInPageItems) {
+      return new Set(propsSelectionKeys);
+    }
+    return "all";
+  }, [props.selections, props.page]);
 
   const handlePaginationChange = (page: number) => {
     mergeQueryParams({
@@ -60,12 +80,34 @@ export const AppTable = <TData extends Record<string, any>>(
     return item[col.key] ?? "-";
   };
 
+  const handleSelectionChange = (s: Selection) => {
+    if (props.onSelectionChange == null || props.selections == null) {
+      return;
+    }
+    if (s === "all") {
+      const newSelectionList = new Set([
+        ...props.selections,
+        ...props.page.items,
+      ]);
+      props.onSelectionChange(Array.from(newSelectionList));
+      return;
+    }
+    const selectedItems = props.page.items.filter((item) => {
+      return s.has(props.toKey(item));
+    });
+
+    const newSelectionList = new Set(selectedItems);
+    props.onSelectionChange(Array.from(newSelectionList));
+  };
+
   return (
     <div className="flex flex-col gap-3">
       <Table
         isHeaderSticky
+        selectedKeys={selectionValue}
         selectionMode={props.selectionMode}
         className={props.className}
+        onSelectionChange={handleSelectionChange}
         bottomContent={
           hasPagination && (
             <div className="flex w-full justify-center">
