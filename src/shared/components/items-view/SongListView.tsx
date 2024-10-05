@@ -1,5 +1,6 @@
 "use client";
 
+import { useDisclosure } from "@nextui-org/react";
 import { useMemo, useState, type FC } from "react";
 import { BiTime } from "react-icons/bi";
 
@@ -13,6 +14,7 @@ import {
 import { formatTime } from "@/shared/utils/formatTime";
 
 import { ListView, type ListViewColumn } from "../ListView";
+import { PlaylistsModal } from "../playlists/PlaylistsModal";
 import { UserActionsButton } from "../UserActionsButton";
 import { SongBaseInfoView } from "./SongBaseInfoView";
 
@@ -45,6 +47,7 @@ function getColumns(
   hoveredRow: ISong | null,
   activeRow: ISong | null,
   setActiveRow: (row: ISong | null) => void,
+  openPlaylistModal: () => void,
 ): readonly ListViewColumn<ISong>[] {
   return [
     ...baseColumns,
@@ -59,9 +62,10 @@ function getColumns(
         return (
           <>
             <UserActionsButton
+              onPlaylistModalOpen={openPlaylistModal}
               isHidden={!isCurrentItemHovered}
-              onTrigger={() => setActiveRow(item)}
-              onClose={() => setActiveRow(null)}
+              onDropdownTrigger={() => setActiveRow(item)}
+              onDropdownClose={() => setActiveRow(null)}
             />
             <p className={isCurrentItemHovered ? "hidden" : ""}>
               {formatTime(item.duration)}
@@ -94,8 +98,15 @@ export const SongListView: FC<Props> = ({
   const [hoveredRow, setHoveredRow] = useState<ISong | null>(null);
   const [activeRow, setActiveRow] = useState<ISong | null>(null);
 
+  const playlistModalDisclosure = useDisclosure();
+
   const columns = useMemo(() => {
-    return getColumns(hoveredRow, activeRow, setActiveRow);
+    return getColumns(
+      hoveredRow,
+      activeRow,
+      setActiveRow,
+      playlistModalDisclosure.onOpen,
+    );
   }, [hoveredRow, activeRow]);
 
   const handleRowClick = (song: ISong) => {
@@ -112,18 +123,23 @@ export const SongListView: FC<Props> = ({
   };
 
   return (
-    <ListView
-      onRowDoubleClick={handleRowClick}
-      onRowHover={handleRowHover}
-      onRowLeave={handleRowLeave}
-      fetchApi={fetchFunction}
-      className={className}
-      gridTemplate="grid-cols-[40px_1fr_100px_200px_100px]"
-      columns={columns}
-      toKey={(item) => item.id}
-      page={page}
-      isActiveRow={(currentSong) => playingSong?.id === currentSong.id}
-      scrollableTargetId={scrollableTargetId}
-    />
+    <>
+      <ListView
+        onRowDoubleClick={handleRowClick}
+        onRowHover={handleRowHover}
+        onRowLeave={handleRowLeave}
+        fetchApi={fetchFunction}
+        className={className}
+        gridTemplate="grid-cols-[40px_1fr_100px_200px_100px]"
+        columns={columns}
+        toKey={(item) => item.id}
+        page={page}
+        isActiveRow={(currentSong) => playingSong?.id === currentSong.id}
+        scrollableTargetId={scrollableTargetId}
+      />
+
+      {/* Note: Need to put the playlist modal outside to prevent clicking outside trigger the click action of row */}
+      <PlaylistsModal {...playlistModalDisclosure} />
+    </>
   );
 };
