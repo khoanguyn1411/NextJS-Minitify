@@ -101,7 +101,7 @@ export async function addSongsToPlaylists(
     });
 
     await Promise.all(updates);
-    revalidatePath("/playlists/[id]", "page");
+    revalidatePath("/playlists/[id]");
   });
 }
 
@@ -122,7 +122,7 @@ export async function removeSongsFromPlaylists(
     });
 
     await Promise.all(updates);
-    revalidatePath("/playlists/[id]", "page");
+    revalidatePath("/playlists/[id]");
   });
 }
 

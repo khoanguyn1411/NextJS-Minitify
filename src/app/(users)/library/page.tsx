@@ -1,6 +1,7 @@
 import { getPlaylists } from "@/core/apis/playlistApis";
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { SquarePlaylistView } from "@/shared/components/items-view/SquarePlaylistView";
+import { AddPlaylistButton } from "@/shared/components/playlists/AddPlaylistButton";
 import { SectionWithTitle } from "@/shared/components/SectionWithTitle";
 import { validateRequest } from "@/shared/services/authService";
 
@@ -14,7 +15,14 @@ export default async function Page() {
   });
   return (
     <div className="p-container">
-      <SectionWithTitle title="Your playlists">
+      <SectionWithTitle
+        title={
+          <div className="flex gap-2 justify-between">
+            <h1>Your playlists</h1>
+            <AddPlaylistButton />
+          </div>
+        }
+      >
         {playlistsPage.items.map((playlist) => (
           <SquarePlaylistView key={playlist.id} playlist={playlist} />
         ))}

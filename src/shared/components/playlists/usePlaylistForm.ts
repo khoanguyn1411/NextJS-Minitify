@@ -11,7 +11,7 @@ import { convertFileToFormData } from "@/shared/services/uploadService";
 
 type Props = {
   readonly userId: User["id"] | null;
-  readonly onSubmitSuccess: () => void;
+  readonly onSubmitSuccess?: () => void;
 };
 
 export const usePlaylistForm = (props: Props) => {
@@ -48,7 +48,7 @@ export const usePlaylistForm = (props: Props) => {
       notify("Created new playlist", {
         type: "success",
       });
-      props.onSubmitSuccess();
+      props.onSubmitSuccess?.();
       reset(PlaylistData.initialValue);
     }
   };

@@ -1,7 +1,7 @@
-import { type FC, type PropsWithChildren } from "react";
+import { type FC, type PropsWithChildren, type ReactNode } from "react";
 
 type Props = {
-  readonly title: string;
+  readonly title: ReactNode;
 };
 
 export const SectionWithTitle: FC<PropsWithChildren<Props>> = ({
@@ -10,7 +10,7 @@ export const SectionWithTitle: FC<PropsWithChildren<Props>> = ({
 }) => {
   return (
     <section className="flex flex-col gap-3">
-      <h1 className="text-xl mx-3 font-semibold">{title}</h1>
+      <div className="text-xl mx-3 font-semibold">{title}</div>
       <div className="flex flex-row overflow-auto flex-wrap">{children}</div>
     </section>
   );
