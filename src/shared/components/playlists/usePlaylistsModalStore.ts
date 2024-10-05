@@ -1,5 +1,5 @@
 import { type User } from "lucia";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { type IPlaylist, getPlaylists } from "@/core/apis/playlistApis";
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
@@ -16,9 +16,13 @@ export const usePlaylistsModalContext = ({ userId }: Params) => {
   const [playlistsPage, setPlaylistsPage] =
     useState<Pagination<IPlaylist> | null>(null);
 
-  const [selectedPlaylists, setSelectedPlaylists] = useState<readonly string[]>(
-    [],
-  );
+  const [rawSelectedPlaylists, setSelectedPlaylists] = useState<
+    readonly string[]
+  >([]);
+
+  const selectedPlaylists = useMemo(() => {
+    return rawSelectedPlaylists.map((playlistId) => Number(playlistId));
+  }, [rawSelectedPlaylists]);
 
   const [isLoading, toggleExecutionState] = useToggleExecutionState();
 
@@ -61,6 +65,7 @@ export const usePlaylistsModalContext = ({ userId }: Params) => {
     userId,
     setMode,
     selectedPlaylists,
+    rawSelectedPlaylists,
     setSelectedPlaylists,
   };
 };
@@ -76,6 +81,7 @@ export const PlaylistsModalContext = createContext<
   mode: "loading",
   userId: null,
   selectedPlaylists: [],
+  rawSelectedPlaylists: [],
 });
 
 export const usePlaylistsModalStore = () => {

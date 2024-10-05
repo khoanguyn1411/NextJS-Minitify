@@ -12,6 +12,7 @@ import {
 import { type FC } from "react";
 import { FormProvider } from "react-hook-form";
 
+import { addSongToPlaylists } from "@/core/apis/playlistApis";
 import { type ISong } from "@/core/apis/songApis";
 import { useCurrentUserStore } from "@/shared/stores/useCurrentUserStore";
 
@@ -31,7 +32,8 @@ export const PlaylistsModal: FC<Props> = (props) => {
   const userId = currentUser?.id ?? null;
   const contextValue = usePlaylistsModalContext({ userId });
 
-  const { mode, fetchPage } = contextValue;
+  const { mode, fetchPage, selectedPlaylists, setSelectedPlaylists } =
+    contextValue;
 
   const { form, onFormSubmit } = usePlaylistForm({
     userId,
@@ -46,7 +48,14 @@ export const PlaylistsModal: FC<Props> = (props) => {
       form.handleSubmit(onFormSubmit);
       return;
     }
-    // addSongToPlaylists()
+    if (props.currentSong == null) {
+      return;
+    }
+    addSongToPlaylists(selectedPlaylists, [props.currentSong.id]);
+  };
+
+  const handleModalClose = () => {
+    setSelectedPlaylists([]);
   };
 
   return (
@@ -54,6 +63,7 @@ export const PlaylistsModal: FC<Props> = (props) => {
       isOpen={props.isOpen}
       scrollBehavior="inside"
       size="2xl"
+      onClose={handleModalClose}
       onOpenChange={props.onOpenChange}
     >
       <ModalContent>
@@ -68,7 +78,14 @@ export const PlaylistsModal: FC<Props> = (props) => {
               </PlaylistsModalContext.Provider>
             </ModalBody>
             <ModalFooter>
-              <Button color="primary" variant="light" onClick={onClose}>
+              <Button
+                color="primary"
+                variant="light"
+                onClick={() => {
+                  handleModalClose();
+                  onClose();
+                }}
+              >
                 Cancel
               </Button>
               <Button color="primary" onClick={handleSubmitButtonClick}>

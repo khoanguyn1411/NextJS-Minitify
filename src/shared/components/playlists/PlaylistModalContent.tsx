@@ -20,7 +20,7 @@ export const PlaylistModalContent: FC = () => {
     userId,
     playlistsPage,
     setMode,
-    selectedPlaylists,
+    rawSelectedPlaylists,
     setSelectedPlaylists,
   } = usePlaylistsModalStore();
 
@@ -37,7 +37,7 @@ export const PlaylistModalContent: FC = () => {
               onClick={() => setMode("view")}
               className="flex gap-2 items-center hover:text-primary-300 transition-all"
             >
-              <BiSolidLeftArrow /> Back to playlist
+              <BiSolidLeftArrow /> Back to playlists
             </button>
           )}
 
@@ -73,7 +73,7 @@ export const PlaylistModalContent: FC = () => {
         </Tooltip>
       </div>
       <PlaylistsTable
-        selections={selectedPlaylists}
+        selections={rawSelectedPlaylists}
         setSections={setSelectedPlaylists}
         playlistsPage={playlistsPage}
       />

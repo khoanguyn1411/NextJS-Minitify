@@ -56,20 +56,22 @@ export async function createPlaylist(data: PlaylistData.ServerType) {
 }
 
 export async function addSongToPlaylists(
-  playlistId: Playlist["id"],
+  playlistIds: Playlist["id"][],
   songIds: Song["id"][],
 ) {
-  return createPrismaRequest(() => {
-    appPrisma.playlist.update({
-      where: {
-        id: playlistId,
-      },
-      data: {
-        songs: {
-          connect: songIds.map((id) => ({ id })),
+  return createPrismaRequest(async () => {
+    const updates = playlistIds.map((playlistId) =>
+      appPrisma.playlist.update({
+        where: { id: playlistId },
+        data: {
+          songs: {
+            connect: songIds.map((id) => ({ id })),
+          },
         },
-      },
-    });
+      }),
+    );
+
+    await Promise.all(updates);
   });
 }
 
