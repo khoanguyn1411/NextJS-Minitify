@@ -17,7 +17,7 @@ export default async function Page() {
     <div className="p-container">
       <SectionWithTitle
         title={
-          <div className="flex gap-2 justify-between">
+          <div className="flex gap-2 items-center justify-between">
             <h1>Your playlists</h1>
             <AddPlaylistButton />
           </div>
