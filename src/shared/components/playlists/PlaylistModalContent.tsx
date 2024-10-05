@@ -1,42 +1,16 @@
 import { Button } from "@nextui-org/button";
 import { Tooltip } from "@nextui-org/react";
-import { type User } from "lucia";
-import { useEffect, useState, type FC } from "react";
+import { type FC } from "react";
 import { BiAddToQueue, BiListUl } from "react-icons/bi";
 
-import { type IPlaylist } from "@/core/apis/playlistApis";
-import { type Pagination } from "@/core/models/pagination";
 import { assertNonNull } from "@/shared/utils/assertNonNull";
 
 import { PlaylistCreationForm } from "./PlaylistCreationForm";
 import { PlaylistsTable } from "./PlaylistsTable";
+import { usePlaylistsModalStore } from "./usePlaylistsModalStore";
 
-type Props = {
-  readonly isLoading: boolean;
-  readonly playlistsPage: Pagination<IPlaylist> | null;
-  readonly userId: User["id"] | null;
-};
-
-export const PlaylistModalContent: FC<Props> = ({
-  playlistsPage,
-  isLoading,
-  userId,
-}) => {
-  const getMode = () => {
-    if (playlistsPage == null || isLoading) {
-      return "loading";
-    }
-    if (playlistsPage.items.length == 0) {
-      return "create";
-    }
-    return "view";
-  };
-
-  const [mode, setMode] = useState<"view" | "create" | "loading">(getMode);
-
-  useEffect(() => {
-    setMode(getMode());
-  }, [playlistsPage, isLoading]);
+export const PlaylistModalContent: FC = () => {
+  const { mode, userId, playlistsPage, setMode } = usePlaylistsModalStore();
 
   if (mode === "loading") {
     return <div>Loading..</div>;

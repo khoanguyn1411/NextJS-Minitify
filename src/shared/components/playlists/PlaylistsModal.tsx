@@ -15,18 +15,22 @@ import { FormProvider } from "react-hook-form";
 import { useCurrentUserStore } from "@/shared/stores/useCurrentUserStore";
 
 import { PlaylistModalContent } from "./PlaylistModalContent";
-import { usePlaylistData } from "./usePlaylistData";
 import { usePlaylistForm } from "./usePlaylistForm";
+import {
+  PlaylistsModalContext,
+  usePlaylistsModalContext,
+} from "./usePlaylistsModalStore";
 
 type Props = ReturnType<typeof useDisclosure>;
 
 export const PlaylistsModal: FC<Props> = (props) => {
   const { currentUser } = useCurrentUserStore();
-  const { playlistsPage, isLoading, fetchPage } = usePlaylistData();
+  const userId = currentUser?.id ?? null;
+  const contextValue = usePlaylistsModalContext({ userId });
 
   const { form, onFormSubmit } = usePlaylistForm({
-    userId: currentUser?.id ?? null,
-    onSubmitSuccess: () => fetchPage(),
+    userId,
+    onSubmitSuccess: () => contextValue.fetchPage(),
   });
 
   return (
@@ -42,11 +46,9 @@ export const PlaylistsModal: FC<Props> = (props) => {
             <ModalHeader className="text-2xl">Playlists</ModalHeader>
             <ModalBody className="flex flex-col gap-7">
               <FormProvider {...form}>
-                <PlaylistModalContent
-                  userId={currentUser?.id ?? null}
-                  isLoading={isLoading}
-                  playlistsPage={playlistsPage}
-                />
+                <PlaylistsModalContext.Provider value={contextValue}>
+                  <PlaylistModalContent />
+                </PlaylistsModalContext.Provider>
               </FormProvider>
             </ModalBody>
             <ModalFooter>
