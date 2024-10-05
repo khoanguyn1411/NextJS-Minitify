@@ -36,8 +36,8 @@ type TableProps<T> = {
   readonly className?: string;
   readonly hasPagination?: boolean;
   readonly selectionMode?: SelectionMode;
-  readonly onSelectionChange?: (data: readonly T[]) => void;
-  readonly selections?: T[] | readonly T[];
+  readonly onSelectionChange?: (data: readonly string[]) => void;
+  readonly selections?: readonly string[];
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -52,14 +52,13 @@ export const AppTable = <TData extends Record<string, any>>(
     if (propsSelections == null) {
       return undefined;
     }
-    const propsSelectionKeys = propsSelections.map((item) => props.toKey(item));
     const hasItemNotIncludedInPageItems =
       props.page.items.find(
-        (item) => !propsSelectionKeys.includes(props.toKey(item)),
+        (item) => !propsSelections.includes(props.toKey(item)),
       ) != null;
 
     if (hasItemNotIncludedInPageItems) {
-      return new Set(propsSelectionKeys);
+      return new Set(propsSelections);
     }
     return "all";
   }, [props.selections, props.page]);
@@ -87,17 +86,12 @@ export const AppTable = <TData extends Record<string, any>>(
     if (s === "all") {
       const newSelectionList = new Set([
         ...props.selections,
-        ...props.page.items,
+        ...props.page.items.map((item) => props.toKey(item)),
       ]);
       props.onSelectionChange(Array.from(newSelectionList));
       return;
     }
-    const selectedItems = props.page.items.filter((item) => {
-      return s.has(props.toKey(item));
-    });
-
-    const newSelectionList = new Set(selectedItems);
-    props.onSelectionChange(Array.from(newSelectionList));
+    props.onSelectionChange(Array.from(s).map((item) => item.toString()));
   };
 
   return (

@@ -7,8 +7,8 @@ import { AppTable, type TableColumn } from "../AppTable";
 
 type Props = {
   readonly playlistsPage: Pagination<IPlaylist>;
-  readonly selections?: readonly IPlaylist[];
-  readonly setSections?: (selections: readonly IPlaylist[]) => void;
+  readonly selections?: readonly string[];
+  readonly setSections?: (selections: readonly string[]) => void;
 };
 
 const baseColumns: TableColumn<IPlaylist>[] = [

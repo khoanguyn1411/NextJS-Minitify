@@ -16,9 +16,9 @@ export const usePlaylistsModalContext = ({ userId }: Params) => {
   const [playlistsPage, setPlaylistsPage] =
     useState<Pagination<IPlaylist> | null>(null);
 
-  const [selectedPlaylists, setSelectedPlaylists] = useState<
-    readonly IPlaylist[]
-  >([]);
+  const [selectedPlaylists, setSelectedPlaylists] = useState<readonly string[]>(
+    [],
+  );
 
   const [isLoading, toggleExecutionState] = useToggleExecutionState();
 
