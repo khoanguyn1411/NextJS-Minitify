@@ -33,16 +33,16 @@ export default async function Page({ params }: { params: { id: string } }) {
             img: "w-full object-cover aspect-square",
           }}
         />
-        <div className="flex gap-4 flex-col">
+        <div className="flex gap-2 flex-col mt-auto">
           <div className="flex flex-col gap-1">
-            <span>
+            <span className="text-xs">
               Playlist of <span className="font-bold">{user?.fullName}</span>
             </span>
             <h1 className="text-3xl flex items-center gap-2 font-bold">
               {playlist.name}
             </h1>
           </div>
-          <p>{playlist.description}</p>
+          <p className="text-xs">{playlist.description}</p>
           <p className="font-semibold flex items-center gap-2">
             <BiCalendar />
             <span>Create at {DateUtils.toReadable(playlist.createdDate)}</span>
