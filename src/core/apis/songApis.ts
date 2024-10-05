@@ -7,33 +7,11 @@ import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
 import { createPrismaPaginationFilter } from "@/shared/utils/createPrismaPaginationFilter";
 import { createPrismaRequest } from "@/shared/utils/createPrismaRequest";
-import { determineConnectField } from "@/shared/utils/determineConnectFields";
 import { validateWithSchema } from "@/shared/utils/errorHandlers";
 import { getMp3Duration } from "@/shared/utils/getMp3Duration";
 
 import { SongData } from "../models/songData";
 import { type SongsFilterParams } from "../models/songsFilterParams";
-
-async function findCurrentSong(songId: Song["id"]) {
-  const currentSong = await appPrisma.song.findUnique({
-    where: {
-      id: songId,
-    },
-    select: {
-      artists: {
-        select: {
-          id: true,
-        },
-      },
-      tags: {
-        select: {
-          id: true,
-        },
-      },
-    },
-  });
-  return currentSong;
-}
 
 export async function createSong(data: SongData.ServerType) {
   return createPrismaRequest(() => {
@@ -77,19 +55,6 @@ export async function updateSong(
       schema: SongData.serverSchema,
       async onPassed(data) {
         const duration = await getMp3Duration(`public${data.song}`);
-        const currentSong = await findCurrentSong(songId);
-
-        const artistConnect = determineConnectField({
-          currentFieldIds:
-            currentSong?.artists.map((artist) => artist.id) ?? [],
-          newFieldIds: data.artistIds.map((option) => option.value),
-        });
-
-        const tagConnect = determineConnectField({
-          currentFieldIds: currentSong?.tags.map((artist) => artist.id) ?? [],
-          newFieldIds: data.tagIds.map((option) => option.value),
-        });
-
         const createSongRequest = appPrisma.song.update({
           where: {
             id: songId,
@@ -100,8 +65,12 @@ export async function updateSong(
             albumId: data.albumId?.value ?? null,
             duration: duration,
             songUrl: data.song,
-            artists: artistConnect,
-            tags: tagConnect,
+            artists: {
+              set: data.artistIds.map((option) => ({ id: option.value })),
+            },
+            tags: {
+              set: data.tagIds.map((option) => ({ id: option.value })), //
+            },
           },
         });
         const [songs] = await Promise.all([createSongRequest]);

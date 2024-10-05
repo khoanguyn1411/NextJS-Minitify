@@ -7,27 +7,10 @@ import { appPrisma } from "@/shared/configs/prisma.config";
 import { createPagination } from "@/shared/utils/createPagination";
 import { createPrismaPaginationFilter } from "@/shared/utils/createPrismaPaginationFilter";
 import { createPrismaRequest } from "@/shared/utils/createPrismaRequest";
-import { determineConnectField } from "@/shared/utils/determineConnectFields";
 import { validateWithSchema } from "@/shared/utils/errorHandlers";
 
 import { AlbumData } from "../models/albumData";
 import { type BaseFilterParams } from "../models/baseFilterParams";
-
-async function findCurrentAlbum(albumId: Album["id"]) {
-  const currentSong = await appPrisma.album.findUnique({
-    where: {
-      id: albumId,
-    },
-    select: {
-      songs: {
-        select: {
-          id: true,
-        },
-      },
-    },
-  });
-  return currentSong;
-}
 
 export async function createAlbum(data: AlbumData.ServerType) {
   return createPrismaRequest(() => {
@@ -59,12 +42,6 @@ export async function updateAlbum(id: Album["id"], data: AlbumData.ServerType) {
       data: data,
       schema: AlbumData.serverSchema,
       async onPassed(data) {
-        const currentAlbum = await findCurrentAlbum(id);
-        const songConnect = determineConnectField({
-          currentFieldIds: currentAlbum?.songs.map((song) => song.id) ?? [],
-          newFieldIds: data.songIds.map((option) => option.value),
-        });
-
         const album = await appPrisma.album.update({
           where: {
             id,
@@ -72,7 +49,9 @@ export async function updateAlbum(id: Album["id"], data: AlbumData.ServerType) {
           data: {
             name: data.name,
             description: data.description,
-            songs: songConnect,
+            songs: {
+              set: data.songIds.map((option) => ({ id: option.value })),
+            },
             artistId: data.artistId?.value,
             imageUrl: data.image,
           },

@@ -14,6 +14,7 @@ import { type PlaylistsFilterParams } from "../models/playlistsFilterParams";
 
 export async function getPlaylists(pagination: PlaylistsFilterParams) {
   return createPrismaRequest(async () => {
+    console.log({ idIncluded: pagination.songIdIncluded });
     const paginationFilters = createPrismaPaginationFilter(pagination);
     const filters: Parameters<typeof appPrisma.playlist.findMany>[0] = {
       where: {
@@ -24,13 +25,25 @@ export async function getPlaylists(pagination: PlaylistsFilterParams) {
       ...paginationFilters,
       ...filters,
       include: {
+        songs: {
+          select: {
+            id: true, // Only select the song ID to optimize the query
+          },
+        },
         _count: true,
       },
     });
 
+    const finalResult = playlists.map((playlist) => ({
+      ...playlist,
+      isSongIncludedIn: playlist.songs.some(
+        (song) => song.id === pagination.songIdIncluded,
+      ),
+    }));
+
     return createPagination({
       pagination: pagination,
-      result: playlists,
+      result: finalResult,
       model: "playlist",
       filters,
     });
@@ -77,16 +90,16 @@ export async function addSongToPlaylists(
   songIds: Song["id"][],
 ) {
   return createPrismaRequest(async () => {
-    const updates = playlistIds.map((playlistId) =>
-      appPrisma.playlist.update({
+    const updates = playlistIds.map(async (playlistId) => {
+      return appPrisma.playlist.update({
         where: { id: playlistId },
         data: {
           songs: {
-            connect: songIds.map((id) => ({ id })),
+            set: songIds.map((id) => ({ id })),
           },
         },
-      }),
-    );
+      });
+    });
 
     await Promise.all(updates);
     revalidatePath("/library");

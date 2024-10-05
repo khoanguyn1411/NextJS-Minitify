@@ -35,6 +35,7 @@ export const PlaylistsModal: FC<Props> = (props) => {
   const userId = currentUser?.id ?? null;
 
   const contextValue = usePlaylistsModalContext({
+    ...props,
     userId,
     currentSong: props.currentSong,
   });

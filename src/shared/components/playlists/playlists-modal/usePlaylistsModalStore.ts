@@ -1,5 +1,6 @@
 import { type User } from "lucia";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { type useDisclosure } from "@nextui-org/react";
 
 import { type IPlaylist, getPlaylists } from "@/core/apis/playlistApis";
 import { type ISong } from "@/core/apis/songApis";
@@ -12,9 +13,13 @@ export type PlaylistMode = "view" | "create" | "loading";
 type Params = {
   readonly userId: User["id"] | null;
   readonly currentSong: ISong | null;
-};
+} & ReturnType<typeof useDisclosure>;
 
-export const usePlaylistsModalContext = ({ userId, currentSong }: Params) => {
+export const usePlaylistsModalContext = ({
+  userId,
+  currentSong,
+  isOpen,
+}: Params) => {
   const [playlistsPage, setPlaylistsPage] =
     useState<Pagination<IPlaylist> | null>(null);
 
@@ -46,6 +51,7 @@ export const usePlaylistsModalContext = ({ userId, currentSong }: Params) => {
         ...BaseFilterParams.initialPagination,
         pageSize: 99999,
         search: "",
+        songIdIncluded: currentSong?.id,
       });
       setPlaylistsPage(page);
     });
@@ -56,11 +62,21 @@ export const usePlaylistsModalContext = ({ userId, currentSong }: Params) => {
   };
 
   useEffect(() => {
-    fetchPage();
-  }, []);
+    if (isOpen) {
+      fetchPage();
+    }
+  }, [currentSong, isOpen]);
 
   useEffect(() => {
     resetMode();
+    if (playlistsPage == null) {
+      return;
+    }
+    setSelectedPlaylists(
+      playlistsPage.items
+        .filter((item) => item.isSongIncludedIn)
+        .map((item) => item.id.toString()),
+    );
   }, [playlistsPage, isLoading]);
 
   return {
