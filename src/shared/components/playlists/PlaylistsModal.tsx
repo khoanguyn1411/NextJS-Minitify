@@ -15,6 +15,8 @@ import { FormProvider } from "react-hook-form";
 import { addSongToPlaylists } from "@/core/apis/playlistApis";
 import { type ISong } from "@/core/apis/songApis";
 import { useCurrentUserStore } from "@/shared/stores/useCurrentUserStore";
+import { useNotify } from "@/shared/hooks/useNotify";
+import { useToggleExecutionState } from "@/shared/hooks/useToggleExecutionState";
 
 import { PlaylistModalContent } from "./PlaylistModalContent";
 import { usePlaylistForm } from "./usePlaylistForm";
@@ -29,8 +31,12 @@ type Props = ReturnType<typeof useDisclosure> & {
 
 export const PlaylistsModal: FC<Props> = (props) => {
   const { currentUser } = useCurrentUserStore();
+
   const userId = currentUser?.id ?? null;
+
   const contextValue = usePlaylistsModalContext({ userId });
+  const { notify } = useNotify();
+  const [isSubmitting, toggleExecutionState] = useToggleExecutionState();
 
   const { mode, fetchPage, selectedPlaylists, setSelectedPlaylists } =
     contextValue;
@@ -40,7 +46,12 @@ export const PlaylistsModal: FC<Props> = (props) => {
     onSubmitSuccess: () => fetchPage(),
   });
 
-  const handleSubmitButtonClick = () => {
+  const handleModalClose = () => {
+    props.onClose();
+    setSelectedPlaylists([]);
+  };
+
+  const handleSubmitButtonClick = async () => {
     if (mode === "loading") {
       return;
     }
@@ -48,14 +59,15 @@ export const PlaylistsModal: FC<Props> = (props) => {
       form.handleSubmit(onFormSubmit);
       return;
     }
-    if (props.currentSong == null) {
+    const currentSong = props.currentSong;
+    if (currentSong == null) {
       return;
     }
-    addSongToPlaylists(selectedPlaylists, [props.currentSong.id]);
-  };
-
-  const handleModalClose = () => {
-    setSelectedPlaylists([]);
+    toggleExecutionState(async () => {
+      await addSongToPlaylists(selectedPlaylists, [currentSong.id]);
+      notify("Added to playlist", { type: "success" });
+      handleModalClose();
+    });
   };
 
   return (
@@ -67,7 +79,7 @@ export const PlaylistsModal: FC<Props> = (props) => {
       onOpenChange={props.onOpenChange}
     >
       <ModalContent>
-        {(onClose) => (
+        {() => (
           <>
             <ModalHeader className="text-2xl">Playlists</ModalHeader>
             <ModalBody className="flex flex-col gap-7">
@@ -81,14 +93,15 @@ export const PlaylistsModal: FC<Props> = (props) => {
               <Button
                 color="primary"
                 variant="light"
-                onClick={() => {
-                  handleModalClose();
-                  onClose();
-                }}
+                onClick={handleModalClose}
               >
                 Cancel
               </Button>
-              <Button color="primary" onClick={handleSubmitButtonClick}>
+              <Button
+                isLoading={isSubmitting || form.formState.isLoading}
+                color="primary"
+                onClick={handleSubmitButtonClick}
+              >
                 Submit
               </Button>
             </ModalFooter>

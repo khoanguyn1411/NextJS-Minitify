@@ -48,6 +48,7 @@ function getColumns(
   activeRow: ISong | null,
   setActiveRow: (row: ISong | null) => void,
   openPlaylistModal: () => void,
+  setCurrentSelectedSong: (row: ISong | null) => void,
 ): readonly ListViewColumn<ISong>[] {
   return [
     ...baseColumns,
@@ -64,7 +65,10 @@ function getColumns(
             <UserActionsButton
               onPlaylistModalOpen={openPlaylistModal}
               isHidden={!isCurrentItemHovered}
-              onDropdownTrigger={() => setActiveRow(item)}
+              onDropdownTrigger={() => {
+                setActiveRow(item);
+                setCurrentSelectedSong(item);
+              }}
               onDropdownClose={() => setActiveRow(null)}
             />
             <p className={isCurrentItemHovered ? "hidden" : ""}>
@@ -97,6 +101,9 @@ export const SongListView: FC<Props> = ({
   const { setPlayingSong, playingSong, setBelongTo } = usePlayingSongStore();
   const [hoveredRow, setHoveredRow] = useState<ISong | null>(null);
   const [activeRow, setActiveRow] = useState<ISong | null>(null);
+  const [currentSelectedSong, setCurrentSelectedSong] = useState<ISong | null>(
+    null,
+  );
 
   const playlistModalDisclosure = useDisclosure();
 
@@ -106,6 +113,7 @@ export const SongListView: FC<Props> = ({
       activeRow,
       setActiveRow,
       playlistModalDisclosure.onOpen,
+      setCurrentSelectedSong,
     );
   }, [hoveredRow, activeRow]);
 
@@ -140,7 +148,10 @@ export const SongListView: FC<Props> = ({
 
       {/* Note: Need to put the playlist modal outside of button component 
       to prevent clicking outside trigger the click action of row */}
-      <PlaylistsModal currentSong={activeRow} {...playlistModalDisclosure} />
+      <PlaylistsModal
+        currentSong={currentSelectedSong}
+        {...playlistModalDisclosure}
+      />
     </>
   );
 };
