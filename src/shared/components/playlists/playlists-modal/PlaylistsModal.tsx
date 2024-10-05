@@ -12,14 +12,17 @@ import {
 import { useMemo, type FC } from "react";
 import { FormProvider } from "react-hook-form";
 
-import { addSongToPlaylists } from "@/core/apis/playlistApis";
+import {
+  addSongsToPlaylists,
+  removeSongsFromPlaylists,
+} from "@/core/apis/playlistApis";
 import { type ISong } from "@/core/apis/songApis";
-import { useCurrentUserStore } from "@/shared/stores/useCurrentUserStore";
 import { useNotify } from "@/shared/hooks/useNotify";
 import { useToggleExecutionState } from "@/shared/hooks/useToggleExecutionState";
+import { useCurrentUserStore } from "@/shared/stores/useCurrentUserStore";
 
-import { PlaylistModalContent } from "./PlaylistModalContent";
 import { usePlaylistForm } from "../usePlaylistForm";
+import { PlaylistModalContent } from "./PlaylistModalContent";
 import {
   PlaylistsModalContext,
   usePlaylistsModalContext,
@@ -46,6 +49,7 @@ export const PlaylistsModal: FC<Props> = (props) => {
     mode,
     fetchPage,
     selectedPlaylists,
+    originalSelectedPlaylists,
     setSelectedPlaylists,
     resetMode,
   } = contextValue;
@@ -83,7 +87,34 @@ export const PlaylistsModal: FC<Props> = (props) => {
       return;
     }
     toggleExecutionState(async () => {
-      await addSongToPlaylists(selectedPlaylists, [currentSong.id]);
+      const originalSelectedPlaylistsSet = new Set(originalSelectedPlaylists);
+      const selectedPlaylistsSet = new Set(selectedPlaylists);
+
+      const playlistsNeedToAddSong = selectedPlaylistsSet.difference(
+        originalSelectedPlaylistsSet,
+      );
+
+      const playlistNeedToRemoveSong =
+        originalSelectedPlaylistsSet.difference(selectedPlaylistsSet);
+
+      const callbacks = [];
+
+      if (playlistNeedToRemoveSong.size > 0) {
+        callbacks.push(
+          removeSongsFromPlaylists(Array.from(playlistNeedToRemoveSong), [
+            currentSong.id,
+          ]),
+        );
+      }
+      if (playlistsNeedToAddSong.size > 0) {
+        callbacks.push(
+          addSongsToPlaylists(Array.from(playlistsNeedToAddSong), [
+            currentSong.id,
+          ]),
+        );
+      }
+
+      await Promise.all(callbacks);
       notify("Added to playlist", { type: "success" });
       handleModalClose();
     });

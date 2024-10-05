@@ -85,7 +85,7 @@ export async function createPlaylist(data: PlaylistData.ServerType) {
   });
 }
 
-export async function addSongToPlaylists(
+export async function addSongsToPlaylists(
   playlistIds: Playlist["id"][],
   songIds: Song["id"][],
 ) {
@@ -96,6 +96,27 @@ export async function addSongToPlaylists(
         data: {
           songs: {
             set: songIds.map((id) => ({ id })),
+          },
+        },
+      });
+    });
+
+    await Promise.all(updates);
+    revalidatePath("/library");
+  });
+}
+
+export async function removeSongsFromPlaylists(
+  playlistIds: Playlist["id"][],
+  songIds: Song["id"][],
+) {
+  return createPrismaRequest(async () => {
+    const updates = playlistIds.map(async (playlistId) => {
+      return appPrisma.playlist.update({
+        where: { id: playlistId },
+        data: {
+          songs: {
+            disconnect: songIds.map((id) => ({ id })),
           },
         },
       });

@@ -1,6 +1,6 @@
+import { type useDisclosure } from "@nextui-org/react";
 import { type User } from "lucia";
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
-import { type useDisclosure } from "@nextui-org/react";
 
 import { type IPlaylist, getPlaylists } from "@/core/apis/playlistApis";
 import { type ISong } from "@/core/apis/songApis";
@@ -26,6 +26,14 @@ export const usePlaylistsModalContext = ({
   const [rawSelectedPlaylists, setSelectedPlaylists] = useState<
     readonly string[]
   >([]);
+
+  const [rawOriginalSelectedPlaylists, setOriginalSelectedPlaylists] = useState<
+    readonly string[]
+  >([]);
+
+  const originalSelectedPlaylists = useMemo(() => {
+    return rawSelectedPlaylists.map((playlistId) => Number(playlistId));
+  }, [rawOriginalSelectedPlaylists]);
 
   const selectedPlaylists = useMemo(() => {
     return rawSelectedPlaylists.map((playlistId) => Number(playlistId));
@@ -72,11 +80,12 @@ export const usePlaylistsModalContext = ({
     if (playlistsPage == null) {
       return;
     }
-    setSelectedPlaylists(
-      playlistsPage.items
-        .filter((item) => item.isSongIncludedIn)
-        .map((item) => item.id.toString()),
-    );
+    const originalSelectedPlaylist = playlistsPage.items
+      .filter((item) => item.isSongIncludedIn)
+      .map((item) => item.id.toString());
+
+    setOriginalSelectedPlaylists(originalSelectedPlaylist);
+    setSelectedPlaylists(originalSelectedPlaylist);
   }, [playlistsPage, isLoading]);
 
   return {
@@ -91,6 +100,7 @@ export const usePlaylistsModalContext = ({
     setSelectedPlaylists,
     resetMode,
     currentSong,
+    originalSelectedPlaylists,
   };
 };
 
@@ -106,6 +116,7 @@ export const PlaylistsModalContext = createContext<
   mode: "loading",
   userId: null,
   selectedPlaylists: [],
+  originalSelectedPlaylists: [],
   rawSelectedPlaylists: [],
   currentSong: null,
 });
