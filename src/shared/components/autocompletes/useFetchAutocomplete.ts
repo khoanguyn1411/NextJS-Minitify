@@ -29,7 +29,9 @@ export const useFetchAutocomplete = <
   const [options, setOptions] = useState<readonly SelectOption<TData>[]>([]);
   const [isLoading, toggleExecutionState] = useToggleExecutionState();
   const [hasNext, setHasNext] = useState(true);
-  const [pageNumber, setPageNumber] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState<number>(
+    BaseFilterParams.initialPagination.pageNumber,
+  );
   const [search, setSearch] = useState("");
 
   const [debouncedSearch] = useDebounceValue(search, 300);
@@ -56,6 +58,7 @@ export const useFetchAutocomplete = <
       const newOptions = result.items.map((item) => params.toOption(item));
       setHasNext(result.hasNext);
       setOptions(newOptions);
+      setPageNumber(BaseFilterParams.initialPagination.pageNumber);
     });
   };
 

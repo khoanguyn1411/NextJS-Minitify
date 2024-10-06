@@ -4,20 +4,19 @@ import { useDebounceValue } from "usehooks-ts";
 import { type ISong, getSongs } from "@/core/apis/songApis";
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { useToggleExecutionState } from "@/shared/hooks/useToggleExecutionState";
+import { useUpdateEffect } from "@/shared/hooks/useUpdateEffect";
 export function useInfinitiveSongData() {
   const [options, setOptions] = useState<readonly ISong[]>([]);
   const [isLoading, toggleExecutionState] = useToggleExecutionState();
   const [searchValue, setSearchValue] = useState("");
   const [hasNext, setHasNext] = useState(true);
-  const [pageNumber, setPageNumber] = useState<number>(0);
+  const [pageNumber, setPageNumber] = useState<number>(
+    BaseFilterParams.initialPagination.pageNumber,
+  );
 
   const [debounceSearch] = useDebounceValue(searchValue, 300);
 
-  const loadOptions = async (
-    pageNumber: number,
-    search: string,
-    shouldReset: boolean,
-  ) => {
+  const fetchPage = async (filters: BaseFilterParams.Combined) => {
     toggleExecutionState(async () => {
       if (!hasNext) {
         return;
@@ -25,29 +24,41 @@ export function useInfinitiveSongData() {
       const result = await getSongs({
         ...BaseFilterParams.initialPagination,
         pageNumber: pageNumber,
-        search: search,
+        search: filters.search,
       });
+      const newOptions = result.items;
       setHasNext(result.hasNext);
-      if (shouldReset) {
-        setOptions(result.items);
-        return;
-      }
-      setOptions((prev) => [...prev, ...result.items]);
+      setOptions((prev) => [...prev, ...newOptions]);
     });
   };
 
+  const fetchPageWithSearch = async (filters: BaseFilterParams.Combined) => {
+    toggleExecutionState(async () => {
+      const result = await getSongs(filters);
+      const newOptions = result.items;
+      setHasNext(result.hasNext);
+      setOptions(newOptions);
+      setPageNumber(BaseFilterParams.initialPagination.pageNumber);
+    });
+  };
+
+  useUpdateEffect(() => {
+    fetchPage({
+      ...BaseFilterParams.initialPagination,
+      pageNumber,
+      search: searchValue,
+    });
+  }, [pageNumber]);
+
   useEffect(() => {
-    loadOptions(
-      BaseFilterParams.initialPagination.pageNumber,
-      debounceSearch,
-      true,
-    );
+    fetchPageWithSearch({
+      ...BaseFilterParams.initialPagination,
+      search: debounceSearch,
+    });
   }, [debounceSearch]);
 
   const onLoadMore = () => {
-    const newPage = pageNumber + 1;
-    setPageNumber(newPage);
-    loadOptions(newPage, "", false);
+    setPageNumber((prev) => prev + 1);
   };
 
   return {
