@@ -37,6 +37,7 @@ export const GlobalSearch: FC = () => {
     if (selectedOption == null) {
       return;
     }
+    setSearchValue(selectedOption.name);
     setPlayingSong(selectedOption);
   };
 
@@ -47,7 +48,11 @@ export const GlobalSearch: FC = () => {
         onInputChange={setSearchValue}
         scrollRef={scrollerRef}
         isLoading={isLoading}
+        allowsCustomValue
         selectedKey={value}
+        isClearable={false}
+        defaultItems={options}
+        type="search"
         onSelectionChange={handleSelectionChange}
         items={options}
         onOpenChange={setIsOpen}
@@ -56,6 +61,8 @@ export const GlobalSearch: FC = () => {
       >
         {(option) => (
           <AutocompleteItem
+            hideSelectedIcon
+            textValue={option.name}
             onClick={() => {
               setPlayingSong(option);
             }}
