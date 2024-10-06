@@ -24,6 +24,7 @@ const baseColumns: TableColumn<IPlaylist>[] = [
   {
     title: "",
     key: "action",
+    align: "end",
     render: (item) => {
       return <DeletePlaylistButton radius="sm" size="sm" playlist={item} />;
     },
