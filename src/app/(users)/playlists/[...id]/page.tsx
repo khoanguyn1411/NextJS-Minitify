@@ -8,18 +8,20 @@ import { PlaylistSongsListView } from "@/shared/components/playlists/PlaylistSon
 import { validateRequest } from "@/shared/services/authService";
 import { DateUtils } from "@/shared/utils/dateUtils";
 
+const NO_DATA_MESSAGE = "Invalid playlist ID. Maybe playlist has been deleted.";
+
 export default async function Page({ params }: { params: { id: string } }) {
   const { user } = await validateRequest();
 
   const playlistId = Number(params.id);
   if (isNaN(playlistId)) {
-    return <p className="p-container">Invalid playlist ID.</p>;
+    return <p className="p-container">{NO_DATA_MESSAGE}</p>;
   }
 
   const playlist = await getPlaylistById(playlistId);
 
   if (playlist == null) {
-    return <p className="p-container">Invalid playlist ID.</p>;
+    return <p className="p-container">{NO_DATA_MESSAGE}</p>;
   }
 
   return (

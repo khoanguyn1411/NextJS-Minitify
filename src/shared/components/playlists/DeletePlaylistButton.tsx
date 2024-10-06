@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@nextui-org/button";
+import { Button, type ButtonProps } from "@nextui-org/button";
 import {
   Modal,
   ModalBody,
@@ -18,20 +18,24 @@ import {
   type IPlaylist,
   type IPlaylistDetail,
 } from "@/core/apis/playlistApis";
+import { useNotify } from "@/shared/hooks/useNotify";
 
 type Props = {
   readonly playlist: IPlaylist | IPlaylistDetail;
   readonly onDeleteComplete?: () => void;
-};
+} & ButtonProps;
 
 export const DeletePlaylistButton: FC<Props> = ({
   playlist,
   onDeleteComplete,
+  ...buttonProps
 }) => {
   const disclosure = useDisclosure();
+  const { notify } = useNotify();
 
   const handleDelete = async () => {
     await deletePlaylist(playlist.id);
+    notify("Delete successfully", { type: "success" });
     onDeleteComplete?.();
   };
   return (
@@ -43,6 +47,7 @@ export const DeletePlaylistButton: FC<Props> = ({
           isIconOnly
           variant="flat"
           radius="full"
+          {...buttonProps}
         >
           <BiTrash className="text-lg" />
         </Button>

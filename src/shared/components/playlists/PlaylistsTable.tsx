@@ -4,6 +4,7 @@ import { type IPlaylist } from "@/core/apis/playlistApis";
 import { type Pagination } from "@/core/models/pagination";
 
 import { AppTable, type TableColumn } from "../AppTable";
+import { DeletePlaylistButton } from "./DeletePlaylistButton";
 
 type Props = {
   readonly playlistsPage: Pagination<IPlaylist>;
@@ -19,6 +20,13 @@ const baseColumns: TableColumn<IPlaylist>[] = [
   {
     title: "Description",
     key: "description",
+  },
+  {
+    title: "",
+    key: "action",
+    render: (item) => {
+      return <DeletePlaylistButton radius="sm" size="sm" playlist={item} />;
+    },
   },
 ];
 
