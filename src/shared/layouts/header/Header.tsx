@@ -4,8 +4,8 @@ import { type User } from "@prisma/client";
 import Link from "next/link";
 import { type FC, type PropsWithChildren } from "react";
 
+import { AppLogoWithName } from "@/shared/components/AppLogoWithName";
 import { UserContext } from "@/shared/stores/useCurrentUserStore";
-import { APP_NAME } from "@/shared/constants/appInfo";
 
 import { GlobalSearch } from "./global-search/GlobalSearch";
 import { UserActions } from "./UserActions";
@@ -20,7 +20,9 @@ const HeaderContent: FC<Pick<Props, "hasSearchBar">> = ({
 }) => {
   return (
     <div className="grid grid-cols-3 gap-4 items-center h-header">
-      <Link href="/">{APP_NAME}</Link>
+      <Link href="/">
+        <AppLogoWithName />
+      </Link>
       <div className="self-center">{hasSearchBar && <GlobalSearch />}</div>
       <UserActions />
     </div>
