@@ -1,4 +1,5 @@
 import { Card } from "@nextui-org/react";
+import { type Metadata } from "next";
 import { BiCalendar, BiMusic } from "react-icons/bi";
 
 import { getPlaylistById } from "@/core/apis/playlistApis";
@@ -7,8 +8,29 @@ import { PlaylistPageActions } from "@/shared/components/playlists/PlaylistPageA
 import { PlaylistSongsListView } from "@/shared/components/playlists/PlaylistSongsListView";
 import { validateRequest } from "@/shared/services/authService";
 import { DateUtils } from "@/shared/utils/dateUtils";
+import { type DynamicRouteProps } from "@/shared/utils/types/dynamicRouteProps";
 
 const NO_DATA_MESSAGE = "Invalid playlist ID. Maybe playlist has been deleted.";
+
+export async function generateMetadata({
+  params,
+}: DynamicRouteProps): Promise<Metadata> {
+  const playlistId = Number(params.id);
+  if (isNaN(playlistId)) {
+    return {};
+  }
+
+  const playlist = await getPlaylistById(playlistId);
+
+  if (playlist == null) {
+    return {};
+  }
+
+  return {
+    title: playlist.name,
+    description: playlist.description,
+  };
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { user } = await validateRequest();

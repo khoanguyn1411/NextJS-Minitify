@@ -1,9 +1,16 @@
+import { type Metadata } from "next";
+
 import { getPlaylists } from "@/core/apis/playlistApis";
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { SquarePlaylistView } from "@/shared/components/items-view/SquarePlaylistView";
 import { AddPlaylistButton } from "@/shared/components/playlists/AddPlaylistButton";
 import { SectionWithTitle } from "@/shared/components/SectionWithTitle";
 import { validateRequest } from "@/shared/services/authService";
+
+export const metadata: Metadata = {
+  title: "Library",
+  description: "Library",
+};
 
 export default async function Page() {
   const { user } = await validateRequest();

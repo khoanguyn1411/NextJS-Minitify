@@ -1,3 +1,4 @@
+import { type Metadata } from "next";
 import {
   BiCalendar,
   BiCheckCircle,
@@ -9,6 +10,27 @@ import { getArtistById } from "@/core/apis/artistApis";
 import { AppImage } from "@/shared/components/AppImage";
 import { ArtistSongsListView } from "@/shared/components/artists/ArtistSongsListView";
 import { DateUtils } from "@/shared/utils/dateUtils";
+import { type DynamicRouteProps } from "@/shared/utils/types/dynamicRouteProps";
+
+export async function generateMetadata({
+  params,
+}: DynamicRouteProps): Promise<Metadata> {
+  const artistId = Number(params.id);
+  if (isNaN(artistId)) {
+    return {};
+  }
+
+  const artist = await getArtistById(artistId);
+
+  if (artist == null) {
+    return {};
+  }
+
+  return {
+    title: artist.name,
+    description: artist.biography,
+  };
+}
 
 export default async function Page({ params }: { params: { id: string } }) {
   const artistId = Number(params.id);

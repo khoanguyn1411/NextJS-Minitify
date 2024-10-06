@@ -15,6 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import { RegisterData } from "@/core/models/registerData";
 import { useError } from "@/shared/hooks/useError";
 import { signUp } from "@/shared/services/authService";
+import { APP_NAME } from "@/shared/constants/appInfo";
 
 import { Password } from "../../Password";
 
@@ -54,7 +55,7 @@ export const RegisterModal: FC<Props> = (props) => {
             <ModalHeader className="text-2xl">Sign Up</ModalHeader>
             <ModalBody className="flex flex-col gap-7">
               <div className="flex flex-col gap-1">
-                <h1 className="text-xl">Welcome to Minitify</h1>
+                <h1 className="text-xl">Welcome to {APP_NAME}</h1>
                 <p className="text-sm text-primary-200">
                   Stay up together with musics!
                 </p>

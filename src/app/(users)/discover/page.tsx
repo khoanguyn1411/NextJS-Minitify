@@ -1,4 +1,11 @@
+import { type Metadata } from "next";
+
 import { DiscoverSongsListView } from "@/shared/components/discover/DiscoverSongsListView";
+
+export const metadata: Metadata = {
+  title: "Discover",
+  description: "Discover latest tracks !!!",
+};
 
 export default async function Page() {
   return (

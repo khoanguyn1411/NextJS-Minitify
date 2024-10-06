@@ -5,6 +5,7 @@ import Link from "next/link";
 import { type FC, type PropsWithChildren } from "react";
 
 import { UserContext } from "@/shared/stores/useCurrentUserStore";
+import { APP_NAME } from "@/shared/constants/appInfo";
 
 import { GlobalSearch } from "./global-search/GlobalSearch";
 import { UserActions } from "./UserActions";
@@ -19,7 +20,7 @@ const HeaderContent: FC<Pick<Props, "hasSearchBar">> = ({
 }) => {
   return (
     <div className="grid grid-cols-3 gap-4 items-center h-header">
-      <Link href="/">Minitify</Link>
+      <Link href="/">{APP_NAME}</Link>
       <div className="self-center">{hasSearchBar && <GlobalSearch />}</div>
       <UserActions />
     </div>

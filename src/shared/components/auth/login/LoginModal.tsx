@@ -15,6 +15,7 @@ import { Controller, useForm } from "react-hook-form";
 import { LoginData } from "@/core/models/loginData";
 import { useError } from "@/shared/hooks/useError";
 import { signIn } from "@/shared/services/authService";
+import { APP_NAME } from "@/shared/constants/appInfo";
 
 import { Password } from "../../Password";
 
@@ -56,7 +57,7 @@ export const LoginModal: FC<Props> = (props) => {
             <ModalHeader className="text-2xl">Sign In</ModalHeader>
             <ModalBody className="flex flex-col gap-7">
               <div className="flex flex-col gap-1">
-                <h1 className="text-xl">Welcome back to Minitify</h1>
+                <h1 className="text-xl">Welcome back to {APP_NAME}</h1>
                 <p className="text-sm text-primary-200">Enjoy your tracks!</p>
               </div>
               <form className="flex flex-col gap-4">
