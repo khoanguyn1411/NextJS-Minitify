@@ -3,6 +3,7 @@ import { BiCalendar, BiMusic } from "react-icons/bi";
 
 import { getPlaylistById } from "@/core/apis/playlistApis";
 import { AppImage } from "@/shared/components/AppImage";
+import { DeletePlaylistButton } from "@/shared/components/playlists/DeletePlaylistButton";
 import { EditPlaylistButton } from "@/shared/components/playlists/EditPlaylistButton";
 import { PlaylistSongsListView } from "@/shared/components/playlists/PlaylistSongsListView";
 import { validateRequest } from "@/shared/services/authService";
@@ -57,8 +58,9 @@ export default async function Page({ params }: { params: { id: string } }) {
               <span>{playlist._count.songs} songs</span>
             </p>
           </div>
-          <div>
+          <div className="flex flex-col gap-3">
             <EditPlaylistButton playlist={playlist} userId={user?.id ?? null} />
+            <DeletePlaylistButton playlist={playlist} />
           </div>
         </div>
       </Card>

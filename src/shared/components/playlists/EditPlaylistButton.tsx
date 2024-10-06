@@ -46,7 +46,7 @@ export const EditPlaylistButton: FC<Props> = ({ playlist, userId }) => {
 
   return (
     <>
-      <Tooltip content="Click to edit playlist">
+      <Tooltip content="Edit playlist">
         <Button
           color="primary"
           onClick={disclosure.onOpen}
