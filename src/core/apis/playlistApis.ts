@@ -18,6 +18,7 @@ export async function getPlaylists(pagination: PlaylistsFilterParams) {
     const filters: Parameters<typeof appPrisma.playlist.findMany>[0] = {
       where: {
         name: { contains: pagination.search },
+        userId: pagination.userId,
       },
     };
     const playlists = await appPrisma.playlist.findMany({
