@@ -3,10 +3,16 @@ import { useInfiniteScroll } from "@nextui-org/use-infinite-scroll";
 import { useState, type FC } from "react";
 import { BiSearch } from "react-icons/bi";
 
+import { usePlayingSongStore } from "@/shared/stores/usePlayingSongStore";
+
 import { useInfinitiveSongData } from "./useInfinitiveSongData";
 
 export const GlobalSearch: FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { setPlayingSong } = usePlayingSongStore();
+
+  // We need this to trigger the click event of autocomplete. Not sure why.
+  const [value, setValue] = useState<string | number | null>(null);
   const {
     options,
     hasNext,
@@ -23,6 +29,17 @@ export const GlobalSearch: FC = () => {
     onLoadMore,
   });
 
+  const handleSelectionChange = (value: string | number | null) => {
+    setValue(value);
+    const selectedOption = options.find(
+      (option) => option.id.toString() === value,
+    );
+    if (selectedOption == null) {
+      return;
+    }
+    setPlayingSong(selectedOption);
+  };
+
   return (
     <>
       <Autocomplete
@@ -30,13 +47,20 @@ export const GlobalSearch: FC = () => {
         onInputChange={setSearchValue}
         scrollRef={scrollerRef}
         isLoading={isLoading}
+        selectedKey={value}
+        onSelectionChange={handleSelectionChange}
         items={options}
         onOpenChange={setIsOpen}
         startContent={<BiSearch />}
         placeholder="What do you want to listen?"
       >
         {(option) => (
-          <AutocompleteItem key={option.id}>
+          <AutocompleteItem
+            onClick={() => {
+              setPlayingSong(option);
+            }}
+            key={option.id}
+          >
             <User
               avatarProps={{ src: option.imageUrl }}
               name={option.name}
