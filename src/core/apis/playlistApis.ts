@@ -153,6 +153,18 @@ export async function updatePlaylist(
   });
 }
 
+export async function deletePlaylist(playlistId: Playlist["id"]) {
+  return createPrismaRequest(async () => {
+    await appPrisma.playlist.delete({
+      where: {
+        id: playlistId,
+      },
+    });
+    revalidatePath("/playlists/[id]");
+    revalidatePath("/library");
+  });
+}
+
 export type IPlaylist = Awaited<ReturnType<typeof getPlaylists>>["items"][0];
 export type IPlaylistDetail = NonNullable<
   Awaited<ReturnType<typeof getPlaylistById>>
