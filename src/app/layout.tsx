@@ -8,9 +8,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: {
     template: `%s | ${APP_NAME}`,
-    default: APP_NAME,
+    default: `${APP_NAME} - To beautiful musics world`,
   },
-  description: "To beautiful musics world.",
+  description: "Music application.",
 };
 
 export default function RootLayout({
