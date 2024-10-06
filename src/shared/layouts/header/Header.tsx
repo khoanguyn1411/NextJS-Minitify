@@ -14,7 +14,9 @@ type Props = {
   readonly hasSearchBar?: boolean;
 };
 
-const HeaderContent: FC<Pick<Props, "hasSearchBar">> = ({ hasSearchBar }) => {
+const HeaderContent: FC<Pick<Props, "hasSearchBar">> = ({
+  hasSearchBar = true,
+}) => {
   return (
     <div className="grid grid-cols-3 gap-4 items-center h-header">
       <Link href="/">Minitify</Link>
