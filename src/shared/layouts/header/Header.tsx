@@ -6,7 +6,7 @@ import { type FC, type PropsWithChildren } from "react";
 
 import { UserContext } from "@/shared/stores/useCurrentUserStore";
 
-import { GlobalSearch } from "./GlobalSearch";
+import { GlobalSearch } from "./global-search/GlobalSearch";
 import { UserActions } from "./UserActions";
 
 type Props = {
