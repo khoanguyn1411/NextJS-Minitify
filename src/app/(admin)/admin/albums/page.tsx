@@ -1,7 +1,13 @@
+import { type Metadata } from "next";
+
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { AlbumCreationButton } from "@/shared/components/admin/albums/AlbumCreationButton";
 import { AlbumsTableServer } from "@/shared/components/admin/albums/AlbumsTableServer";
 import { AdminTableLayout } from "@/shared/layouts/AdminTableLayout";
+
+export const metadata: Metadata = {
+  title: "Albums",
+};
 
 export default function Page({
   searchParams,

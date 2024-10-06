@@ -1,7 +1,13 @@
+import { type Metadata } from "next";
+
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { TagCreationButton } from "@/shared/components/admin/tags/TagCreationButton";
 import { TagsTableServer } from "@/shared/components/admin/tags/TagsTableServer";
 import { AdminTableLayout } from "@/shared/layouts/AdminTableLayout";
+
+export const metadata: Metadata = {
+  title: "Tags",
+};
 
 export default function Page({
   searchParams,

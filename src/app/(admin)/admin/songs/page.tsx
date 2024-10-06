@@ -1,7 +1,13 @@
+import { type Metadata } from "next";
+
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { SongCreationButton } from "@/shared/components/admin/songs/SongCreationButton";
 import { SongsTableServer } from "@/shared/components/admin/songs/SongTableServer";
 import { AdminTableLayout } from "@/shared/layouts/AdminTableLayout";
+
+export const metadata: Metadata = {
+  title: "Songs",
+};
 
 export default function Page({
   searchParams,

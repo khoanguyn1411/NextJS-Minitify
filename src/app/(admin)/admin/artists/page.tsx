@@ -1,7 +1,13 @@
+import { type Metadata } from "next";
+
 import { BaseFilterParams } from "@/core/models/baseFilterParams";
 import { ArtistCreationButton } from "@/shared/components/admin/artists/ArtistCreationButton";
 import { ArtistsTableServer } from "@/shared/components/admin/artists/ArtistsTableServer";
 import { AdminTableLayout } from "@/shared/layouts/AdminTableLayout";
+
+export const metadata: Metadata = {
+  title: "Artists",
+};
 
 export default function Page({
   searchParams,
