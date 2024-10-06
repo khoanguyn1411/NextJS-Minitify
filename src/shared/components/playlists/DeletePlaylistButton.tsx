@@ -21,13 +21,18 @@ import {
 
 type Props = {
   readonly playlist: IPlaylist | IPlaylistDetail;
+  readonly onDeleteComplete?: () => void;
 };
 
-export const DeletePlaylistButton: FC<Props> = ({ playlist }) => {
+export const DeletePlaylistButton: FC<Props> = ({
+  playlist,
+  onDeleteComplete,
+}) => {
   const disclosure = useDisclosure();
 
   const handleDelete = async () => {
     await deletePlaylist(playlist.id);
+    onDeleteComplete?.();
   };
   return (
     <>
