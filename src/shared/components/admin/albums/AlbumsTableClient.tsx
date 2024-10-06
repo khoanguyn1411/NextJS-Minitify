@@ -1,6 +1,6 @@
 "use client";
 
-import { User as NextUiUser, Tooltip } from "@nextui-org/react";
+import { User as NextUiUser } from "@nextui-org/react";
 import { type FC } from "react";
 
 import { type IAlbum } from "@/core/apis/albumsApis";
@@ -27,14 +27,7 @@ const columns: readonly TableColumn<IAlbum>[] = [
   {
     title: "Description",
     key: "description",
-    render: (item) => (
-      <Tooltip
-        className="max-w-48 overflow-auto max-h-40"
-        content={item.description}
-      >
-        <p className="truncate-2">{item.description}</p>
-      </Tooltip>
-    ),
+    render: (item) => <p className="truncate-2">{item.description}</p>,
   },
   {
     title: "Artist",
