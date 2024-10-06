@@ -59,6 +59,7 @@ export const usePlaylistsModalContext = ({
         ...BaseFilterParams.initialPagination,
         pageSize: 99999,
         search: "",
+        userId: userId ?? undefined,
         songIdIncluded: currentSong?.id,
       });
       setPlaylistsPage(page);
