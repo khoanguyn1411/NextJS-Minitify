@@ -23,15 +23,15 @@ export default async function Page() {
           </div>
         }
       >
-        <div className="px-3 flex">
+        <>
           {playlistsPage.items.length === 0 && (
-            <p>You current have no playlist.</p>
+            <p className="px-3">You current have no playlist.</p>
           )}
           {playlistsPage.items.length > 0 &&
             playlistsPage.items.map((playlist) => (
               <SquarePlaylistView key={playlist.id} playlist={playlist} />
             ))}
-        </div>
+        </>
       </SectionWithTitle>
     </div>
   );
