@@ -47,3 +47,7 @@ export async function middleware(request: NextRequest) {
     return redirect(); // Redirect on validation failure
   }
 }
+
+export const config = {
+  matcher: ["/admin/:path*", "/library"],
+};
