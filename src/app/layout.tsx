@@ -2,7 +2,6 @@ import { NextUIProvider } from "@nextui-org/react";
 import type { Metadata } from "next";
 
 import { ToastProvider } from "@/shared/providers/ToastProvider";
-
 import "./globals.css";
 
 export const metadata: Metadata = {

@@ -28,6 +28,6 @@ export namespace BaseFilterParams {
 
   export const initialPagination: Pagination = {
     pageNumber: 0,
-    pageSize: 10,
+    pageSize: 5,
   };
 }
