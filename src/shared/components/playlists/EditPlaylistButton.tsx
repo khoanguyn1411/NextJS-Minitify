@@ -51,7 +51,7 @@ export const EditPlaylistButton: FC<Props> = ({ playlist, userId }) => {
           color="primary"
           onClick={disclosure.onOpen}
           isIconOnly
-          variant="light"
+          variant="flat"
           radius="full"
         >
           <BiEdit className="text-lg" />
