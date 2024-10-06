@@ -17,7 +17,6 @@ import { usePlaylistsModalStore } from "./usePlaylistsModalStore";
 export const PlaylistModalContent: FC = () => {
   const {
     mode,
-    userId,
     playlistsPage,
     setMode,
     currentSong,
@@ -48,7 +47,7 @@ export const PlaylistModalContent: FC = () => {
           </p>
         </div>
 
-        <PlaylistCreationForm userId={userId} />
+        <PlaylistCreationForm />
       </div>
     );
   }

@@ -1,19 +1,17 @@
 import { Input, Textarea } from "@nextui-org/input";
-import { type User } from "@prisma/client";
 import { type FC } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
-import { type IPlaylist } from "@/core/apis/playlistApis";
+import { type IPlaylist, type IPlaylistDetail } from "@/core/apis/playlistApis";
 import { type PlaylistData } from "@/core/models/playListData";
 
 import { FileUploader } from "../FileUploader";
 
 type Props = {
-  readonly playlist?: IPlaylist;
-  readonly userId: User["id"] | null;
+  readonly playlist?: IPlaylist | IPlaylistDetail;
 };
 
-export const PlaylistCreationForm: FC<Props> = () => {
+export const PlaylistCreationForm: FC<Props> = ({ playlist }) => {
   const { control } = useFormContext<PlaylistData.Type>();
 
   return (
@@ -49,6 +47,7 @@ export const PlaylistCreationForm: FC<Props> = () => {
         name="image"
         render={({ field, fieldState }) => (
           <FileUploader
+            currentUrl={playlist?.imageUrl}
             fileAccepted=".jpg,.jpeg,.png"
             label="Playlist"
             errorMessage={fieldState.error?.message}

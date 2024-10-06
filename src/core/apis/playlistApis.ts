@@ -143,6 +143,7 @@ export async function updatePlaylist(
           data: {
             name: data.name,
             description: data.description,
+            imageUrl: data.image,
           },
         });
         revalidatePath("/library");
@@ -153,3 +154,6 @@ export async function updatePlaylist(
 }
 
 export type IPlaylist = Awaited<ReturnType<typeof getPlaylists>>["items"][0];
+export type IPlaylistDetail = NonNullable<
+  Awaited<ReturnType<typeof getPlaylistById>>
+>;
