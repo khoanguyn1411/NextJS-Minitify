@@ -46,6 +46,7 @@ export const AppTable = <TData extends Record<string, any>>(
 ) => {
   const hasPagination = props.hasPagination ?? true;
   const { mergeQueryParams } = useAppQueryParams();
+  const totalPage = props.page.totalPages === 0 ? 1 : props.page.totalPages;
 
   const selectionValue = useMemo<Selection | undefined>(() => {
     const propsSelections = props.selections;
@@ -111,7 +112,7 @@ export const AppTable = <TData extends Record<string, any>>(
                 showControls
                 showShadow
                 isDisabled={props.page.totalCount === 0}
-                total={props.page.totalPages}
+                total={totalPage}
                 page={props.page.pageNumber + 1}
               />
             </div>
