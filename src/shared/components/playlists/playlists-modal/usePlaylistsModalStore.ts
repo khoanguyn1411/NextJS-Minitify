@@ -74,7 +74,7 @@ export const usePlaylistsModalContext = ({
     if (isOpen) {
       fetchPage();
     }
-  }, [currentSong, isOpen]);
+  }, [currentSong, isOpen, userId]);
 
   useEffect(() => {
     resetMode();
