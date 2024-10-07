@@ -39,8 +39,9 @@ export const LoginModal: FC<Props> = (props) => {
     const result = await signIn(data);
     notifyOnAppError(result);
     extractErrorsToForm({ result, setError });
-    if (isSuccess(result) && props.onLoginSuccess) {
-      props.onLoginSuccess();
+    if (isSuccess(result)) {
+      props.onClose();
+      props.onLoginSuccess?.();
     }
   };
 
