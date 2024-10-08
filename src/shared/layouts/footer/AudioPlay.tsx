@@ -136,7 +136,6 @@ export const AudioPlay: FC<Props> = ({
           track: "bg-default-500/30",
           thumb: "w-2 h-2 after:w-2 after:h-2 after:bg-foreground",
         }}
-        onDrag={() => console.log("Here")}
         value={progress}
         onChange={handleProgressChange}
         onChangeEnd={handleProgressChangeEnd}
