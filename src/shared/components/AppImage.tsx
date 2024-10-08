@@ -10,9 +10,9 @@ type Props = ImageProps & {
   readonly isFromApi?: boolean;
 };
 
-export const AppImage: FC<Props> = (props) => {
+export const AppImage: FC<Props> = ({ isFromApi = false, ...props }) => {
   const getCurrentImageSrc = () => {
-    if (props.isFromApi && props.src) {
+    if (isFromApi && props.src) {
       return getSrcFromApi(props.src);
     }
     return props.src ?? "";
