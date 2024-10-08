@@ -35,6 +35,7 @@ export const AudioPlay: FC<Props> = ({
 }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [progress, setProgress] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
 
   // When the audio is loaded, set the duration
   const handleLoadedMetadata = () => {
@@ -48,17 +49,20 @@ export const AudioPlay: FC<Props> = ({
     if (audioRef.current) {
       const currentTime = audioRef.current.currentTime;
       const totalDuration = audioRef.current.duration;
-
-      setProgress((currentTime / totalDuration) * 100); // Update progress percentage
+      if (!isDragging) {
+        setProgress((currentTime / totalDuration) * 100); // Update progress percentage
+      }
       setCurrentTime(audioRef.current.currentTime);
     }
   };
 
   // Function to seek the audio position when progress bar is clicked
   const handleProgressChange = (progress: number | number[]) => {
-    if (typeof progress != "number") {
+    if (typeof progress != "number" || audioRef.current == null) {
       return;
     }
+    setIsDragging(true);
+    setCurrentTime((audioRef.current.duration * progress) / 100);
     setProgress(progress);
   };
 
@@ -66,6 +70,7 @@ export const AudioPlay: FC<Props> = ({
     if (typeof newProgress != "number") {
       return;
     }
+    setIsDragging(false);
     if (audioRef.current) {
       const newTime = (newProgress / 100) * duration;
       audioRef.current.currentTime = newTime; // Update audio position
@@ -131,6 +136,7 @@ export const AudioPlay: FC<Props> = ({
           track: "bg-default-500/30",
           thumb: "w-2 h-2 after:w-2 after:h-2 after:bg-foreground",
         }}
+        onDrag={() => console.log("Here")}
         value={progress}
         onChange={handleProgressChange}
         onChangeEnd={handleProgressChangeEnd}
