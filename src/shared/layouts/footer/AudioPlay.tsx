@@ -2,6 +2,7 @@ import { Slider } from "@nextui-org/react";
 import { useEffect, useRef, useState, type FC } from "react";
 
 import { type ISong } from "@/core/apis/songApis";
+import { getSrcFromApi } from "@/shared/utils/getSrcFromApi";
 
 import { type AudioStatus, type VolumeSetting } from "./Footer";
 
@@ -113,7 +114,7 @@ export const AudioPlay: FC<Props> = ({
         ref={audioRef}
         onTimeUpdate={handleTimeUpdate}
         onLoadedMetadata={handleLoadedMetadata}
-        src={song.songUrl}
+        src={getSrcFromApi(song.songUrl, "mp3")}
       >
         Your browser does not support the audio element.
       </audio>

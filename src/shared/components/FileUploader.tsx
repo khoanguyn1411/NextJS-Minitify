@@ -73,6 +73,7 @@ export const FileUploader: FC<Props> = ({
         {isCurrentFileShown && fileAccepted === ".jpg,.jpeg,.png" && (
           <AppImage
             isBlurred
+            isFromApi
             className="object-cover"
             src={currentUrl ?? ""}
             width={100}

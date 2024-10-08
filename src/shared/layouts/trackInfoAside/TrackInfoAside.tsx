@@ -55,6 +55,7 @@ export const TrackInfoAside: FC = () => {
     <div className="flex flex-col gap-4">
       <AppImage
         isBlurred
+        isFromApi
         classNames={{ wrapper: "!max-w-full", img: "w-full" }}
         alt={playingSong.name}
         src={playingSong.imageUrl}
@@ -80,6 +81,7 @@ export const TrackInfoAside: FC = () => {
           <Card isPressable onClick={() => handleArtistClick(artist)}>
             <CardBody>
               <AppImage
+                isFromApi
                 classNames={{ wrapper: "!max-w-full", img: "w-full" }}
                 src={artist.imageUrl}
                 alt={artist.name}

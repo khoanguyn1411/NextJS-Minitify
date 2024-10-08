@@ -19,7 +19,7 @@ export async function uploadFile(
     const buffer = Buffer.from(bytes);
 
     // For this, we'll just write it to the filesystem in a new location
-    const path = join("public", "uploads", type, file.name);
+    const path = join("uploads", type, file.name);
     await writeFile(path, buffer);
 
     return {

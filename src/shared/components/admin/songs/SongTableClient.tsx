@@ -5,6 +5,7 @@ import { type FC } from "react";
 
 import { type ISong } from "@/core/apis/songApis";
 import { type Pagination } from "@/core/models/pagination";
+import { getSrcFromApi } from "@/shared/utils/getSrcFromApi";
 
 import { AppTable, type TableColumn } from "../../AppTable";
 import { SongActionsCell } from "./SongActionsCell";
@@ -16,7 +17,7 @@ const columns: readonly TableColumn<ISong>[] = [
     key: "name",
     render: (item) => (
       <NextUiUser
-        avatarProps={{ radius: "full", src: item.imageUrl }}
+        avatarProps={{ radius: "full", src: getSrcFromApi(item.imageUrl) }}
         description={item.artists.map((artist) => artist.name).join(", ")}
         name={item.name}
       />
@@ -30,7 +31,7 @@ const columns: readonly TableColumn<ISong>[] = [
     render: (item) => {
       return (
         <audio controls>
-          <source src={item.songUrl} />
+          <source src={getSrcFromApi(item.songUrl, "mp3")} />
         </audio>
       );
     },

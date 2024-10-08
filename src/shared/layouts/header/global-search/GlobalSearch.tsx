@@ -4,6 +4,7 @@ import { useState, type FC } from "react";
 import { BiSearch } from "react-icons/bi";
 
 import { usePlayingSongStore } from "@/shared/stores/usePlayingSongStore";
+import { getSrcFromApi } from "@/shared/utils/getSrcFromApi";
 
 import { useInfinitiveSongData } from "./useInfinitiveSongData";
 
@@ -69,7 +70,7 @@ export const GlobalSearch: FC = () => {
             key={option.id}
           >
             <User
-              avatarProps={{ src: option.imageUrl }}
+              avatarProps={{ src: getSrcFromApi(option.imageUrl) }}
               name={option.name}
               description={option.artists
                 .map((artist) => artist.name)

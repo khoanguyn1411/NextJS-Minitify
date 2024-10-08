@@ -53,6 +53,7 @@ export default async function Page({ params }: { params: { id: string } }) {
           <AppImage
             isBlurred
             isZoomed
+            isFromApi
             src={playlist.imageUrl}
             alt={playlist.name}
             classNames={{

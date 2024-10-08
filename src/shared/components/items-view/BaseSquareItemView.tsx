@@ -22,6 +22,7 @@ export const BaseSquareItemView: FC<Props> = ({
   isRounded = false,
   onClick,
 }) => {
+  const appImageUrl = `/api/images?image=${imageUrl}`;
   return (
     <Card
       radius="lg"
@@ -38,7 +39,7 @@ export const BaseSquareItemView: FC<Props> = ({
           wrapper: "aspect-square",
           img: "aspect-square w-[inherit]",
         }}
-        src={imageUrl}
+        src={appImageUrl}
       />
 
       <div className="flex gap-1 flex-col">

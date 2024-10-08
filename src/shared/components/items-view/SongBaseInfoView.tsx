@@ -3,6 +3,7 @@ import classNames from "classnames";
 import { type FC } from "react";
 
 import { type ISong } from "@/core/apis/songApis";
+import { getSrcFromApi } from "@/shared/utils/getSrcFromApi";
 
 type Props = {
   readonly song: ISong;
@@ -27,7 +28,7 @@ export const SongBaseInfoView: FC<Props> = ({
       description={song.artists.map((artist) => artist.name).join(", ")}
       className="justify-start"
       avatarProps={{
-        src: song.imageUrl,
+        src: getSrcFromApi(song.imageUrl),
         className: classNames({
           "animate-spin": isSpinning,
         }),

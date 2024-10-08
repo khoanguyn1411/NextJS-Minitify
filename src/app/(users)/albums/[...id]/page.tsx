@@ -7,6 +7,7 @@ import { AlbumSongsListView } from "@/shared/components/albums/AlbumSongsListVie
 import { AppImage } from "@/shared/components/AppImage";
 import { DateUtils } from "@/shared/utils/dateUtils";
 import { type DynamicRouteProps } from "@/shared/utils/types/dynamicRouteProps";
+import { getSrcFromApi } from "@/shared/utils/getSrcFromApi";
 
 export async function generateMetadata({
   params,
@@ -45,6 +46,7 @@ export default async function Page({ params }: DynamicRouteProps) {
         <AppImage
           isBlurred
           isZoomed
+          isFromApi
           src={album.imageUrl}
           alt={album.name}
           classNames={{
@@ -70,7 +72,10 @@ export default async function Page({ params }: DynamicRouteProps) {
           </p>
           <div>
             <User
-              avatarProps={{ radius: "lg", src: album.artist.imageUrl }}
+              avatarProps={{
+                radius: "lg",
+                src: getSrcFromApi(album.artist.imageUrl),
+              }}
               name={album.artist.name}
               description="Artist of the album"
             />

@@ -6,6 +6,7 @@ import { type FC } from "react";
 import { type IAlbum } from "@/core/apis/albumsApis";
 import { type Pagination } from "@/core/models/pagination";
 import { DateUtils } from "@/shared/utils/dateUtils";
+import { getSrcFromApi } from "@/shared/utils/getSrcFromApi";
 
 import { AppTable, type TableColumn } from "../../AppTable";
 import { AlbumActionsCell } from "./AlbumActionsCell";
@@ -17,7 +18,7 @@ const columns: readonly TableColumn<IAlbum>[] = [
     key: "name",
     render: (item) => (
       <NextUiUser
-        avatarProps={{ radius: "full", src: item.imageUrl }}
+        avatarProps={{ radius: "full", src: getSrcFromApi(item.imageUrl) }}
         description={`Last updated: ${DateUtils.toReadable(item.updatedAt)}`}
         name={item.name}
       />
