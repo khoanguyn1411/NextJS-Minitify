@@ -19,7 +19,7 @@ export async function createSong(data: SongData.ServerType) {
       data: data,
       schema: SongData.serverSchema,
       async onPassed(data) {
-        const duration = await getMp3Duration(`public${data.song}`);
+        const duration = await getMp3Duration(data.song);
         const createSongRequest = appPrisma.song.create({
           data: {
             name: data.name,
@@ -54,7 +54,7 @@ export async function updateSong(
       data: data,
       schema: SongData.serverSchema,
       async onPassed(data) {
-        const duration = await getMp3Duration(`public${data.song}`);
+        const duration = await getMp3Duration(data.song);
         const createSongRequest = appPrisma.song.update({
           where: {
             id: songId,

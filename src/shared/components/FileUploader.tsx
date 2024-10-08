@@ -4,6 +4,7 @@ import { useRef, type ChangeEvent, type FC, type ReactNode } from "react";
 import { BiFile, BiUpload, BiX } from "react-icons/bi";
 
 import { AppImage } from "./AppImage";
+import { getSrcFromApi } from "../utils/getSrcFromApi";
 
 export const ACCEPTED_UPLOAD_FILES = {
   mp3: ".mp3",
@@ -67,7 +68,7 @@ export const FileUploader: FC<Props> = ({
       <div className="flex flex-col gap-4 items-center">
         {isCurrentFileShown && fileAccepted === ".mp3" && (
           <audio controls>
-            <source src={currentUrl} />
+            <source src={getSrcFromApi(currentUrl)} />
           </audio>
         )}
         {isCurrentFileShown && fileAccepted === ".jpg,.jpeg,.png" && (
