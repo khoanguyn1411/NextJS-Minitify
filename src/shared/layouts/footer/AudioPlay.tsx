@@ -69,8 +69,6 @@ export const AudioPlay: FC<Props> = ({
     if (audioRef.current) {
       const newTime = (newProgress / 100) * duration;
       audioRef.current.currentTime = newTime; // Update audio position
-      console.log({ current: audioRef.current });
-      console.log({ refCurrentTime: audioRef.current.currentTime, newTime });
     }
   };
 
