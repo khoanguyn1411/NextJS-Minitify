@@ -51,8 +51,8 @@ export const AudioPlay: FC<Props> = ({
       const totalDuration = audioRef.current.duration;
       if (!isDragging) {
         setProgress((currentTime / totalDuration) * 100); // Update progress percentage
+        setCurrentTime(audioRef.current.currentTime);
       }
-      setCurrentTime(audioRef.current.currentTime);
     }
   };
 
