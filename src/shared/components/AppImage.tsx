@@ -29,6 +29,8 @@ export const AppImage: FC<Props> = (props) => {
     setImageSrc(getCurrentImageSrc());
   }, [props.src]);
 
+  console.log({ imageSrc });
+
   return (
     <>
       <Image {...props} alt={props.alt} loading="lazy" src={imageSrc} />
