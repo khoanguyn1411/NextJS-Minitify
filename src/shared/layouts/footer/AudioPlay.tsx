@@ -36,20 +36,21 @@ export const AudioPlay: FC<Props> = ({
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [progress, setProgress] = useState(0);
 
+  // When the audio is loaded, set the duration
+  const handleLoadedMetadata = () => {
+    if (audioRef.current) {
+      setDuration(audioRef.current.duration);
+    }
+  };
+
   // Update progress as the song plays
   const handleTimeUpdate = () => {
     if (audioRef.current) {
       const currentTime = audioRef.current.currentTime;
       const totalDuration = audioRef.current.duration;
+
       setProgress((currentTime / totalDuration) * 100); // Update progress percentage
       setCurrentTime(audioRef.current.currentTime);
-    }
-  };
-
-  // When the audio is loaded, set the duration
-  const handleLoadedMetadata = () => {
-    if (audioRef.current) {
-      setDuration(audioRef.current.duration);
     }
   };
 
@@ -59,9 +60,17 @@ export const AudioPlay: FC<Props> = ({
       return;
     }
     setProgress(progress);
+  };
+
+  const handleProgressChangeEnd = (newProgress: number | number[]) => {
+    if (typeof newProgress != "number") {
+      return;
+    }
     if (audioRef.current) {
-      const newTime = (progress / 100) * duration;
+      const newTime = (newProgress / 100) * duration;
       audioRef.current.currentTime = newTime; // Update audio position
+      console.log({ current: audioRef.current });
+      console.log({ refCurrentTime: audioRef.current.currentTime, newTime });
     }
   };
 
@@ -126,6 +135,7 @@ export const AudioPlay: FC<Props> = ({
         }}
         value={progress}
         onChange={handleProgressChange}
+        onChangeEnd={handleProgressChangeEnd}
         color="foreground"
         size="sm"
       />
