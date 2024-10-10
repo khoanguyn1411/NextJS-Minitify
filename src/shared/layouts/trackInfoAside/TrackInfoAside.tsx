@@ -17,14 +17,10 @@ import { SongBaseInfoView } from "@/shared/components/items-view/SongBaseInfoVie
 import { PlaylistsModal } from "@/shared/components/playlists/playlists-modal/PlaylistsModal";
 import { UserActionsButton } from "@/shared/components/UserActionsButton";
 import { usePlayingSongStore } from "@/shared/stores/usePlayingSongStore";
-import { useCurrentUserStore } from "@/shared/stores/useCurrentUserStore";
-import { LoginModal } from "@/shared/components/auth/login/LoginModal";
 
 export const TrackInfoAside: FC = () => {
   const { playingSong, nextSongs, setPlayingSong } = usePlayingSongStore();
-  const { currentUser } = useCurrentUserStore();
   const playlistModalDisclosure = useDisclosure();
-  const loginModalDisclosure = useDisclosure();
   const router = useRouter();
 
   const handleSongClick = (song: ISong) => {
@@ -36,10 +32,6 @@ export const TrackInfoAside: FC = () => {
   };
 
   const onPlaylistOpenClick = () => {
-    if (currentUser == null) {
-      loginModalDisclosure.onOpen();
-      return;
-    }
     playlistModalDisclosure.onOpen();
   };
 
@@ -69,10 +61,6 @@ export const TrackInfoAside: FC = () => {
         <PlaylistsModal
           currentSong={playingSong}
           {...playlistModalDisclosure}
-        />
-        <LoginModal
-          onLoginSuccess={playlistModalDisclosure.onOpen}
-          {...loginModalDisclosure}
         />
       </div>
       <Divider />

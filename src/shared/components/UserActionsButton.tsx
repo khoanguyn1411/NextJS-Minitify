@@ -7,6 +7,7 @@ import {
   DropdownMenu,
   DropdownTrigger,
 } from "@nextui-org/dropdown";
+import { useDisclosure } from "@nextui-org/react";
 import { type FC, type ReactNode } from "react";
 import {
   BiAddToQueue,
@@ -15,7 +16,9 @@ import {
   BiSkipPreviousCircle,
 } from "react-icons/bi";
 
+import { useCurrentUserStore } from "../stores/useCurrentUserStore";
 import { usePlayingSongStore } from "../stores/usePlayingSongStore";
+import { LoginModal } from "./auth/login/LoginModal";
 
 type Item = {
   readonly label: string;
@@ -37,12 +40,22 @@ export const UserActionsButton: FC<Props> = ({
   onPlaylistModalOpen,
 }) => {
   const { moveToNextSong, moveToPreviousSong } = usePlayingSongStore();
+  const { currentUser } = useCurrentUserStore();
+  const loginModalDisclosure = useDisclosure();
+
+  const handlePlaylistModalOpen = () => {
+    if (currentUser == null) {
+      loginModalDisclosure.onOpen();
+      return;
+    }
+    onPlaylistModalOpen();
+  };
 
   const items: readonly Item[] = [
     {
       icon: <BiAddToQueue className="text-lg" />,
       label: "Modified playlist",
-      onClick: () => onPlaylistModalOpen(),
+      onClick: () => handlePlaylistModalOpen(),
     },
     {
       icon: <BiSkipNextCircle className="text-lg" />,
@@ -81,6 +94,11 @@ export const UserActionsButton: FC<Props> = ({
           )}
         </DropdownMenu>
       </Dropdown>
+
+      <LoginModal
+        onLoginSuccess={onPlaylistModalOpen}
+        {...loginModalDisclosure}
+      />
     </>
   );
 };
